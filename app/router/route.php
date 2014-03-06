@@ -1,56 +1,5 @@
 <?php
 
-class Router
-{
-    private $routes = array();
-    private $actions = array();
-
-    public function __construct()
-    {
-        $this->routes = array();
-        $this->actions = array();
-    }
-
-    public function addRoute(Route $route)
-    {
-        $this->routes[] = $route;
-    }
-
-    public function addRoutes(array $routes)
-    {
-        foreach($routes as $route)
-        {
-            $this->addRoute($route);
-        }
-    }
-
-    public function getPage($url)
-    {
-        foreach($this->routes as $route)
-        {
-            $found = true;
-            try
-            {
-                $data = $route->callController($url);
-            }
-            catch(Exception $e)
-            {
-                $found = false;
-            }
-            if ($found === true)
-                break;
-        }
-        if ($found === true)
-        {
-            return $data;
-        }
-        else
-        {
-            header('HTTP/1.0 404 Not Found');
-        }
-    }
-}
-
 class Route
 {
     private $controller = null;
@@ -94,7 +43,7 @@ class Route
             $params = array(new Request());
             $params = array_merge($params, $this->parse_params($url));
             $controller = new $this->controller;
-            return call_user_func_array(array($controller, $this->action), $params);
+            call_user_func_array(array($controller, $this->action), $params);
         }
         else
         {
@@ -108,6 +57,3 @@ class Route
         return array_slice($matches, 1);
     }
 }
-
-class Request
-{}
