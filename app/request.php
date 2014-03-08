@@ -2,8 +2,8 @@
 require dirname(dirname(__FILE__)).'/vendor/autoload.php';
 require 'config.php';
 
-$loader = new Link_Loader_Filesystem('../tpl/cache');
-$cache = new Link_Cache_Filesystem('../tpl');
+$loader = new Link_Loader_Filesystem('../tpl');
+$cache = new Link_Cache_Filesystem('../cache/tpl');
 
 $link = new Link_Environment($loader, $cache);
 
@@ -43,6 +43,7 @@ class Request
 
     public function parseTemplate($file, $data)
     {
+        global $link;
         $link->parse($file, $data);
     }
 

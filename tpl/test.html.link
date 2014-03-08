@@ -1,0 +1,9 @@
+<html>
+<body>
+  <if cond="{$nb->getValue()} > 1">
+    plural
+  <else />
+    singular
+  </if>
+</body>
+</html>

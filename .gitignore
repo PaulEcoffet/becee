@@ -5,6 +5,7 @@ app/bootstrap*
 vendor/*
 */logs/*
 */cache/*
+cache/*
 web/uploads/*
 web/bundles/*
 
