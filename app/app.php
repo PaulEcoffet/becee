@@ -11,7 +11,7 @@ class Dummy
 }
 
 $router = new Router();
-$route = new Route('#^lol/?$#', "Dummy", "view");
+$route = new Route('lol', "Dummy", "view");
 
 $router->addRoute($route);
 $path = explode('?', $_SERVER['QUERY_STRING'])[0];
