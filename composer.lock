@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c59bf9df7c0fe4a0cb15bf2a50855a6e",
+    "hash": "263e049a854aa76a5a2e005774436348",
     "packages": [
         {
             "name": "taluu/link-tpl",
