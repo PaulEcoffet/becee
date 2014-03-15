@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+    <h1>Oups</h1>
+    <p>Il semblerait que la page <em>{url}</em> n'existe pas&nbsp;!</p>
+</body>
+</html>
