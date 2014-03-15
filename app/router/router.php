@@ -13,7 +13,7 @@ class Router
     {
         $this->routes = array();
         $this->actions = array();
-        $this->error404Route = new Route('error404', 'HttpError', 'error404');
+        $this->error404Route = new Route('(.*)', 'HttpError', 'Error404');
     }
 
     public function addRoute(Route $route)

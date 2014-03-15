@@ -27,7 +27,7 @@ class Route
 
     public function setController($controller)
     {
-        $this->controller = $controller;
+        $this->controller = 'Beece\\Controllers\\' .$controller;
     }
 
     public function setAction($action)
@@ -54,7 +54,7 @@ class Route
         }
         else
         {
-            throw new Exception();
+            throw new Exception('url is invalid');
         }
     }
 

@@ -1,8 +1,8 @@
 <?php
-require dirname(dirname(__FILE__)).'/vendor/autoload.php';
-require 'config.php';
+require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
+require_once 'config.php';
 
-$loader = new Link_Loader_Filesystem('../tpl');
+$loader = new Link_Loader_Filesystem('../src/tpl');
 $cache = new Link_Cache_Filesystem('../cache/tpl');
 
 $link = new Link_Environment($loader, $cache);
