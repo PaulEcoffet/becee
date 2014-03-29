@@ -1,18 +1,12 @@
 <?php
 
-require 'router/router.php';
-
-class Dummy
-{
-    public function viewAction($request)
-    {
-        $request->parseTemplate('test.html.link', array('nb' => 2));
-    }
-}
+require_once 'router/router.php';
+require_once 'config.php';
+require_once 'routes.php';
 
 $router = new Router();
-$route = new Route('lol', "Dummy", "view");
 
-$router->addRoute($route);
+$router->addRoutes(get_routes());
+
 $path = explode('?', $_SERVER['QUERY_STRING'])[0];
 $router->getPage($path);
