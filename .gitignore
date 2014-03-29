@@ -4,14 +4,12 @@ app/bootstrap*
 # Symfony directories
 vendor/*
 */logs/*
-*/cache/*
-cache/*
+cache/tpl/*
 web/uploads/*
 web/bundles/*
 
 # Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
+app/config.php
 
 # vim
 *.swp
