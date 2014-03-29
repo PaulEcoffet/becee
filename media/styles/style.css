@@ -1,0 +1,470 @@
+#head
+{
+	background: url(../img/head.jpg) center center;
+	background-size: cover;
+	height: 400px;
+	width: 100%;
+	margin: 0;
+	border-bottom: 2px solid #ddd;
+}
+
+#center-row
+{
+	margin: auto; 
+	max-width: 800px;
+}
+.home-business
+{
+	padding: 20px;
+	padding-bottom: 0;
+	text-align: center;
+}
+.home-business > a > img.center
+{ 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto;
+    border: 1px solid #ddd !important;
+    border-bottom: 0;
+}
+#main
+{
+	background-color: #fefefe;
+	height: 100px;
+	width: 100%;
+}
+.panel
+{
+	margin-top: 20px;
+	border: 1px solid #ddd;
+	border-radius: 0;
+	font-family: 'Roboto';
+	font-size: 2em;
+	font-weight: 800;
+}
+.panel-heading
+{
+	background-color: #cbdbea;
+	height: 2px;
+	padding: 0 15px;
+}
+/*   BECEE PROJECT BY MEP TEAMFOR CSWD2014 (Université de Bordeaux)   */
+/*   BECEE PROJECT BY MEP TEAMFOR CSWD2014 (Université de Bordeaux)   */
+
+
+* {
+	outline: none;
+	-moz-box-sizing: border-box;
+}
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video
+{
+	border: 0;
+	font: inherit;
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+
+body, html {
+	height: 100%;
+}
+
+html {
+ 	-webkit-text-size-adjust: 100%;
+	-webkit-font-smoothing: antialiased;
+	line-height:1;
+
+}
+
+body {
+	font-size: 12px; 
+	font-family: 'Open Sans', 'Open Sans Light','Droid Arabic Naskh','Mplus Fulah Light','Helvetica Neue', Helvetica, Arial, Verdana, Sans-serif;
+	color: #1f2528;
+	min-height: 100%; 
+	position: relative; 
+	margin: 0;
+}
+
+header
+{
+    padding: 5px;
+	//background: url(../img/header.png) no-repeat center center;  
+    background-color: white;
+    border-bottom: 1px solid #d2d2d2;
+    -moz-box-shadow: inset 0 -10px 10px -20px rgba(0, 0, 0, 1);
+    -webkit-box-shadow: inset 0 -10px 10px -20px rgba(0, 0, 0, 1);
+    box-shadow: inset 0 -10px 10px -20px rgba(0, 0, 0, 1);
+}
+
+input {
+	background-color: #fff;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	background-color: #f27678;
+	height: 5px;
+	width: 100%;
+	z-index: 2;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { 
+    display: block;
+}
+
+img, fieldset {
+	border: 0;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+.btn-categories {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.42857;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 6px 12px;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    -ms-border-radius:4px;
+    -o-border-radius:4px;
+    border-radius:4px;
+    border: 1px solid #dddddd;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#logo 
+{
+	float: right;
+	background: url(../img/logo.png) no-repeat center center;
+    margin-top:5px;
+	background-size: 180px;
+	width: 180px;
+	height: 35px;
+}
+
+#nav-tools
+{
+	display: block;
+    float: left;
+    margin-top: 5px;
+}
+
+#nav-tools > li:first-child 
+{
+    margin: 0px;
+}
+
+#nav-tools > li {
+    text-align: center;
+    display: block;
+    float: left;
+    margin-left: 15px;
+    position: relative;
+}
+
+#nav-tools > .btn-categories, .btn-default > span
+{
+	margin:2px 0 2px 8px;
+    display:inline-block;
+	float:left;
+    vertical-align:middle;
+}
+
+#nav-tools > .btn-categories, .btn-default > i
+{
+	display:inline-block;
+	float:left;
+    margin-top:5px;
+}
+
+@media all and (max-width: 66em)
+{
+	#nav-tools
+	{
+		display: none;
+	}
+}
+
+#nav-tools > a:focus {
+    outline: thin dotted;
+    outline-offset: 0px;
+}
+#nav-tools > a:hover, a:focus {
+    color: #2A6496;
+    text-decoration: underline;
+}
+#nav-tools > a:active, a:hover {
+    outline: 0px none;
+}
+
+.input-group 
+{
+	display: none;
+}
+@media all and (min-width: 33em) and (min-height: 10em)
+{
+	.input-group
+	{
+		display: inline-table;
+		min-width: 205px;
+		margin: 7px 30px;
+        margin-left: 5px;
+		width: 20%;
+		float: left;
+	}
+}
+
+.restaurant{
+	height: 150px;
+	margin: 0px 0;
+	padding: 0 5px;
+	color: black;
+	position: relative;
+	cursor: pointer;
+	box-shadow: 0px 0px 1px rgba(200, 200, 200, 0.1);
+	border-left: 15px solid #e3eaee;
+    border-bottom: 1px dashed #e3eaee;
+	-webkit-border-radius: 10dpx;
+	-moz-border-radius: 10px;
+	border-radius: 0px;
+	moz-transition: height 0.3s ease-out;
+	ms-transition: height 0.3s ease-out;
+	o-transition: height 0.3s ease-out;
+	transition: height 0.3s ease-out;
+	webkit-transition: height 0.3s ease-out;
+	transition: 0.1s;
+}
+@media all and (min-width: 36em) and (min-height: 28em)
+{
+	.restaurant
+	{
+		height: 180px;
+	}
+}
+
+.restaurant-clicked
+{
+/*	background-color: #313537;
+	color: white;*/
+	border-color: #f2c4c4;
+	background-color: #f8f8f8;
+
+}
+
+.title, .address{
+	padding: 4px 5px 0 5px;
+	line-height: 15px;
+	font-size: 1.3em;
+	text-shadow: 0px 0px 4px rgba(250, 250, 250, 0.6);
+	-webkit-text-stroke: 1px rgba(250,250,250,0.1)
+	text-shadow: #333 0px 0px 1px;
+	-webkit-font-smoothing: antialiased;
+	moz-transition: font-size 0.3s ease-out;
+	ms-transition: font-size 0.3s ease-out;
+	o-transition: font-size 0.3s ease-out;
+	transition: font-size 0.3s ease-out;
+	webkit-transition: font-size 0.3s ease-out;
+}
+
+.address {
+	font-size: 0.9em;
+}
+@media all and (min-width: 36em) and (min-height: 28em)
+{
+	.title
+	{
+		font-size: 1.5em;
+	}
+	.address 
+	{
+		font-size: 1.1em;
+	}
+}
+@media all and (min-width: 81em) and (min-height: 28em)
+{
+	.title
+	{
+		font-size: 1.7em;
+	}
+	.address 
+	{
+		font-size: 0.8em;
+	}
+}
+@media all and (min-width: 66em) and (min-height: 28em)
+{
+	.title
+	{
+		font-size: 1.9em;
+	}
+	.address 
+	{
+		font-size: 0.9em;
+	}
+}
+@media all and (min-width: 81em) and (min-height: 38em)
+{
+	.title
+	{
+		font-size: 2.1em;
+		line-height: 30px;
+	}
+	.address 
+	{
+		font-size: 1em;
+	}
+}
+
+.buisness-contener
+{
+	width: 100%;
+	max-height: 100%;
+	display: block;
+}
+
+.buisness-image 
+{
+	margin: 5px 5px;
+	max-width: 25%;
+	height: auto;
+	float: right;
+	right: 0;
+	display: block;
+	position: relative;
+	border: 2px solid #e7e7e7;
+	}
+
+.restaurant-info 
+{
+	height: 100%;
+	width: calc(100% - 1em);
+	float: left;
+	background-image: url(../img/dot_pattern.png);
+}
+
+
+.buisness-sheet 
+{
+	height: 100%;
+	overflow: hidden;
+}
+
+#map-canvas 
+{ 
+	height: 320px;
+    border-bottom: 1px solid #d2d2d2;
+    overflow: hidden;
+    position: fixed;
+}
+
+.containers2 {
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	-o-overflow-scrolling: touch;
+	-moz-overflow-scrolling: touch;
+	overflow-scrolling: touch;
+
+}
+
+.headline{
+	width: 100%;
+	height: 60px;
+	border-bottom: 1px #efefef solid;
+    display: table;
+}
+
+.business-pub {
+    border-bottom: 1px #efefef dashed;
+}
+
+.buisness-information, .bui-title, .price, .categories, .about-bui, .pseudo, .title-review  {
+	font-size: 1em;
+	display: inline-block;
+}
+
+.bui-title 
+{
+    padding: 0 15px;
+	font-size: 1.7em;
+	font-weight: 900;
+    font-style: italic;
+    font-family: 'Roboto';
+	color:#303537;
+    min-width: 25%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.price, .categories {
+    padding: 0 10px;
+    border-left: 1px dotted #c8c8c8;
+	font-size: 1.2em;
+	font-weight: 400;
+    min-width: 21%;
+    font-weight: 500;
+    font-family: 'Roboto';
+	color:#303537;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.about-bui 
+{
+	padding: 10px;
+	line-height: 25px;
+	color: #333333;
+	font-size: 1.3em;
+	width: 55%;
+    border-left: 3px solid #e9f3f6;
+}
+
+.title-review {
+	color: #333333;
+	font-size: 1.5em;
+	font-weight: 700;
+	margin: 7px;
+}
+
+.pseudo 
+{
+	float: left;
+	text-align: center;
+	margin: 0 2em;
+	padding-top: 0;
+	height: 70px;
+	color: #333333
+}
+
+hr.fancy-line { 
+    border: 0; 
+    height: 1px;
+    position: relative;
+    margin: 0.5em 0;
+}
+hr.fancy-line:before {
+    top: -0.5em;
+    height: 1em;
+}
+hr.fancy-line:after {
+    content:'';
+    height: 0.5em;  
+    top: 1px;
+}
+
+hr.fancy-line:before, hr.fancy-line:after {
+    content: '';
+    position: absolute;
+  
