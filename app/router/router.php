@@ -38,7 +38,7 @@ class Router
             {
                 $data = $route->callController($url);
             }
-            catch(Exception $e)
+            catch(WrongRouteException $e)
             {
                 $found = false;
             }

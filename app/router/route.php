@@ -1,5 +1,9 @@
 <?php
 
+class WrongRouteException extends Exception
+{
+}
+
 class Route
 {
     private $controller = null;
@@ -54,7 +58,7 @@ class Route
         }
         else
         {
-            throw new Exception('url is invalid');
+            throw new WrongRouteException('Url does not match');
         }
     }
 
