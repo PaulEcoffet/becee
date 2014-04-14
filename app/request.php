@@ -13,7 +13,7 @@ class Request
     private $db_connection;
     private $config;
     private $get_vars;
-    private $template_hooks;
+    private $template_hooks = array();
 
     public function __construct()
     {
@@ -54,7 +54,7 @@ class Request
         $link->parse($file, $data);
     }
 
-    public addTemplateHook(Hook $hook)
+    public function addTemplateHook(Hook $hook)
     {
         $this->template_hooks[] = $hook;
     }
