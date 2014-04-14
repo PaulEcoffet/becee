@@ -1,6 +1,7 @@
 <?php
 require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 require_once 'config.php';
+require_once 'Hook.php';
 
 $loader = new Link_Loader_Filesystem('../src/tpl');
 $cache = new Link_Cache_Filesystem('../cache/tpl');
@@ -12,6 +13,7 @@ class Request
     private $db_connection;
     private $config;
     private $get_vars;
+    private $template_hooks;
 
     public function __construct()
     {
@@ -41,10 +43,20 @@ class Request
         return $args_array;
     }
 
-    public function parseTemplate($file, $data)
+    public function parseTemplate($file, $page_data)
     {
         global $link;
+        $data['page'] = $page_data;
+        foreach($this->template_hooks as $hook)
+        {
+            $data[$hook->getName] = $hook->execute();
+        }
         $link->parse($file, $data);
+    }
+
+    public addTemplateHook(Hook $hook)
+    {
+        $this->template_hooks[] = $hook;
     }
 
     public function getPdo()
