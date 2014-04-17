@@ -81,4 +81,11 @@ class Request
         }
         return $_POST;
     }
+
+    public function getManager($name)
+    {
+        // TODO
+    }
 }
+
+
