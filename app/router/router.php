@@ -29,8 +29,18 @@ class Router
         }
     }
 
+    public function addRoutesFromJson($path)
+    {
+        $routes = json_decode(utf8_encode(file_get_contents($path)));
+        foreach($routes as $route)
+        {
+            $this->addRoute(new Route($route->route, $route->controller, $route->action));
+        }
+    }
+
     public function getPage($url)
     {
+        $found = false;
         foreach($this->routes as $route)
         {
             $found = true;

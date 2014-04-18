@@ -1,0 +1,25 @@
+[
+    {
+        "route": "user/{id}",
+        "controller": "Users",
+        "action": "viewUser",
+        "variables": {
+            "id": "\\d+"
+        }
+    },
+    {
+        "route": "user/edit",
+        "controller": "Profile",
+        "action": "edit"
+    },
+    {
+        "route": "lol",
+        "controller": "Dummy",
+        "action": "view"
+    },
+    {
+        "route": "",
+        "controller": "Home",
+        "action": "index"
+    }
+]
