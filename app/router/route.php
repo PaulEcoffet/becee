@@ -54,7 +54,7 @@ class Route
             $params = array(new Request());
             $params = array_merge($params, $this->parse_params($url));
             $controller = new $this->controller;
-            call_user_func_array(array($controller, $this->action), $params);
+            echo call_user_func_array(array($controller, $this->action), $params);
         }
         else
         {

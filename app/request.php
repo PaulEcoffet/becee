@@ -3,10 +3,10 @@ require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 require_once 'config.php';
 require_once 'Hook.php';
 
-$loader = new Link_Loader_Filesystem('../src/tpl');
-$cache = new Link_Cache_Filesystem('../cache/tpl');
-
-$link = new Link_Environment($loader, $cache);
+$loader = new Twig_Loader_Filesystem('../src/tpl');
+$twig = new Twig_Environment($loader, array(
+    'cache' => '../cache/tpl',
+    'debug' => get_config()['debug']));
 
 class Request
 {
@@ -45,13 +45,13 @@ class Request
 
     public function parseTemplate($file, $page_data)
     {
-        global $link;
+        global $twig;
         $data['page'] = $page_data;
         foreach($this->template_hooks as $hook)
         {
             $data[$hook->getName] = $hook->execute();
         }
-        $link->parse($file, $data);
+        return $twig->render($file, $data);
     }
 
     public function addTemplateHook(Hook $hook)
@@ -87,5 +87,3 @@ class Request
         // TODO
     }
 }
-
-

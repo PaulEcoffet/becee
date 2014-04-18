@@ -6,6 +6,6 @@ class Dummy
 {
     public function viewAction($request)
     {
-        $request->parseTemplate('test.html.link', array('nb' => 2));
+        return $request->parseTemplate('test.html.twig', array('nb' => 2));
     }
 }
