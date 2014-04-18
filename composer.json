@@ -1,6 +1,6 @@
  {
     "require": {
-      "Taluu/Link-TPL": "1.*"
+      "twig/twig": "1.*"
     },
     "autoload": {
         "psr-4": {"Beece\\": "src/"}
