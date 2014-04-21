@@ -29,7 +29,7 @@ class Router
         }
     }
 
-    public function addRoutesFromJson($path)
+    public function addRoutesFromJsonFile($path)
     {
         $routes = json_decode(utf8_encode(file_get_contents($path)));
         foreach($routes as $route)
