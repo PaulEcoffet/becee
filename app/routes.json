@@ -28,6 +28,11 @@
         "action": "registerProcessing"
     },
     {
+        "route": "update",
+        "controller": "Home",
+        "action": "index"
+    },
+    {
         "route": "",
         "controller": "Home",
         "action": "index"
