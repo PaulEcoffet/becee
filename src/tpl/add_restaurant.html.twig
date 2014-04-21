@@ -1,6 +1,5 @@
 {% extends "main_layout.html.twig" %}
-{% from 'forms.html.twig' import input as input_field %}
-{% from 'forms.html.twig' import submit, textarea %}
+{% from 'forms.html.twig' import submit, textarea, upload, input as input_field %}
 {% block title %}#business_registration#{% endblock %}
 
 {% block content %}
@@ -16,14 +15,15 @@
 		        	<div class="panel">
 					    <div class="panel-heading"></div>
 					    <div class="panel-body">
-							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" action="??????????????????">
-								{{ input_field('#name') }}<hr />
-								{{ input_field('#locality') }}
-								{{ input_field('#region') }}
-								{{ input_field('#postcode') }}
-								{{ input_field('#country') }}<hr />
-								{{ textarea('#description') }}
-								{{ input_field('#website') }}<hr />
+							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="app.php?business/add/processing">
+								{{ input_field('name') }}<hr />
+								{{ input_field('city') }}
+								{{ input_field('region') }}
+								{{ input_field('postcode') }}
+								{{ input_field('country') }}<hr />
+								{{ textarea('description') }}
+								{{ input_field('website') }}<hr />
+								{{ upload('images') }}<hr />
 								{{ submit('Sign In') }}
 							</form>
 					    </div>

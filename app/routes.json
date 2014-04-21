@@ -23,6 +23,11 @@
         "action": "register"
     },
     {
+        "route": "business/add/processing",
+        "controller": "Businesses",
+        "action": "registerProcessing"
+    },
+    {
         "route": "",
         "controller": "Home",
         "action": "index"

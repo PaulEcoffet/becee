@@ -39,9 +39,20 @@ class BusinessManager
 
 	public function getBusinessesByCity($city)
 	{
-		$business_req = $this->pdo->prepare('SELECT b.name, b.description, bi.path FROM (businesses b INNER JOIN cities c ON b.city_id = c.id) INNER JOIN business_images bi ON bi.business_id = b.id WHERE c.name = "bordeaux";');
+		$business_req = $this->pdo->prepare('SELECT b.name, b.description FROM (businesses b INNER JOIN cities c ON b.city_id = c.id) WHERE c.name = "bordeaux";');
 		$business_req->execute();
 		return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+	}
+	public function insertBusiness($business)
+	{
+		$sql = "INSERT INTO `businesses` (name, description, city_id) VALUES(
+    		   '".$business['name']."', 
+    		   '".$business['description']."', 
+               (SELECT id FROM cities WHERE cities.name = '".$business['city']."') 
+               );";
+		echo $sql;
+		$business_req = $this->pdo->prepare($sql);
+		$business_req->execute();
 	}
 }
 
