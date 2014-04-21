@@ -4,18 +4,6 @@
  USE becee;
 -- SOURCE app/db_config.sql;
 
-CREATE TABLE countries(
-    id int unsigned NOT NULL AUTO_INCREMENT,
-    iso char(2) NOT NULL,
-    name varchar(80) NOT NULL,
-    nicename varchar(80) NOT NULL,
-    iso3 char(3) DEFAULT NULL,
-    numcode smallint(6) DEFAULT NULL,
-    phonecode int(5) NOT NULL,
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-
 CREATE TABLE user_categories(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(40),
@@ -32,27 +20,37 @@ CREATE TABLE users(
     trustability DOUBLE,
     FOREIGN KEY (category) REFERENCES user_categories(id),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 -- BUSINESS TABLES
+CREATE TABLE countries(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    iso CHAR(2) NOT NULL,
+    name VARCHAR(80) NOT NULL,
+    nicename VARCHAR(80) NOT NULL,
+    iso3 CHAR(3) DEFAULT NULL,
+    numcode SMALLINT(6) DEFAULT NULL,
+    phonecode INT(5) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE addresses(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     address_details VARCHAR(255),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE provinces(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(40),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE cities(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(40),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE businesses(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -73,13 +71,13 @@ CREATE TABLE businesses(
     FOREIGN KEY (country_id) REFERENCES countries(id),
     FOREIGN KEY (province_id) REFERENCES provinces(id),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE business_tags(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(40),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE business_images(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -90,7 +88,7 @@ CREATE TABLE business_images(
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (business_id) REFERENCES businesses(id),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE business_visits(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -100,7 +98,7 @@ CREATE TABLE business_visits(
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (business_id) REFERENCES businesses(id),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE business_comments(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -114,7 +112,7 @@ CREATE TABLE business_comments(
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (business_id) REFERENCES businesses(id),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE link_business_tags(
     business_id INT UNSIGNED,
@@ -123,13 +121,13 @@ CREATE TABLE link_business_tags(
     nb_no SMALLINT UNSIGNED,
     FOREIGN KEY (tag_id) REFERENCES business_tags(id),
     FOREIGN KEY (business_id) REFERENCES businesses(id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE business_features(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(40),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE link_features_tags(
     feature_id INT UNSIGNED,
@@ -137,7 +135,7 @@ CREATE TABLE link_features_tags(
     pertinence DOUBLE,
     FOREIGN KEY (tag_id) REFERENCES business_tags(id),
     FOREIGN KEY (feature_id) REFERENCES business_features(id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE score_businesses_features(
     business_id INT UNSIGNED,
@@ -145,7 +143,7 @@ CREATE TABLE score_businesses_features(
     elo_score INT UNSIGNED,
     FOREIGN KEY (feature_id) REFERENCES business_tags(id),
     FOREIGN KEY (business_id) REFERENCES businesses(id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 CREATE TABLE businesses_comparaisons(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -158,7 +156,7 @@ CREATE TABLE businesses_comparaisons(
     FOREIGN KEY (business_visit2_id) REFERENCES businesses(id),
     FOREIGN KEY (feature_id) REFERENCES business_features(id),
     PRIMARY KEY (id)
-) ENGINE=INNODB;
+) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
 
 
 -- TEST INSERT
