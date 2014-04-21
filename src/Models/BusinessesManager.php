@@ -34,26 +34,33 @@ class BusinessManager
 
 	public function getBusinessFeaturesById($business_id) // NOT OVER
 	{
-		$business_req = $this->pdo->prepare('SELECT * FROM ')
+		$business_req = $this->pdo->prepare('SELECT * FROM ');
+	}
+
+	public function getBusinessesByCity($city)
+	{
+		$business_req = $this->pdo->prepare('SELECT b.name, b.description, bi.path FROM (businesses b INNER JOIN cities c ON b.city_id = c.id) INNER JOIN business_images bi ON bi.business_id = b.id WHERE c.name = "bordeaux";');
+		$business_req->execute();
+		return($business_req->fetchAll(\PDO::FETCH_ASSOC));
 	}
 }
 
-'SELECT *
-FROM business, business_tags
+//'SELECT *
+//FROM business, business_tags
 
-INNER JOIN users
-ON Users.id = users.id_manager  /*Getting Manager*/
+//INNER JOIN users
+//ON Users.id = users.id_manager  /*Getting Manager*/
 
-INNER JOIN business_images
-ON businesses.id = business_images.business_id    /* Getting Images */
+//INNER JOIN business_images
+//ON businesses.id = business_images.business_id    /* Getting Images */
 
-INNER JOIN link_business_tags                                   /* TODO, Getting tags for this business */
-ON link_business_tags.id_business = business.id AND business_tags.id = link_business_tags.id_business_tag
+//INNER JOIN link_business_tags                                   /* TODO, Getting tags for this business */
+//ON link_business_tags.id_business = business.id AND business_tags.id = link_business_tags.id_business_tag
 
 
-INNER JOIN business_vist
-ON business_visits.business_id = business.id   /* Getting visit */
-'
+//INNER JOIN business_vist
+//ON business_visits.business_id = business.id   /* Getting visit */
+//'
 
 // TODO 
 

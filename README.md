@@ -1,4 +1,4 @@
-beece
+Becee
 =====
 
-Beece is a local businesses comparator.
+Becee is a local businesses comparator.

@@ -18,6 +18,11 @@
         "action": "view"
     },
     {
+        "route": "business/add",
+        "controller": "Businesses",
+        "action": "register"
+    },
+    {
         "route": "",
         "controller": "Home",
         "action": "index"

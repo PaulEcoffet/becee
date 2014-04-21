@@ -31,7 +31,7 @@ class Route
 
     public function setController($controller)
     {
-        $this->controller = 'Beece\\Controllers\\' .$controller;
+        $this->controller = 'Becee\\Controllers\\' .$controller;
     }
 
     public function setAction($action)

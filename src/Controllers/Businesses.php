@@ -14,6 +14,13 @@ class Businesses
 	{
 		// TODO
 	}
+	public function registerAction($request)
+	{
+		//INSERT INTO `businesses` VALUES (NULL, $name, $desc, NULL, 0, 0, NULL);
+    	//$BusinessManager = new \Becee\Models\BusinessManager($request->getPdo());
+    	//$businesses = $BusinessManager->getBusinessesByCity("bordeaux");
+        return $request->parseTemplate('add_restaurant.html.twig', array());
+	}
 }
 
 

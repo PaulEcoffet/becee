@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+		{% block head %}
+		<meta charset="utf-8">
+		<title>
+			BECEE | {% block title %}Compare, Review, Explore{% endblock %}
+		</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		{% block stylesheet %}
+		<link rel="stylesheet" type="text/css" href="../media/bootstrap/bootstrap.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../media/styles/style.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../media/styles/custom-scrollbar.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="../media/styles/bootstrap-custom.css" media="all" />
+	    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+	    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800,800italic' rel='stylesheet' type='text/css'>
+	    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,900italic,100,300,300italic' rel='stylesheet' type='text/css'>
+	    <link rel="stylesheet" href="../media/bootstrap/font-awesome/css/font-awesome.min.css">
+	    {% endblock %}
+	    {% endblock %}
+	</head>
+
+	<body onload="initialize()">
+		<header class="container-fluid">
+			<div class="input-group">
+			  	<span class="input-group-addon">
+			  		<span class="glyphicon glyphicon-search"></span>
+				</span>
+			  	<input type="text" class="form-control" placeholder="Restaurant Indien">
+			</div>
+			<ul id="nav-tools">
+				<li>
+					<a class="btn-categories btn-default" href="#">
+					    <i class="fa fa-beer fa-lg" style="vertical-align: middle;"></i>
+					    <span>
+					        Bars
+					    </span>
+					</a>
+				</li>
+				<li>
+					<a class="btn-categories btn-default" href="#">
+					    <i class="fa fa-coffee fa-lg"></i>
+					    <span>
+					        Cafés
+					    </span>
+					</a>
+				</li>
+				<li>
+					<a class="btn-categories btn-default" href="#">
+					    <i class="fa fa-cutlery fa-lg"></i>
+					    <span>
+					        Restaurants
+					    </span>
+					</a>
+				</li>
+				<li>
+					<a class="btn-categories btn-default" href="#">
+					    <i class="fa fa-gear fa-lg" ></i>
+					    <span>
+					        Custom
+					    </span>
+					</a>
+				</li>
+			</ul>
+			<div id="logo">
+			</div>
+		</header>
+
+		<div class="container-fluid main-content" style="margin:0 15px;height:calc(100% - 60px); text-align: left;">
+		{% block content %}{% endblock %}
+		</div>
+
+		<footer>
+			{% block footer %}
+			{% endblock %}
+		</footer>
+
+		</body>
+</html>

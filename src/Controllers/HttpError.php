@@ -1,6 +1,6 @@
 <?php
 
-namespace Beece\Controllers;
+namespace Becee\Controllers;
 
 class HttpError
 {
