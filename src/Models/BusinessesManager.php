@@ -59,7 +59,7 @@ class BusinessesManager
          //Need checking and testing, seems shitty
 
 
-        $business_req = $this->pdo->prepare($sql)
+        $business_req = $this->pdo->prepare($sql);
 
 
         
