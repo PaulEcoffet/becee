@@ -28,7 +28,8 @@ class BusinessesManager
     public function getBusinessById($business_id)// NOT OVER
     {
         $new_business = new Business();
-       'SELECT *                       -- ATM get everything, will later only get what matters
+
+        $sql = 'SELECT *        -- ATM get everything, will later only get what matters
         FROM businesses, business_tags
 
         INNER JOIN users
@@ -53,15 +54,17 @@ class BusinessesManager
         ON link_business_tags.id_business = businesses.id AND business_tags.id = link_business_tags.id_business_tag
 
         INNER JOIN business_vist
-        ON business_visits.business_id = businesses.id    -- Getting visit '
-        
+        ON business_visits.business_id = businesses.id ;-- Getting visit'
+
          //Need checking and testing, seems shitty
+
+
+        $business_req = $this->pdo->prepare($sql)
+
+
+        
     }
 
-    public function getBusinessFeaturesById($business_id) // NOT OVER
-    {
-        $business_req = $this->pdo->prepare('SELECT * FROM ');
-    }
 
     public function getBusinessesByCity($city)
     {
