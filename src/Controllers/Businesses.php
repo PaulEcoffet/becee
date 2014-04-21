@@ -17,7 +17,14 @@ class Businesses
         $BusinessManager = new \Becee\Models\BusinessManager($request->getPdo());
         $businesses = $BusinessManager->insertBusiness($request->getPost());
 
+<<<<<<< HEAD
     }
+=======
+	public function getBusiness() // TOUT DEDANS
+	{
+		
+	}
+>>>>>>> 53b7f66bb23526bfb62ced9742b2e609651c4a7a
 
     public function registerAction($request)
     {
