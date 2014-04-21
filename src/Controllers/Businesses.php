@@ -12,7 +12,7 @@ class Businesses
 
 	public function getBusiness() // TOUT DEDANS
 	{
-		// TODO
+		
 	}
 
 	public function registerProcessingAction($request)

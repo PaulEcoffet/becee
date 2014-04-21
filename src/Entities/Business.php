@@ -10,7 +10,7 @@ class Business
 	public $manager = NULL;
 	public $website = NULL;
 	public $tags = NULL;
-	//public $images = NULL;
+	public $images = NULL;
 	public $visits = NULL;
 	public $comments = NULL;
 	public $features = NULL;
