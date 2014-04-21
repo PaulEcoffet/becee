@@ -1,196 +1,236 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.4
+-- http://www.phpmyadmin.net
+--
+-- Client: localhost
+-- Généré le: Lun 21 Avril 2014 à 17:33
+-- Version du serveur: 5.6.12-log
+-- Version de PHP: 5.4.12
 
- DROP DATABASE IF EXISTS becee;
- CREATE DATABASE becee CHARACTER SET 'utf8';
- USE becee;
--- SOURCE app/db_config.sql;
-
-CREATE TABLE countries(
-    id int unsigned NOT NULL AUTO_INCREMENT,
-    iso char(2) NOT NULL,
-    name varchar(80) NOT NULL,
-    nicename varchar(80) NOT NULL,
-    iso3 char(3) DEFAULT NULL,
-    numcode smallint(6) DEFAULT NULL,
-    phonecode int(5) NOT NULL,
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
-CREATE TABLE user_categories(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name VARCHAR(40),
-    PRIMARY KEY (id)
-) ENGINE=INNODB DEFAULT CHARACTER SET 'utf8';
-
-CREATE TABLE users(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL,
-    name VARCHAR(40) NOT NULL,
-    hashed_password VARCHAR(255),
-    category INT UNSIGNED,
-    salt VARCHAR(255),
-    trustability DOUBLE,
-    FOREIGN KEY (category) REFERENCES user_categories(id),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
--- BUSINESS TABLES
-
-CREATE TABLE addresses(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    address_details VARCHAR(255),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE provinces(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name VARCHAR(40),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE cities(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name VARCHAR(40),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE businesses(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    ranking INT UNSIGNED,
-    manager_id INT UNSIGNED,
-    address_id INT UNSIGNED,
-    city_id INT UNSIGNED,
-    country_id INT UNSIGNED,
-    province_id INT UNSIGNED,
-    website VARCHAR(255),
-    email VARCHAR(255),
-    phone_number VARCHAR(15),
-    FOREIGN KEY (manager_id) REFERENCES users(id),
-    FOREIGN KEY (address_id) REFERENCES addresses(id),
-    FOREIGN KEY (city_id) REFERENCES cities(id),
-    FOREIGN KEY (country_id) REFERENCES countries(id),
-    FOREIGN KEY (province_id) REFERENCES provinces(id),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE business_tags(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name VARCHAR(40),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE business_images(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id INT UNSIGNED,
-    business_id INT UNSIGNED,
-    priority TINYINT UNSIGNED,
-    path VARCHAR(40),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (business_id) REFERENCES businesses(id),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE business_visits(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id INT UNSIGNED,
-    business_id INT UNSIGNED,
-    visit_date DATETIME,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (business_id) REFERENCES businesses(id),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE business_comments(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id INT UNSIGNED,
-    business_id INT UNSIGNED,
-    comment TEXT,
-    pub_date DATETIME,
-    status TINYINT UNSIGNED,
-    vote_pos SMALLINT UNSIGNED,
-    vote_neg SMALLINT UNSIGNED,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (business_id) REFERENCES businesses(id),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE link_business_tags(
-    business_id INT UNSIGNED,
-    tag_id INT UNSIGNED,
-    nb_yes SMALLINT UNSIGNED,
-    nb_no SMALLINT UNSIGNED,
-    FOREIGN KEY (tag_id) REFERENCES business_tags(id),
-    FOREIGN KEY (business_id) REFERENCES businesses(id)
-) ENGINE=INNODB;
-
-CREATE TABLE business_features(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name VARCHAR(40),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-CREATE TABLE link_features_tags(
-    feature_id INT UNSIGNED,
-    tag_id INT UNSIGNED,
-    pertinence DOUBLE,
-    FOREIGN KEY (tag_id) REFERENCES business_tags(id),
-    FOREIGN KEY (feature_id) REFERENCES business_features(id)
-) ENGINE=INNODB;
-
-CREATE TABLE score_businesses_features(
-    business_id INT UNSIGNED,
-    feature_id INT UNSIGNED,
-    elo_score INT UNSIGNED,
-    FOREIGN KEY (feature_id) REFERENCES business_tags(id),
-    FOREIGN KEY (business_id) REFERENCES businesses(id)
-) ENGINE=INNODB;
-
-CREATE TABLE businesses_comparaisons(
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    business_visit1_id INT UNSIGNED,
-    business_visit2_id INT UNSIGNED,
-    winner TINYINT,
-    feature_id INT UNSIGNED,
-    trustability DOUBLE,
-    FOREIGN KEY (business_visit1_id) REFERENCES businesses(id),
-    FOREIGN KEY (business_visit2_id) REFERENCES businesses(id),
-    FOREIGN KEY (feature_id) REFERENCES business_features(id),
-    PRIMARY KEY (id)
-) ENGINE=INNODB;
-
-
--- TEST INSERT
-INSERT INTO `cities` (name) VALUES ('grenoble'), ('bordeaux'), ('paris'), ('lyon');
--- BUISINESS TEST
-INSERT INTO `businesses` (name, description, city_id) VALUES(
-    'Le Black Pearl', 
-    'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
-    (SELECT id FROM cities WHERE cities.name = 'bordeaux') 
-);
-
-INSERT INTO `businesses` (name, description, city_id) VALUES(
-    'Le White Pearl', 
-    'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
-    (SELECT id FROM cities WHERE cities.name = 'bordeaux') 
-);
-
-INSERT INTO `businesses` (name, description, city_id) VALUES(
-    'Le Green Pearl', 
-    'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
-    (SELECT id FROM cities WHERE cities.name = 'grenoble') 
-);
-
-INSERT INTO `business_images` (business_id, path) VALUES 
-(1, '../media/img/home-holder1.png'), 
-(2, '../media/img/home-holder2.png'), 
-(3, '../media/img/home-holder3.png');
-
-
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Dumping data for table `country`
+-- Base de données: `becee`
+--
+CREATE DATABASE IF NOT EXISTS `becee` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `becee`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `addresses`
+--
+
+CREATE TABLE IF NOT EXISTS `addresses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `address_details` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `businesses`
+--
+
+CREATE TABLE IF NOT EXISTS `businesses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `manager_id` int(10) unsigned DEFAULT NULL,
+  `address_id` int(10) unsigned DEFAULT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  `country_id` int(10) unsigned DEFAULT NULL,
+  `province_id` int(10) unsigned DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(15) DEFAULT NULL,
+  `verified` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `manager_id` (`manager_id`),
+  KEY `address_id` (`address_id`),
+  KEY `city_id` (`city_id`),
+  KEY `country_id` (`country_id`),
+  KEY `province_id` (`province_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `businesses`
+--
+
+INSERT INTO `businesses` (`id`, `name`, `description`, `manager_id`, `address_id`, `city_id`, `country_id`, `province_id`, `website`, `email`, `phone_number`, `verified`) VALUES
+(1, 'Le Black Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, 0),
+(2, 'Le White Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, 0),
+(3, 'Le Green Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `businesses_comparaisons`
+--
+
+CREATE TABLE IF NOT EXISTS `businesses_comparaisons` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `business_visit1_id` int(10) unsigned DEFAULT NULL,
+  `business_visit2_id` int(10) unsigned DEFAULT NULL,
+  `winner` tinyint(4) DEFAULT NULL,
+  `feature_id` int(10) unsigned DEFAULT NULL,
+  `trustability` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `business_visit1_id` (`business_visit1_id`),
+  KEY `business_visit2_id` (`business_visit2_id`),
+  KEY `feature_id` (`feature_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `business_comments`
+--
+
+CREATE TABLE IF NOT EXISTS `business_comments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `business_id` int(10) unsigned DEFAULT NULL,
+  `comment` text,
+  `pub_date` datetime DEFAULT NULL,
+  `status` tinyint(3) unsigned DEFAULT NULL,
+  `vote_pos` smallint(5) unsigned DEFAULT NULL,
+  `vote_neg` smallint(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `business_features`
+--
+
+CREATE TABLE IF NOT EXISTS `business_features` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `business_images`
+--
+
+CREATE TABLE IF NOT EXISTS `business_images` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `business_id` int(10) unsigned DEFAULT NULL,
+  `priority` tinyint(3) unsigned DEFAULT NULL,
+  `path` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `business_images`
+--
+
+INSERT INTO `business_images` (`id`, `user_id`, `business_id`, `priority`, `path`) VALUES
+(1, NULL, 1, NULL, '../media/img/home-holder1.png'),
+(2, NULL, 2, NULL, '../media/img/home-holder2.png'),
+(3, NULL, 3, NULL, '../media/img/home-holder3.png');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `business_tags`
+--
+
+CREATE TABLE IF NOT EXISTS `business_tags` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+
+--
+-- Contenu de la table `business_tags`
+--
+
+INSERT INTO `business_tags` (`id`, `name`) VALUES
+(1, 'chinois'),
+(2, 'restaurant'),
+(3, 'italien'),
+(4, 'regional'),
+(5, 'pirate'),
+(6, 'vin'),
+(7, 'bar'),
+(8, 'restaurant'),
+(9, 'commerce');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `business_visits`
+--
+
+CREATE TABLE IF NOT EXISTS `business_visits` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `business_id` int(10) unsigned DEFAULT NULL,
+  `visit_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cities`
+--
+
+CREATE TABLE IF NOT EXISTS `cities` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `cities`
+--
+
+INSERT INTO `cities` (`id`, `name`) VALUES
+(1, 'grenoble'),
+(2, 'bordeaux'),
+(3, 'paris'),
+(4, 'lyon');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `countries`
+--
+
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `iso` char(2) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `nicename` varchar(80) NOT NULL,
+  `iso3` char(3) DEFAULT NULL,
+  `numcode` smallint(6) DEFAULT NULL,
+  `phonecode` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=240 ;
+
+--
+-- Contenu de la table `countries`
 --
 
 INSERT INTO `countries` (`id`, `iso`, `name`, `nicename`, `iso3`, `numcode`, `phonecode`) VALUES
@@ -433,3 +473,162 @@ INSERT INTO `countries` (`id`, `iso`, `name`, `nicename`, `iso3`, `numcode`, `ph
 (237, 'YE', 'YEMEN', 'Yemen', 'YEM', 887, 967),
 (238, 'ZM', 'ZAMBIA', 'Zambia', 'ZMB', 894, 260),
 (239, 'ZW', 'ZIMBABWE', 'Zimbabwe', 'ZWE', 716, 263);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `link_business_tags`
+--
+
+CREATE TABLE IF NOT EXISTS `link_business_tags` (
+  `business_id` int(10) unsigned DEFAULT NULL,
+  `tag_id` int(10) unsigned DEFAULT NULL,
+  `nb_yes` smallint(5) unsigned DEFAULT NULL,
+  `nb_no` smallint(5) unsigned DEFAULT NULL,
+  KEY `tag_id` (`tag_id`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `link_features_tags`
+--
+
+CREATE TABLE IF NOT EXISTS `link_features_tags` (
+  `feature_id` int(10) unsigned DEFAULT NULL,
+  `tag_id` int(10) unsigned DEFAULT NULL,
+  `pertinence` double DEFAULT NULL,
+  KEY `tag_id` (`tag_id`),
+  KEY `feature_id` (`feature_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `provinces`
+--
+
+CREATE TABLE IF NOT EXISTS `provinces` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `score_businesses_features`
+--
+
+CREATE TABLE IF NOT EXISTS `score_businesses_features` (
+  `business_id` int(10) unsigned DEFAULT NULL,
+  `feature_id` int(10) unsigned DEFAULT NULL,
+  `elo_score` int(10) unsigned DEFAULT NULL,
+  KEY `feature_id` (`feature_id`),
+  KEY `business_id` (`business_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `hashed_password` varchar(255) DEFAULT NULL,
+  `category` int(10) unsigned DEFAULT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  `trustability` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `category` (`category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user_categories`
+--
+
+CREATE TABLE IF NOT EXISTS `user_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `businesses`
+--
+ALTER TABLE `businesses`
+  ADD CONSTRAINT `businesses_ibfk_1` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `businesses_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`),
+  ADD CONSTRAINT `businesses_ibfk_3` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
+  ADD CONSTRAINT `businesses_ibfk_4` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
+  ADD CONSTRAINT `businesses_ibfk_5` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`);
+
+--
+-- Contraintes pour la table `businesses_comparaisons`
+--
+ALTER TABLE `businesses_comparaisons`
+  ADD CONSTRAINT `businesses_comparaisons_ibfk_1` FOREIGN KEY (`business_visit1_id`) REFERENCES `businesses` (`id`),
+  ADD CONSTRAINT `businesses_comparaisons_ibfk_2` FOREIGN KEY (`business_visit2_id`) REFERENCES `businesses` (`id`),
+  ADD CONSTRAINT `businesses_comparaisons_ibfk_3` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`);
+
+--
+-- Contraintes pour la table `business_comments`
+--
+ALTER TABLE `business_comments`
+  ADD CONSTRAINT `business_comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `business_comments_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
+
+--
+-- Contraintes pour la table `business_images`
+--
+ALTER TABLE `business_images`
+  ADD CONSTRAINT `business_images_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `business_images_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
+
+--
+-- Contraintes pour la table `business_visits`
+--
+ALTER TABLE `business_visits`
+  ADD CONSTRAINT `business_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `business_visits_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
+
+--
+-- Contraintes pour la table `link_business_tags`
+--
+ALTER TABLE `link_business_tags`
+  ADD CONSTRAINT `link_business_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
+  ADD CONSTRAINT `link_business_tags_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
+
+--
+-- Contraintes pour la table `link_features_tags`
+--
+ALTER TABLE `link_features_tags`
+  ADD CONSTRAINT `link_features_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
+  ADD CONSTRAINT `link_features_tags_ibfk_2` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`);
+
+--
+-- Contraintes pour la table `score_businesses_features`
+--
+ALTER TABLE `score_businesses_features`
+  ADD CONSTRAINT `score_businesses_features_ibfk_1` FOREIGN KEY (`feature_id`) REFERENCES `business_tags` (`id`),
+  ADD CONSTRAINT `score_businesses_features_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
+
+--
+-- Contraintes pour la table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`category`) REFERENCES `user_categories` (`id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
