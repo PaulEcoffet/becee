@@ -28,8 +28,34 @@ class BusinessesManager
     public function getBusinessById($business_id)// NOT OVER
     {
         $new_business = new Business();
-        //$new_business->add_features(featuresgetBusinessFeaturesById($business_id)); //get features from the DB and add them to the business
+       'SELECT *                       -- ATM get everything, will later only get what matters
+        FROM businesses, business_tags
 
+        INNER JOIN users
+        ON users.id = users.id_manager  --Getting Manager
+
+        INNER JOIN adresses
+        ON businesses.adress_id = addresses.id    --Getting adress
+
+        INNER JOIN cities
+        ON businesses.city_id = cities.id  --Getting city
+
+        INNER JOIN countries
+        ON businesses.country_id = country.id     --Getting country
+
+        INNER JOIN provinces
+        ON businesses.province_id = provinces.id -- Getting province
+
+        INNER JOIN business_images
+        ON businesses.id = business_images.business_id    --Getting Images
+
+        INNER JOIN link_business_tags                                   --TODO, Getting tags for this business
+        ON link_business_tags.id_business = businesses.id AND business_tags.id = link_business_tags.id_business_tag
+
+        INNER JOIN business_vist
+        ON business_visits.business_id = businesses.id    -- Getting visit '
+        
+         //Need checking and testing, seems shitty
     }
 
     public function getBusinessFeaturesById($business_id) // NOT OVER
@@ -64,28 +90,3 @@ class BusinessesManager
         $business_req->execute();
     }
 }
-
-//'SELECT *
-//FROM business, business_tags
-
-//INNER JOIN users
-//ON Users.id = users.id_manager  /*Getting Manager*/
-
-//INNER JOIN business_images
-//ON businesses.id = business_images.business_id    /* Getting Images */
-
-//INNER JOIN link_business_tags                                   /* TODO, Getting tags for this business */
-//ON link_business_tags.id_business = business.id AND business_tags.id = link_business_tags.id_business_tag
-
-
-//INNER JOIN business_vist
-//ON business_visits.business_id = business.id   /* Getting visit */
-//'
-
-// TODO
-
-//Need checking and testing, seems shitty
-
-
-
-
