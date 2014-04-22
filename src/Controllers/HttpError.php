@@ -4,8 +4,9 @@ namespace Becee\Controllers;
 
 class HttpError
 {
-    public function error404Action($request, $url)
+    public function error404Action($request)
     {
-        $request->parseTemplate('HttpError/404.html.link', array('url' => $url));
+        $url = $request->getParamsUri('url');
+        $request->parseTemplate('HttpError/404.html.twig', array('url' => $url));
     }
 }

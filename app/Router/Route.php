@@ -1,6 +1,10 @@
 <?php
 
-class WrongRouteException extends Exception
+namespace QDE\Router;
+
+use \QDE\Request;
+
+class WrongRouteException extends \Exception
 {
 }
 
@@ -10,13 +14,14 @@ class Route
     private $action = null;
     private $route = null;
     private $regexPattern = null;
+    private $variables = null;
 
-    public function __construct($route, $controller, $action)
+    public function __construct($route, $controller, $action, $variables=null)
     {
         $this->setRoute($route);
         $this->setController($controller);
         $this->setAction($action);
-        $this->setRegexPattern('#^' . $this->route . '/?$#');
+        $this->setRegexPatternFromRoute($route, $variables);
     }
 
     public function setRoute($route)
@@ -27,6 +32,23 @@ class Route
     public function setRegexPattern($pattern)
     {
         $this->regexPattern = $pattern;
+    }
+
+    public function getRegexPattern()
+    {
+        return $this->regexPattern;
+    }
+
+    public function setRegexPatternFromRoute($route, $variables)
+    {
+        if ($variables !== null)
+        {
+            foreach($variables as $key => $pattern)
+            {
+                $route = str_replace('{'.$key.'}', '(?<'. $key .'>'. $pattern .')', $route);
+            }
+        }
+        $this->setRegexPattern('#^'.$route.'$#U');
     }
 
     public function setController($controller)
@@ -51,10 +73,10 @@ class Route
     {
         if ($this->is_url_for_this_route($url) === true)
         {
-            $params = array(new Request());
-            $params = array_merge($params, $this->parse_params($url));
+            $request = new Request();
+            $request->setParamsUri($this->parse_params($url));
             $controller = new $this->controller;
-            echo call_user_func_array(array($controller, $this->action), $params);
+            echo call_user_func(array($controller, $this->action), $request);
         }
         else
         {

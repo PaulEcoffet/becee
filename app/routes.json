@@ -13,9 +13,12 @@
         "action": "edit"
     },
     {
-        "route": "lol",
+        "route": "lol/{nb}",
         "controller": "Dummy",
-        "action": "view"
+        "action": "view",
+        "variables": {
+            "nb": "\\d+"
+        }
     },
     {
         "route": "business/add",
@@ -26,6 +29,15 @@
         "route": "business/add/processing",
         "controller": "Businesses",
         "action": "registerProcessing"
+    },
+    {
+        "route": "business/{id}-{name}",
+        "controller": "Businnesses",
+        "action": "view",
+        "variables": {
+            "id": "\\d+",
+            "name": "[-A-Z0-9a-z]+"
+        }
     },
     {
         "route": "update",

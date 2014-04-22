@@ -1,12 +1,11 @@
 <?php
-require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
-require_once 'config.php';
-require_once 'Hook.php';
 
-$loader = new Twig_Loader_Filesystem('../src/tpl');
-$twig = new Twig_Environment($loader, array(
-    'cache' => '../cache/tpl',
-    'debug' => get_config()['debug']));
+namespace QDE;
+
+use \PDO;
+
+require_once 'config.php';
+
 
 class Request
 {
@@ -14,6 +13,8 @@ class Request
     private $config;
     private $get_vars;
     private $template_hooks = array();
+    private $twig;
+    private $uri_vars;
 
     public function __construct()
     {
@@ -29,6 +30,10 @@ class Request
         {
             exit('<strong>Unexpected exception:</strong> '. $exception->getMessage());
         }
+        $loader = new \Twig_Loader_Filesystem('../src/tpl');
+        $this->twig = new \Twig_Environment($loader, array(
+            'cache' => '../cache/tpl',
+            'debug' => \get_config()['debug']));
         $this->get_vars = $this->build_get();
     }
 
@@ -45,13 +50,12 @@ class Request
 
     public function parseTemplate($file, $page_data)
     {
-        global $twig;
         $data['page'] = $page_data;
         foreach($this->template_hooks as $hook)
         {
-            $data[$hook->getName] = $hook->execute();
+            $data[$hook->getName()] = $hook->execute();
         }
-        return $twig->render($file, $data);
+        return $this->twig->render($file, $data);
     }
 
     public function addTemplateHook(Hook $hook)
@@ -71,6 +75,20 @@ class Request
             return $this->get_vars[$key];
         }
         return $this->get_vars;
+    }
+
+    public function setParamsUri($params)
+    {
+        $this->uri_vars = $params;
+    }
+
+    public function getParamsUri($key=null)
+    {
+        if(!empty($key))
+        {
+            return $this->uri_vars[$key];
+        }
+        return $uri_vars;
     }
 
     public function getPost($key=null)

@@ -3,6 +3,7 @@
       "twig/twig": "1.*"
     },
     "autoload": {
-        "psr-4": {"Becee\\": "src/"}
+        "psr-4": {"Becee\\": "src/",
+            "QDE\\": "app/"}
     }
   }
