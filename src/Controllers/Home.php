@@ -6,7 +6,7 @@ use \Becee\Models\BusinessesManager;
 
 class Home
 {
-    public function indexAction($request, $city="bordeaux")
+    public function indexAction($request, $city="Bordeaux")
     {
         $BusinessManager = new BusinessesManager($request->getPdo());
         $POST = $request->getPost();

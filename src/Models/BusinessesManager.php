@@ -82,14 +82,24 @@ class BusinessesManager
     public function insertBusiness($business, $image_path=NULL)
     {
         $sql1 = "
-        INSERT INTO `cities` (name)
-        VALUES('".ucfirst(strtolower($business['city']))."');
+        INSERT INTO `provinces` (name, country_id)
+        VALUES
+        (
+            '".ucwords(strtolower($business['province']))."', 
+            (SELECT id FROM countries WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
+        );
+        INSERT INTO `cities` (name, province_id)
+        VALUES
+        (
+            '".ucwords(strtolower($business['city']))."', 
+            (SELECT id FROM provinces WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
+        );
         ";
         $sql2 = "
         INSERT INTO `businesses` (name, description, city_id) VALUES(
                '".ucwords(strtolower($business['name']))."',
                '".ucfirst(strtolower($business['description']))."',
-               (SELECT id FROM cities WHERE cities.name = '".ucfirst(strtolower($business['city']))."')
+               (SELECT id FROM cities WHERE cities.name = '".ucwords(strtolower($business['city']))."')
                );
         SELECT LAST_INSERT_ID() INTO @LAST_ID;
         INSERT INTO `business_images` (business_id, path)

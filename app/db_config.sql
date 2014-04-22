@@ -65,15 +65,6 @@ CREATE TABLE IF NOT EXISTS `businesses` (
   KEY `province_id` (`province_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
---
--- Contenu de la table `businesses`
---
-
-INSERT INTO `businesses` (`id`, `name`, `description`, `manager_id`, `address_id`, `city_id`, `country_id`, `province_id`, `website`, `email`, `phone_number`, `verified`) VALUES
-(1, 'Le Black Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, 0),
-(2, 'Le White Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, 0),
-(3, 'Le Green Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -208,16 +199,6 @@ CREATE TABLE IF NOT EXISTS `cities` (
   KEY `province_id` (`province_id`),
   UNIQUE KEY `ix_cities` (`name`, `province_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Contenu de la table `cities`
---
-
-INSERT INTO `cities` (`id`, `name`) VALUES
-(1, 'Grenoble'),
-(2, 'Bordeaux'),
-(3, 'Paris'),
-(4, 'Lyon');
 
 -- --------------------------------------------------------
 
@@ -656,6 +637,31 @@ ALTER TABLE `cities`
 --
 ALTER TABLE `provinces`
   ADD CONSTRAINT `provinces_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
+
+
+ INSERT INTO `provinces` (name, country_id) VALUES ( 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') ); 
+ INSERT INTO `cities` (name, province_id) VALUES ( 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') ); 
+ INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Black Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Bordeaux') ); 
+ SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder1.png' ); 
+
+ INSERT INTO `provinces` (name, country_id) VALUES ( 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') ); 
+ INSERT INTO `cities` (name, province_id) VALUES ( 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') ); 
+ INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le White Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Bordeaux') ); 
+ SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder2.png' ); 
+
+  INSERT INTO `provinces` (name, country_id) VALUES ( 'Ile-de-france', (SELECT id FROM countries WHERE countries.nicename = 'France') ); 
+ INSERT INTO `cities` (name, province_id) VALUES ( 'Paris', (SELECT id FROM provinces WHERE provinces.name = 'Ile-de-france') ); 
+ INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Green Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Paris') ); 
+ SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder3.png' ); 
+
+  INSERT INTO `provinces` (name, country_id) VALUES ( 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') ); 
+ INSERT INTO `cities` (name, province_id) VALUES ( 'Biarritz', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') ); 
+ INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Red Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Biarritz') ); 
+ SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder4.png' ); 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
