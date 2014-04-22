@@ -19,11 +19,11 @@ class FilesManager
 		//Début des vérifications de sécurité...
 		if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
 		{
-		     $erreur = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, txt ou doc...';
+		     $erreur = '--------------- Unsupported file format ---------------';
 		}
 		if($taille>$max_size)
 		{
-		     $erreur = 'Le fichier est trop gros...';
+		     $erreur = '--------------- File is too big ---------------';
 		}
 		if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 		{
@@ -34,12 +34,12 @@ class FilesManager
 		     $filename = preg_replace('/([^.a-z0-9]+)/i', '-', $filename);
 		     if(move_uploaded_file($file['tmp_name'], getcwd() . '/' . $folder . $filename)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
 		     {
-		          echo 'Upload completed successfully ! FROM: ',$file['tmp_name'], ' TO: ', $folder . $filename;
+		          echo '--------------- Upload completed successfully ! ---------------';
 		          return $folder . $filename;
 		     }
 		     else //Sinon (la fonction renvoie FALSE).
 		     {
-		          echo 'Upload failed !';
+		          echo '--------------- Upload failed ! ---------------';
 		     }
 		}
 		else

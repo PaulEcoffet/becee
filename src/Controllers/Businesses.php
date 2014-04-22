@@ -23,7 +23,10 @@ class Businesses
         $BusinessManager = new BusinessesManager($request->getPdo());
         $FileManager = new FilesManager($request->getPdo());
         $FILES = $request->getFiles();
-        $BusinessManager->insertBusiness($request->getPost(), $FileManager->uploadImage($FILES['img_business_med'], 'images_businesses'));
+        $path = $FileManager->uploadImage($FILES['img_business_med'], 'images_businesses');
+        if (!$path == NULL) {
+            $BusinessManager->insertBusiness($request->getPost(), $path);
+        }
     }
 
     public function registerAction($request)

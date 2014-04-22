@@ -33,11 +33,11 @@
     </div>
 {% endmacro %}
 
-{% macro upload(name, value = "", type = "text", size = 20) %}
+{% macro upload(name, value = "", max_size = 100000, required="") %}
 <div class="form-group">
     <label for="exampleInputFile" class="col-sm-3 control-label" style="text-align:left;margin-bottom:10px">{{ value }}</label>
     <div class="col-sm-9">
-         <input type="hidden" name="MAX_FILE_SIZE" value="500000">
+         <input type="hidden" name="MAX_FILE_SIZE" value="{{ max_size }}">
     	<input {{ required }} type="file" name="{{ name }}" id="{{ name }}" id="exampleInputFile">
     </div>
   </div>
