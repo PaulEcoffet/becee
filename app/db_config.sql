@@ -56,11 +56,7 @@ CREATE TABLE IF NOT EXISTS `businesses` (
   `phone_number` varchar(15) DEFAULT NULL,
   `verified` boolean DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `manager_id` (`manager_id`),
-  KEY `address_id` (`address_id`),
-  KEY `city_id` (`city_id`),
-  KEY `country_id` (`country_id`),
-  KEY `province_id` (`province_id`)
+  KEY `manager_id` (`manager_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 SHOW WARNINGS;
 -- --------------------------------------------------------
