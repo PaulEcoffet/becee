@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `businesses` (
   `website` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone_number` varchar(15) DEFAULT NULL,
-  `verified` tinyint(1) NOT NULL,
+  `verified` boolean DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `manager_id` (`manager_id`),
   KEY `address_id` (`address_id`),
