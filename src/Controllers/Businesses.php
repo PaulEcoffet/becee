@@ -27,7 +27,7 @@ class Businesses
 
     public function registerAction($request)
     {
-        return $request->parseTemplate('add_restaurant.html.twig', array());
+        return $request->parseTemplate('add_business.html.twig', array());
     }
 }
 
