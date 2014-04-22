@@ -34,10 +34,12 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `line1` varchar(255) DEFAULT NULL,
   `line2` varchar(255) DEFAULT NULL,
   `city_id` int(10) unsigned DEFAULT NULL,
+  `business_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `city_id` (`city_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 SHOW WARNINGS;
+
 -- --------------------------------------------------------
 
 --
@@ -49,10 +51,6 @@ CREATE TABLE IF NOT EXISTS `businesses` (
   `name` varchar(255) NOT NULL,
   `description` text,
   `manager_id` int(10) unsigned DEFAULT NULL,
-  `address_id` int(10) unsigned DEFAULT NULL,
-  `city_id` int(10) unsigned DEFAULT NULL,
-  `country_id` int(10) unsigned DEFAULT NULL,
-  `province_id` int(10) unsigned DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone_number` varchar(15) DEFAULT NULL,
@@ -149,17 +147,6 @@ SHOW WARNINGS;
 -- Contenu de la table `business_tags`
 --
 
-INSERT INTO `business_tags` (`id`, `name`) VALUES
-(1, 'chinois'),
-(2, 'restaurant'),
-(3, 'italien'),
-(4, 'regional'),
-(5, 'pirate'),
-(6, 'vin'),
-(7, 'bar'),
-(8, 'restaurant'),
-(9, 'commerce');
-SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -549,11 +536,7 @@ SHOW WARNINGS;
 -- Contraintes pour la table `businesses`
 --
 ALTER TABLE `businesses`
-  ADD CONSTRAINT `businesses_ibfk_1` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `businesses_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`),
-  ADD CONSTRAINT `businesses_ibfk_3` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
-  ADD CONSTRAINT `businesses_ibfk_4` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
-  ADD CONSTRAINT `businesses_ibfk_5` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`);
+  ADD CONSTRAINT `businesses_ibfk_1` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`);
 SHOW WARNINGS;
 --
 -- Contraintes pour la table `businesses_comparaisons`
@@ -629,40 +612,24 @@ SHOW WARNINGS;
 ALTER TABLE `provinces`
   ADD CONSTRAINT `provinces_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
 SHOW WARNINGS;
- INSERT INTO `provinces` (name, country_id)  SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
- SHOW WARNINGS;
- INSERT INTO `cities` (name, province_id)  SELECT 'Bordeaux', (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')); INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Black Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Bordeaux') ); 
- SHOW WARNINGS;
- SELECT LAST_INSERT_ID() INTO @LAST_ID; 
- SHOW WARNINGS;
- INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder1.png' );
+
+
+INSERT INTO `business_tags` (`id`, `name`) VALUES
+(1, 'chinois'),
+(2, 'restaurant'),
+(3, 'italien'),
+(4, 'regional'),
+(5, 'pirate'),
+(6, 'vin'),
+(7, 'bar'),
+(8, 'restaurant'),
+(9, 'commerce');
 SHOW WARNINGS;
- INSERT INTO `provinces` (name, country_id)  SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
- SHOW WARNINGS;
- INSERT INTO `cities` (name, province_id)  SELECT 'Bordeaux', (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine'));
- SHOW WARNINGS;
- INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le White Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Bordeaux') ); 
- SHOW WARNINGS;
- SELECT LAST_INSERT_ID() INTO @LAST_ID; 
- SHOW WARNINGS;
- INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder2.png' ); 
-SHOW WARNINGS;
- INSERT INTO `provinces` (name, country_id)  SELECT 'Ile-de-france', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Ile-de-france' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
- SHOW WARNINGS;
- INSERT INTO `cities` (name, province_id)  SELECT 'Paris', (SELECT id FROM `provinces` WHERE provinces.name = 'Ile-de-france')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Paris' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Ile-de-france')); INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Green Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Paris') ); 
- SHOW WARNINGS;
- SELECT LAST_INSERT_ID() INTO @LAST_ID; 
- SHOW WARNINGS;
- INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder3.png' ); 
-SHOW WARNINGS;
- INSERT INTO `provinces` (name, country_id)  SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
- SHOW WARNINGS;
- INSERT INTO `cities` (name, province_id)  SELECT 'Biarritz', (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Biarritz' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')); INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Red Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Biarritz') ); 
- SHOW WARNINGS;
- SELECT LAST_INSERT_ID() INTO @LAST_ID; 
- SHOW WARNINGS;
- INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder4.png' );
-SHOW WARNINGS;
+
+
+
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
