@@ -82,6 +82,15 @@ class Request
         return $_POST;
     }
 
+    public function getFiles($key=null)
+    {
+        if(!empty($key))
+        {
+            return $_FILES[$key];
+        }
+        return $_FILES;
+    }
+
     public function getManager($name)
     {
         // TODO

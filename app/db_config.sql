@@ -19,6 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Base de données: `becee`
 --
+DROP DATABASE `becee`;
 CREATE DATABASE IF NOT EXISTS `becee` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `becee`;
 
@@ -132,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `business_images` (
   `user_id` int(10) unsigned DEFAULT NULL,
   `business_id` int(10) unsigned DEFAULT NULL,
   `priority` tinyint(3) unsigned DEFAULT NULL,
-  `path` varchar(40) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `business_id` (`business_id`)
@@ -199,7 +200,8 @@ CREATE TABLE IF NOT EXISTS `business_visits` (
 CREATE TABLE IF NOT EXISTS `cities` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_cities` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --

@@ -54,7 +54,7 @@ class BusinessesManager
         ON link_business_tags.id_business = businesses.id AND business_tags.id = link_business_tags.id_business_tag
 
         INNER JOIN business_vist
-        ON business_visits.business_id = businesses.id ;-- Getting visit'
+        ON business_visits.business_id = businesses.id ;-- Getting visit';
 
          //Need checking and testing, seems shitty
 
@@ -68,7 +68,7 @@ class BusinessesManager
 
     public function getBusinessesByCity($city)
     {
-        $sql = 'SELECT b.name, b.description FROM (businesses b INNER JOIN cities c ON b.city_id = c.id) WHERE c.name = "'.$city.'";';
+        $sql = 'SELECT b.name, b.description, bi.path FROM (businesses b INNER JOIN cities c ON b.city_id = c.id) INNER JOIN business_images bi ON bi.business_id = b.id WHERE c.name = "'.$city.'";';
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
@@ -79,17 +79,29 @@ class BusinessesManager
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
-    public function insertBusiness($business)
+    public function insertBusiness($business, $image_path=NULL)
     {
-        $sql = "
+        $sql1 = "
         INSERT INTO `cities` (name)
         VALUES('".$business['city']."');
+        ";
+        $sql2 = "
         INSERT INTO `businesses` (name, description, city_id) VALUES(
                '".$business['name']."',
                '".$business['description']."',
                (SELECT id FROM cities WHERE cities.name = '".$business['city']."')
-               );";
-        $business_req = $this->pdo->prepare($sql);
+               );
+        SELECT LAST_INSERT_ID() INTO @LAST_ID;
+        INSERT INTO `business_images` (business_id, path)
+        VALUES(
+            @LAST_ID,
+            '$image_path'
+            );
+        ";
+        echo $sql1,$sql2;
+        $business_req = $this->pdo->prepare($sql1); //Si $sql1 groupé avec $sql2 -> la requete ne fonctionne pas (même si elle est correct) SSI il y a déja une ville du même nom dans la table cities (exemple : duplicate entry 'bordeaux for key 'ix_cities')
+        $business_req->execute();
+        $business_req = $this->pdo->prepare($sql2);
         $business_req->execute();
     }
 }
