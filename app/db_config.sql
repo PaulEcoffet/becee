@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   PRIMARY KEY (`id`),
   KEY `city_id` (`city_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `businesses` (
   KEY `country_id` (`country_id`),
   KEY `province_id` (`province_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `businesses_comparaisons` (
   KEY `business_visit2_id` (`business_visit2_id`),
   KEY `feature_id` (`feature_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `business_comments` (
   KEY `user_id` (`user_id`),
   KEY `business_id` (`business_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `business_features` (
   `name` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `business_images` (
   KEY `user_id` (`user_id`),
   KEY `business_id` (`business_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `business_tags` (
   `name` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
-
+SHOW WARNINGS;
 --
 -- Contenu de la table `business_tags`
 --
@@ -159,7 +159,7 @@ INSERT INTO `business_tags` (`id`, `name`) VALUES
 (7, 'bar'),
 (8, 'restaurant'),
 (9, 'commerce');
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `business_visits` (
   KEY `user_id` (`user_id`),
   KEY `business_id` (`business_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `cities` (
   KEY `province_id` (`province_id`),
   UNIQUE KEY `ix_cities` (`name`, `province_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `phonecode` int(5) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=240 ;
-
+SHOW WARNINGS;
 --
 -- Contenu de la table `countries`
 --
@@ -452,7 +452,7 @@ INSERT INTO `countries` (`id`, `iso`, `name`, `nicename`, `iso3`, `numcode`, `ph
 (237, 'YE', 'YEMEN', 'Yemen', 'YEM', 887, 967),
 (238, 'ZM', 'ZAMBIA', 'Zambia', 'ZMB', 894, 260),
 (239, 'ZW', 'ZIMBABWE', 'Zimbabwe', 'ZWE', 716, 263);
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -467,7 +467,7 @@ CREATE TABLE IF NOT EXISTS `link_business_tags` (
   KEY `tag_id` (`tag_id`),
   KEY `business_id` (`business_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -481,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `link_features_tags` (
   KEY `tag_id` (`tag_id`),
   KEY `feature_id` (`feature_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -496,7 +496,7 @@ CREATE TABLE IF NOT EXISTS `provinces` (
   KEY `country_id` (`country_id`),
   UNIQUE KEY `ix_provinces` (`name`, `country_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -510,7 +510,7 @@ CREATE TABLE IF NOT EXISTS `score_businesses_features` (
   KEY `feature_id` (`feature_id`),
   KEY `business_id` (`business_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -528,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   KEY `category` (`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 -- --------------------------------------------------------
 
 --
@@ -540,7 +540,7 @@ CREATE TABLE IF NOT EXISTS `user_categories` (
   `name` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+SHOW WARNINGS;
 --
 -- Contraintes pour les tables exportées
 --
@@ -554,7 +554,7 @@ ALTER TABLE `businesses`
   ADD CONSTRAINT `businesses_ibfk_3` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
   ADD CONSTRAINT `businesses_ibfk_4` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
   ADD CONSTRAINT `businesses_ibfk_5` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `businesses_comparaisons`
 --
@@ -562,93 +562,107 @@ ALTER TABLE `businesses_comparaisons`
   ADD CONSTRAINT `businesses_comparaisons_ibfk_1` FOREIGN KEY (`business_visit1_id`) REFERENCES `businesses` (`id`),
   ADD CONSTRAINT `businesses_comparaisons_ibfk_2` FOREIGN KEY (`business_visit2_id`) REFERENCES `businesses` (`id`),
   ADD CONSTRAINT `businesses_comparaisons_ibfk_3` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `business_comments`
 --
 ALTER TABLE `business_comments`
   ADD CONSTRAINT `business_comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `business_comments_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `business_images`
 --
 ALTER TABLE `business_images`
   ADD CONSTRAINT `business_images_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `business_images_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `business_visits`
 --
 ALTER TABLE `business_visits`
   ADD CONSTRAINT `business_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `business_visits_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `link_business_tags`
 --
 ALTER TABLE `link_business_tags`
   ADD CONSTRAINT `link_business_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
   ADD CONSTRAINT `link_business_tags_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `link_features_tags`
 --
 ALTER TABLE `link_features_tags`
   ADD CONSTRAINT `link_features_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
   ADD CONSTRAINT `link_features_tags_ibfk_2` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `score_businesses_features`
 --
 ALTER TABLE `score_businesses_features`
   ADD CONSTRAINT `score_businesses_features_ibfk_1` FOREIGN KEY (`feature_id`) REFERENCES `business_tags` (`id`),
   ADD CONSTRAINT `score_businesses_features_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`category`) REFERENCES `user_categories` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `addresses`
 --
 ALTER TABLE `addresses`
   ADD CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `cities`
 --
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`);
-
+SHOW WARNINGS;
 --
 -- Contraintes pour la table `provinces`
 --
 ALTER TABLE `provinces`
   ADD CONSTRAINT `provinces_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
-
+SHOW WARNINGS;
  INSERT INTO `provinces` (name, country_id)  SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
+ SHOW WARNINGS;
  INSERT INTO `cities` (name, province_id)  SELECT 'Bordeaux', (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')); INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Black Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Bordeaux') ); 
+ SHOW WARNINGS;
  SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ SHOW WARNINGS;
  INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder1.png' );
-
+SHOW WARNINGS;
  INSERT INTO `provinces` (name, country_id)  SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
+ SHOW WARNINGS;
  INSERT INTO `cities` (name, province_id)  SELECT 'Bordeaux', (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine'));
+ SHOW WARNINGS;
  INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le White Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Bordeaux') ); 
+ SHOW WARNINGS;
  SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ SHOW WARNINGS;
  INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder2.png' ); 
-
+SHOW WARNINGS;
  INSERT INTO `provinces` (name, country_id)  SELECT 'Ile-de-france', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Ile-de-france' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
+ SHOW WARNINGS;
  INSERT INTO `cities` (name, province_id)  SELECT 'Paris', (SELECT id FROM `provinces` WHERE provinces.name = 'Ile-de-france')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Paris' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Ile-de-france')); INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Green Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Paris') ); 
+ SHOW WARNINGS;
  SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ SHOW WARNINGS;
  INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder3.png' ); 
-
+SHOW WARNINGS;
  INSERT INTO `provinces` (name, country_id)  SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France'));
+ SHOW WARNINGS;
  INSERT INTO `cities` (name, province_id)  SELECT 'Biarritz', (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')  FROM dual  WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Biarritz' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')); INSERT INTO `businesses` (name, description, city_id) VALUES( 'Le Red Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.', (SELECT id FROM cities WHERE cities.name = 'Biarritz') ); 
+ SHOW WARNINGS;
  SELECT LAST_INSERT_ID() INTO @LAST_ID; 
+ SHOW WARNINGS;
  INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/img/home-holder4.png' );
-
+SHOW WARNINGS;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
