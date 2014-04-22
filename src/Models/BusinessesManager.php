@@ -81,37 +81,52 @@ class BusinessesManager
     }
     public function insertBusiness($business, $image_path=NULL)
     {
-        $sql1 = "
-        INSERT INTO `provinces` (name, country_id)
-        VALUES
-        (
-            '".ucwords(strtolower($business['province']))."', 
-            (SELECT id FROM countries WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
-        );
-        INSERT INTO `cities` (name, province_id)
-        VALUES
-        (
-            '".ucwords(strtolower($business['city']))."', 
-            (SELECT id FROM provinces WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
-        );
-        ";
-        $sql2 = "
-        INSERT INTO `businesses` (name, description, city_id) VALUES(
+        $sql = "
+        INSERT INTO `businesses` (name, description) VALUES(
                '".ucwords(strtolower($business['name']))."',
-               '".ucfirst(strtolower($business['description']))."',
-               (SELECT id FROM cities WHERE cities.name = '".ucwords(strtolower($business['city']))."')
-               );
+               '".ucfirst(strtolower($business['description']))."';
+
         SELECT LAST_INSERT_ID() INTO @LAST_ID;
+
         INSERT INTO `business_images` (business_id, path)
         VALUES(
             @LAST_ID,
             '$image_path'
             );
+
+        INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
+        VALUES(
+            @LAST_ID,
+            SELECT id FROM cities WHERE cities.name = '".ucwords(strtolower($business['city']))."',
+            '".ucwords(strtolower($business['line1']))."',
+            '".ucwords(strtolower($business['line2']))."',
+            '".ucwords(strtolower($business['lat']))."',
+            '".ucwords(strtolower($business['lng']))."'
+            );
+
+        INSERT INTO `provinces` (name, country_id)
+        VALUES
+        (
+            SELECT '".ucwords(strtolower($business['province']))."', 
+            (SELECT id FROM countries WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
+        )
+        FROM dual
+        WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = '".ucwords(strtolower($business['province']))."' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
+        );
+
+        INSERT INTO `cities` (name, country_id)
+        VALUES
+        (
+            SELECT '".ucwords(strtolower($business['city']))."',
+            (SELECT id FROM provinces WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
+        )
+        FROM dual
+        WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = '".ucwords(strtolower($business['city']))."' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
+        );
+
         ";
-        echo $sql1,$sql2;
-        $business_req = $this->pdo->prepare($sql1); //Si $sql1 groupé avec $sql2 -> la requete ne fonctionne pas (même si elle est correct) SSI il y a déja une ville du même nom dans la table cities (exemple : duplicate entry 'bordeaux for key 'ix_cities')
-        $business_req->execute();
-        $business_req = $this->pdo->prepare($sql2);
+        echo $sql;
+        $business_req = $this->pdo->prepare($sql); 
         $business_req->execute();
     }
 }
