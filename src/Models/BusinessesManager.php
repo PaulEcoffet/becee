@@ -68,7 +68,11 @@ class BusinessesManager
 
     public function getBusinessesByCity($city)
     {
-        $sql = 'SELECT b.name, b.description, bi.path FROM (businesses b INNER JOIN cities c ON b.city_id = c.id) INNER JOIN business_images bi ON bi.business_id = b.id WHERE c.name = "'.$city.'";';
+        $sql = "
+        SELECT b.name, b.description, bi.path 
+        FROM ((businesses b INNER JOIN business_addresses ba ON b.id = ba.business_id) INNER JOIN cities c ON c.id = ba.city_id) INNER JOIN business_images bi ON bi.business_id = b.id WHERE c.name =  '".$city."'
+        ;
+        ";
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
@@ -84,7 +88,8 @@ class BusinessesManager
         $sql = "
         INSERT INTO `businesses` (name, description) VALUES(
                '".ucwords(strtolower($business['name']))."',
-               '".ucfirst(strtolower($business['description']))."';
+               '".ucfirst(strtolower($business['description']))."')
+        ;
 
         SELECT LAST_INSERT_ID() INTO @LAST_ID;
 
@@ -92,37 +97,35 @@ class BusinessesManager
         VALUES(
             @LAST_ID,
             '$image_path'
-            );
+            )
+        ;
+
+        INSERT INTO `provinces` (name, country_id)
+            SELECT '".ucwords(strtolower($business['province']))."', 
+            (SELECT id FROM countries WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
+                FROM dual
+                WHERE NOT EXISTS 
+                (SELECT 1 from `provinces` WHERE name = '".ucwords(strtolower($business['province']))."' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = '".ucwords(strtolower($business['country']))."'))
+        ;
+
+        INSERT INTO `cities` (name, province_id)
+            SELECT '".ucwords(strtolower($business['city']))."',
+            (SELECT id FROM provinces WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
+                FROM dual
+                WHERE NOT EXISTS 
+                (SELECT 1 from `cities` WHERE name = '".ucwords(strtolower($business['city']))."' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = '".ucwords(strtolower($business['province']))."'))
+        ;
 
         INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
         VALUES(
             @LAST_ID,
-            SELECT id FROM cities WHERE cities.name = '".ucwords(strtolower($business['city']))."',
+            (SELECT id FROM cities WHERE cities.name = '".ucwords(strtolower($business['city']))."'),
             '".ucwords(strtolower($business['line1']))."',
             '".ucwords(strtolower($business['line2']))."',
             '".ucwords(strtolower($business['lat']))."',
             '".ucwords(strtolower($business['lng']))."'
-            );
-
-        INSERT INTO `provinces` (name, country_id)
-        VALUES
-        (
-            SELECT '".ucwords(strtolower($business['province']))."', 
-            (SELECT id FROM countries WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
-        )
-        FROM dual
-        WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = '".ucwords(strtolower($business['province']))."' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
-        );
-
-        INSERT INTO `cities` (name, country_id)
-        VALUES
-        (
-            SELECT '".ucwords(strtolower($business['city']))."',
-            (SELECT id FROM provinces WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
-        )
-        FROM dual
-        WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = '".ucwords(strtolower($business['city']))."' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
-        );
+            )
+        ;
 
         ";
         echo $sql;

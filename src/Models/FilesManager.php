@@ -9,7 +9,7 @@ class FilesManager
 		$this->pdo = $pdo;
 	}
 
-    public function uploadImage($file, $foldername, $max_size="100000")
+    public function uploadImage($file, $foldername, $max_size="900000")
     {
 		$folder = '../media/upload/'. $foldername . '/';
 		$filename = basename($file['name']);

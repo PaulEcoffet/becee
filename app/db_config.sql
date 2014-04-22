@@ -26,13 +26,15 @@ USE `becee`;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `addresses`
+-- Structure de la table `business_addresses`
 --
 
-CREATE TABLE IF NOT EXISTS `addresses` (
+CREATE TABLE IF NOT EXISTS `business_addresses` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `line1` varchar(255) DEFAULT NULL,
   `line2` varchar(255) DEFAULT NULL,
+  `lat` DOUBLE DEFAULT NULL,
+  `lng` DOUBLE DEFAULT NULL,
   `city_id` int(10) unsigned DEFAULT NULL,
   `business_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -591,10 +593,10 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`category`) REFERENCES `user_categories` (`id`);
 SHOW WARNINGS;
 --
--- Contraintes pour la table `addresses`
+-- Contraintes pour la table `business_addresses`
 --
-ALTER TABLE `addresses`
-  ADD CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
+ALTER TABLE `business_addresses`
+  ADD CONSTRAINT `business_addresses_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
 SHOW WARNINGS;
 --
 -- Contraintes pour la table `cities`
@@ -622,9 +624,37 @@ INSERT INTO `business_tags` (`id`, `name`) VALUES
 (9, 'commerce');
 SHOW WARNINGS;
 
+--
+-- DEVELOPPER DEBUG TEST (INSERT BUSINESS)
+--
 
+-- The Black Pearl (Bordeaux, France)
+INSERT INTO `businesses` (name, description) VALUES( 'The Black Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/upload/images_businesses/home-holder1.png' ); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Bordeaux'), '15 Rue Du Placeholder', '', '0', '0' ); 
 
+-- The Green Pearl (New York, United States)
+INSERT INTO `businesses` (name, description) VALUES( 'The Green Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.');
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/upload/images_businesses/home-holder4.png' ); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Manhattan', (SELECT id FROM countries WHERE countries.nicename = 'United States') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Manhattan' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'United States')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'New York', (SELECT id FROM provinces WHERE provinces.name = 'Manhattan') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'New York' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Manhattan')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'New York'), '16 Rue Du Placeholder', '', '0', '0' ); 
 
+-- The Yellow Pearl (Bordeaux, France)
+INSERT INTO `businesses` (name, description) VALUES( 'The Yellow Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/upload/images_businesses/home-holder2.png' ); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Bordeaux'), '16 Rue Du Placeholder', '', '0', '0' ); 
+
+-- The Blue Pearl (Paris, France)
+INSERT INTO `businesses` (name, description) VALUES( 'The Blue Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/upload/images_businesses/home-holder3.png' ); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Ile-de-france', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Ile-de-france' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Paris', (SELECT id FROM provinces WHERE provinces.name = 'Ile-de-france') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Paris' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Ile-de-france')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Paris'), '17 Rue Du Placeholder', '', '0', '0' ); 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

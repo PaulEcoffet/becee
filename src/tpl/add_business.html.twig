@@ -1,5 +1,5 @@
 {% extends "main_layout.html.twig" %}
-{% from 'forms.html.twig' import submit, textarea, upload, input as input_field %}
+{% from 'forms.html.twig' import submit, textarea, upload, selection as selection_field, input as input_field %}
 {% block title %}#business_registration#{% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
 								{{ input_field('city') }}
 								{{ input_field('province') }}
 								{{ input_field('postcode') }}
-								{{ input_field('country') }}<hr />
+								{{ selection_field('country', page.countries) }}<hr />
 								{{ input_field('line1') }}
 								{{ input_field('line2') }}<hr />
 								{{ input_field('lat') }}

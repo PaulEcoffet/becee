@@ -4,6 +4,7 @@ namespace Becee\Controllers;
 
 use \Becee\Models\BusinessesManager;
 use \Becee\Models\FilesManager;
+use \Becee\Models\GeneralManager;
 
 class Businesses
 {
@@ -27,7 +28,8 @@ class Businesses
 
     public function registerAction($request)
     {
-        return $request->parseTemplate('add_business.html.twig', array());
+        $GeneralManager = new GeneralManager($request->getPdo());
+        return $request->parseTemplate('add_business.html.twig', array('countries' => $GeneralManager->getCountries('nicename')));
     }
 }
 
