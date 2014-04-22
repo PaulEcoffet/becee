@@ -83,13 +83,13 @@ class BusinessesManager
     {
         $sql1 = "
         INSERT INTO `cities` (name)
-        VALUES('".$business['city']."');
+        VALUES('".ucfirst(strtolower($business['city']))."');
         ";
         $sql2 = "
         INSERT INTO `businesses` (name, description, city_id) VALUES(
-               '".$business['name']."',
-               '".$business['description']."',
-               (SELECT id FROM cities WHERE cities.name = '".$business['city']."')
+               '".ucwords(strtolower($business['name']))."',
+               '".ucfirst(strtolower($business['description']))."',
+               (SELECT id FROM cities WHERE cities.name = '".ucfirst(strtolower($business['city']))."')
                );
         SELECT LAST_INSERT_ID() INTO @LAST_ID;
         INSERT INTO `business_images` (business_id, path)

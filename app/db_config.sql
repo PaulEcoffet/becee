@@ -31,8 +31,11 @@ USE `becee`;
 
 CREATE TABLE IF NOT EXISTS `addresses` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `address_details` varchar(255) DEFAULT NULL,
+  `line1` varchar(255) DEFAULT NULL,
+  `line2` varchar(255) DEFAULT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
+  KEY `city_id` (`city_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -209,10 +212,10 @@ CREATE TABLE IF NOT EXISTS `cities` (
 --
 
 INSERT INTO `cities` (`id`, `name`) VALUES
-(1, 'grenoble'),
-(2, 'bordeaux'),
-(3, 'paris'),
-(4, 'lyon');
+(1, 'Grenoble'),
+(2, 'Bordeaux'),
+(3, 'Paris'),
+(4, 'Lyon');
 
 -- --------------------------------------------------------
 
@@ -630,6 +633,12 @@ ALTER TABLE `score_businesses_features`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`category`) REFERENCES `user_categories` (`id`);
+
+--
+-- Contraintes pour la table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
