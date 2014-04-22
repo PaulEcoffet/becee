@@ -1,6 +1,10 @@
 <?php
 
-class WrongRouteException extends Exception
+namespace QDE\Router;
+
+use \QDE\Request;
+
+class WrongRouteException extends \Exception
 {
 }
 

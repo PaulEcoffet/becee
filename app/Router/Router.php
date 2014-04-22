@@ -1,7 +1,10 @@
 <?php
 
-require_once dirname(__FILE__).'/route.php';
-require_once dirname(dirname(__FILE__)).'/request.php';
+namespace QDE\Router;
+
+use \QDE\Request;
+use \QDE\Router\Route;
+
 
 class Router
 {
