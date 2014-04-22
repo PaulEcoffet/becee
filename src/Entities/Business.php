@@ -17,13 +17,13 @@ class Business
 
 	public function add_features($new_features)
 	{
-		$this->$features = array_merge($this->$features, $new_features)
+		$this->$features = array_merge($this->$features, $new_features);
 	}
 
 	public function add_tags($new_tags)
 
 	{
-		$this->$tags = array_merge($this->$tags, $new_tags)
+		$this->$tags = array_merge($this->$tags, $new_tags);
 	}
 
 	
