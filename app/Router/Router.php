@@ -16,7 +16,7 @@ class Router
     {
         $this->routes = array();
         $this->actions = array();
-        $this->error404Route = new Route('(.*)', 'HttpError', 'Error404');
+        $this->error404Route = new Route('{url}', 'HttpError', 'Error404', array('url' => '.*'));
     }
 
     public function addRoute(Route $route)
@@ -34,10 +34,17 @@ class Router
 
     public function addRoutesFromJsonFile($path)
     {
-        $routes = json_decode(utf8_encode(file_get_contents($path)));
+        $routes = \json_decode(\utf8_encode(\file_get_contents($path)));
         foreach($routes as $route)
         {
-            $this->addRoute(new Route($route->route, $route->controller, $route->action));
+            $variables = null;
+            if (isset($route->variables))
+            {
+                $variables = $route->variables;
+            }
+
+            $route_obj = new Route($route->route, $route->controller, $route->action, $variables);
+            $this->addRoute($route_obj);
         }
     }
 

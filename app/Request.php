@@ -14,6 +14,7 @@ class Request
     private $get_vars;
     private $template_hooks = array();
     private $twig;
+    private $uri_vars;
 
     public function __construct()
     {
@@ -74,6 +75,20 @@ class Request
             return $this->get_vars[$key];
         }
         return $this->get_vars;
+    }
+
+    public function setParamsUri($params)
+    {
+        $this->uri_vars = $params;
+    }
+
+    public function getParamsUri($key=null)
+    {
+        if(!empty($key))
+        {
+            return $this->uri_vars[$key];
+        }
+        return $uri_vars;
     }
 
     public function getPost($key=null)
