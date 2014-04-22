@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `line1` varchar(255) DEFAULT NULL,
   `line2` varchar(255) DEFAULT NULL,
   `city_id` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   KEY `city_id` (`city_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -203,8 +203,10 @@ CREATE TABLE IF NOT EXISTS `business_visits` (
 CREATE TABLE IF NOT EXISTS `cities` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
+  `province_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_cities` (`name`)
+  KEY `province_id` (`province_id`),
+  UNIQUE KEY `ix_cities` (`name`, `province_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
@@ -517,7 +519,10 @@ CREATE TABLE IF NOT EXISTS `link_features_tags` (
 CREATE TABLE IF NOT EXISTS `provinces` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `country_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `country_id` (`country_id`),
+  UNIQUE KEY `ix_provinces` (`name`, `country_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -639,6 +644,18 @@ ALTER TABLE `users`
 --
 ALTER TABLE `addresses`
   ADD CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`);
+
+--
+-- Contraintes pour la table `cities`
+--
+ALTER TABLE `cities`
+  ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`);
+
+--
+-- Contraintes pour la table `provinces`
+--
+ALTER TABLE `provinces`
+  ADD CONSTRAINT `provinces_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
