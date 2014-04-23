@@ -15,7 +15,13 @@
         "action": "edit"
     },
     {
-	"name": "lolilol",
+	    "name": "user_signup",
+        "route": "signup",
+        "controller": "Users",
+        "action": "register"
+    },
+    {
+        "name": "lolilol",
         "route": "lol/{nb}",
         "controller": "Dummy",
         "action": "view",
