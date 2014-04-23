@@ -32,7 +32,7 @@
     },
     {
         "route": "business/{id}-{name}",
-        "controller": "Businnesses",
+        "controller": "Businesses",
         "action": "view",
         "variables": {
             "id": "\\d+",
