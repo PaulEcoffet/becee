@@ -10,14 +10,16 @@ class WrongRouteException extends \Exception
 
 class Route
 {
+    private $name = null;
     private $controller = null;
     private $action = null;
     private $route = null;
     private $regexPattern = null;
     private $variables = null;
 
-    public function __construct($route, $controller, $action, $variables=null)
+    public function __construct($name, $route, $controller, $action, $variables=null)
     {
+        $this->setName($name);
         $this->setRoute($route);
         $this->setController($controller);
         $this->setAction($action);
@@ -27,6 +29,16 @@ class Route
     public function setRoute($route)
     {
         $this->route = $route;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+    
+    public function getName()
+    {
+        return $this->name;
     }
 
     public function setRegexPattern($pattern)
@@ -56,9 +68,19 @@ class Route
         $this->controller = 'Becee\\Controllers\\' .$controller;
     }
 
+    public function getController()
+    {
+        return $this->controller;
+    }
+
     public function setAction($action)
     {
         $this->action = $action . 'Action';
+    }
+
+    public function getAction()
+    {
+        return $this->action;
     }
 
     public function is_url_for_this_route($url)
@@ -67,21 +89,6 @@ class Route
             return true;
         else
             return false;
-    }
-
-    public function callController($url)
-    {
-        if ($this->is_url_for_this_route($url) === true)
-        {
-            $request = new Request();
-            $request->setParamsUri($this->parse_params($url));
-            $controller = new $this->controller;
-            echo call_user_func(array($controller, $this->action), $request);
-        }
-        else
-        {
-            throw new WrongRouteException('Url does not match');
-        }
     }
 
     public function parse_params($url)

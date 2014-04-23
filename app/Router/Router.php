@@ -11,17 +11,18 @@ class Router
     protected $routes = array();
     protected $actions = array();
     protected $error404Route = null;
+        
 
     public function __construct()
     {
         $this->routes = array();
         $this->actions = array();
-        $this->error404Route = new Route('{url}', 'HttpError', 'Error404', array('url' => '.*'));
+        $this->error404Route = new Route('404Error', '{url}', 'HttpError', 'Error404', array('url' => '.*'));
     }
 
     public function addRoute(Route $route)
     {
-        $this->routes[] = $route;
+        $this->routes[$route->getName()] = $route;
     }
 
     public function addRoutes(array $routes)
@@ -43,33 +44,20 @@ class Router
                 $variables = $route->variables;
             }
 
-            $route_obj = new Route($route->route, $route->controller, $route->action, $variables);
+            $route_obj = new Route($route->name, $route->route, $route->controller, $route->action, $variables);
             $this->addRoute($route_obj);
         }
     }
 
-    public function getPage($url)
+    public function getRoute($url)
     {
         $found = false;
         foreach($this->routes as $route)
         {
-            $found = true;
-            try
-            {
-                $data = $route->callController($url);
-            }
-            catch(WrongRouteException $e)
-            {
-                $found = false;
-            }
-            if ($found === true)
-                break;
+            if($route->is_url_for_this_route($url))
+                return $route;
         }
-        if ($found === false)
-        {
-            header('HTTP/1.0 404 Not Found');
-            $this->error404Route->callController($url);
-        }
+        return $this->error404Route;
     }
 
     public function getRouteByPattern($pattern)
@@ -77,7 +65,7 @@ class Router
         foreach($this->routes as &$route)
         {
             if($route->getRoute() === $pattern)
-            return $route;
+                return $route;
         }
         throw Exception('There is no route with the pattern \''. $pattern .'\' registered');
     }

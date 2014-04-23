@@ -1,5 +1,6 @@
 [
     {
+	"name": "view_user",
         "route": "user/{id}",
         "controller": "Users",
         "action": "viewUser",
@@ -8,11 +9,19 @@
         }
     },
     {
+	"name": "edit_user",
         "route": "user/edit",
         "controller": "Profile",
         "action": "edit"
     },
     {
+	    "name": "user_signup",
+        "route": "signup",
+        "controller": "Users",
+        "action": "register"
+    },
+    {
+        "name": "lolilol",
         "route": "lol/{nb}",
         "controller": "Dummy",
         "action": "view",
@@ -21,16 +30,19 @@
         }
     },
     {
+	"name": "add_business",
         "route": "business/add",
         "controller": "Businesses",
         "action": "register"
     },
     {
+	"name": "business_add_processing",
         "route": "business/add/processing",
         "controller": "Businesses",
         "action": "registerProcessing"
     },
     {
+	"name": "view_business",
         "route": "business/{id}-{name}",
         "controller": "Businesses",
         "action": "view",
@@ -40,11 +52,13 @@
         }
     },
     {
+	"name": "sers_a_rien_enleve_moi_ce_truc_bordel",
         "route": "update",
         "controller": "Home",
         "action": "index"
     },
     {
+	"name": "home",
         "route": "",
         "controller": "Home",
         "action": "index"

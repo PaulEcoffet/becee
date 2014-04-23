@@ -22,6 +22,14 @@
 	</head>
 
 	<body onload="initialize()">
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
 		<header class="container-fluid">
 			<div class="input-group">
 			  	<span class="input-group-addon">
@@ -29,7 +37,7 @@
 				</span>
 			  	<input type="text" class="form-control" placeholder="Restaurant Indien">
 			</div>
-			<ul id="nav-tools">
+			<ul id="nav-tools" style="padding:7px 30px">
 				<li>
 					<a class="btn-categories btn-default" href="#">
 					    <i class="fa fa-beer fa-lg" style="vertical-align: middle;"></i>
@@ -65,9 +73,31 @@
 			</ul>
 			<div id="logo">
 			</div>
+			<div style="position:absolute;right:200px;float:right;margin-right:50px;min-height:60px;height:auto;background-color:rgb(252,252,252); padding:10px 30px;-moz-box-shadow: 0px 2px 5px 0px #D0D0D0;
+-webkit-box-shadow: 0px 2px 5px 0px #D0D0D0;
+-o-box-shadow: 0px 2px 5px 0px #D0D0D0;
+box-shadow: 0px 2px 5px 0px #D0D0D0;
+filter:progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5);
+-moz-border-radius: 1px;
+-webkit-border-radius: 1px;
+border-radius: 2px;z-index:9999999999999999999999999999999;">
+
+			<ul id="nav-tools">
+				<li>
+					<a class="btn-categories btn-default" href="./app.php?signup">
+					    <span style="font-weight:400; ">Connexion</span>
+					</a>
+				</li>
+				<li>
+					<a class="btn-categories btn-default" href="./app.php?signup">
+					    <span style="font-weight:400">Inscription</span>
+					</a>
+				</li>
+			</ul>
+			</div>
 		</header>
 
-		<div class="container-fluid main-content" style="margin:0 15px;height:calc(100% - 60px); text-align: left;">
+		<div class="container-fluid main-content" style="margin:0;height:calc(100% - 60px); text-align: left;">
 		{% block content %}{% endblock %}
 		</div>
 

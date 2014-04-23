@@ -12,13 +12,13 @@ class Request
     private $db_connection;
     private $config;
     private $get_vars;
-    private $template_hooks = array();
-    private $twig;
     private $uri_vars;
+    protected $app;
 
-    public function __construct()
+    public function __construct(App &$app)
     {
         $this->config = get_config();
+        $this->app = $app;
         try
         {
             $this->db_connection = new PDO('mysql:host='. $this->config['mysql_host'] .
@@ -30,10 +30,6 @@ class Request
         {
             exit('<strong>Unexpected exception:</strong> '. $exception->getMessage());
         }
-        $loader = new \Twig_Loader_Filesystem('../src/tpl');
-        $this->twig = new \Twig_Environment($loader, array(
-            'cache' => '../cache/tpl',
-            'debug' => \get_config()['debug']));
         $this->get_vars = $this->build_get();
     }
 
@@ -51,16 +47,11 @@ class Request
     public function parseTemplate($file, $page_data)
     {
         $data['page'] = $page_data;
-        foreach($this->template_hooks as $hook)
+        /*foreach($this->template_hooks as $hook)
         {
             $data[$hook->getName()] = $hook->execute();
-        }
-        return $this->twig->render($file, $data);
-    }
-
-    public function addTemplateHook(Hook $hook)
-    {
-        $this->template_hooks[] = $hook;
+        }*/
+        return $this->app->getTwig()->render($file, $data);
     }
 
     public function getPdo()
