@@ -656,20 +656,6 @@ INSERT INTO `provinces` (name, country_id) SELECT 'Ile-de-france', (SELECT id FR
 INSERT INTO `cities` (name, province_id) SELECT 'Paris', (SELECT id FROM provinces WHERE provinces.name = 'Ile-de-france') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Paris' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Ile-de-france')) ; 
 INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Paris'), '17 Rue Du Placeholder', '', '0', '0' ); 
  
- -- Le bar des philosophes (Bordeaux, France)
- INSERT INTO `businesses` (name, description) VALUES( 'Le Bar De La Philosphie Et Du Rhum', 'Cest trop cool il y a de la biã¨re et les serveuse sont habillã©s en madame bovary') ;
- SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/upload/images_businesses/non-cogito-ergo-yolo.jpg' ) ; INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France')
- FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; INSERT INTO `cities` (name, province_id) SELECT 'Saint Mã©dard', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual
- WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Saint Mã©dard' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
- VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Saint Mã©dard'), '522 Rue Du Descartes', '33160 Saint Mã©dard En Jalles', NULL, NULL );
-SHOW WARNINGS;
- 
- 
--- Le bar de slim'
- INSERT INTO `businesses` (name, description) VALUES( 'Le Bar De Slim', 'Il y a qui te regarde') ; SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/upload/images_businesses/Are-you-kidding-me.png' ) ; INSERT INTO `provinces` (name, country_id)
- SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; INSERT INTO `cities` (name, province_id) SELECT 'Saint Mã©dard', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine')
- FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Saint Mã©dard' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Saint Mã©dard'), '159 Rue Des Bananes', 'Banana', NULL, NULL ) ;  
-SHOW WARNINGS;
  
  
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

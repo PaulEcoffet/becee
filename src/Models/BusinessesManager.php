@@ -85,51 +85,66 @@ class BusinessesManager
     }
     public function insertBusiness($business, $image_path=NULL)
     {
-        $sql = "
-        INSERT INTO `businesses` (name, description) VALUES(
-               '".ucwords(strtolower($business['name']))."',
-               '".ucfirst(strtolower($business['description']))."')
-        ;
+        $sql = 'INSERT INTO `businesses` (name, description) VALUES( :name, :description)
+                ;
 
-        SELECT LAST_INSERT_ID() INTO @LAST_ID;
+                SELECT LAST_INSERT_ID() INTO @LAST_ID;
 
-        INSERT INTO `business_images` (business_id, path)
-        VALUES(
-            @LAST_ID,
-            '$image_path'
-            )
-        ;
+                INSERT INTO test VALUES(@LAST_ID);
+                INSERT INTO `business_images` (business_id, path)
+                VALUES(
+                @LAST_ID,
+                "lol"
+                )
+                ;
 
-        INSERT INTO `provinces` (name, country_id)
-            SELECT '".ucwords(strtolower($business['province']))."', 
-            (SELECT id FROM countries WHERE countries.nicename = '".ucwords(strtolower($business['country']))."')
+                INSERT INTO `provinces` (name, country_id)
+                SELECT :province, (SELECT id FROM countries WHERE countries.nicename = :country)
                 FROM dual
-                WHERE NOT EXISTS 
-                (SELECT 1 from `provinces` WHERE name = '".ucwords(strtolower($business['province']))."' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = '".ucwords(strtolower($business['country']))."'))
-        ;
+                WHERE NOT EXISTS
+                (SELECT 1 from `provinces` WHERE name = :province and country_id = (SELECT id FROM `countries` WHERE countries.nicename = :country))
+                ;
 
-        INSERT INTO `cities` (name, province_id)
-            SELECT '".ucwords(strtolower($business['city']))."',
-            (SELECT id FROM provinces WHERE provinces.name = '".ucwords(strtolower($business['province']))."')
+                INSERT INTO `cities` (name, province_id)
+                SELECT :city,
+                (SELECT id FROM provinces WHERE provinces.name = :province)
                 FROM dual
-                WHERE NOT EXISTS 
-                (SELECT 1 from `cities` WHERE name = '".ucwords(strtolower($business['city']))."' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = '".ucwords(strtolower($business['province']))."'))
-        ;
+                WHERE NOT EXISTS
+                (SELECT 1 from `cities` WHERE name = :city and province_id = (SELECT id FROM `provinces` WHERE provinces.name = :province))
+                ;
 
-        INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
-        VALUES(
-            @LAST_ID,
-            (SELECT id FROM cities WHERE cities.name = '".ucwords(strtolower($business['city']))."'),
-            '".ucwords(strtolower($business['line1']))."',
-            '".ucwords(strtolower($business['line2']))."',
-            '".ucwords(strtolower($business['lat']))."',
-            '".ucwords(strtolower($business['lng']))."'
-            )
-        ;
+                INSERT INTO test VALUES(@LAST_ID);
 
-        ";
-        echo $sql;
+                INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
+                VALUES(
+                @LAST_ID,
+                (SELECT id FROM cities WHERE cities.name = :city),
+                :line1, :line2, :lat, :lng )
+                ;
+
+                ';
+        
         $business_req = $this->pdo->prepare($sql); 
-        $business_req->execute();
+        $business_req->bindValue('name', ucwords(strtolower($business['name'])), \PDO::PARAM_STR);
+        $business_req->bindValue('description', ucfirst(strtolower($business['description'])), \PDO::PARAM_STR);
+        $business_req->bindValue('province', ucwords(strtolower($business['province'])), \PDO::PARAM_STR);
+        $business_req->bindValue('country', ucwords(strtolower($business['country'])), \PDO::PARAM_STR);
+        $business_req->bindValue('city', ucwords(strtolower($business['city'])), \PDO::PARAM_STR);
+        $business_req->bindValue('line1', ucwords(strtolower($business['line1'])));
+        $business_req->bindValue('line2', ucwords(strtolower($business['line2'])));
+        $business_req->bindValue('lat', ucwords(strtolower($business['lat'])));
+        $business_req->bindValue('lng', ucwords(strtolower($business['lng'])));
+
+        echo $sql;
+
+       
+
+        $business_req->execute(); 
+
+        echo '<br /><br /><br />';
+
+        echo $business_req->errorCode();
+
+        print_r($business_req->errorInfo());
     }
 }

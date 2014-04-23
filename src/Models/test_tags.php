@@ -40,7 +40,7 @@
         --INNER JOIN users
         --ON users.id = users.id_manager  --Getting Manager
 
-        INNER JOIN adresses
+        INNER JOIN businesses_addresses
         ON businesses.adress_id = addresses.id    --Getting adress
 
         --INNER JOIN cities
@@ -71,3 +71,5 @@
 
         printf($business_req->fetch());
 
+
+// to hydrate your object use FETCH_CLASS
