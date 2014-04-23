@@ -1,4 +1,8 @@
 /* BOOTSTRAP CUSTOM BY LA MEP TEAM */
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
 .main-content.container-fluid 
 {
     padding-right: 0;

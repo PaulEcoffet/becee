@@ -13,6 +13,11 @@
         "action": "edit"
     },
     {
+        "route": "signup",
+        "controller": "Users",
+        "action": "register"
+    },
+    {
         "route": "lol/{nb}",
         "controller": "Dummy",
         "action": "view",
