@@ -22,11 +22,13 @@ class Businesses
     {
         $BusinessManager = new BusinessesManager($request->getPdo());
         $FileManager = new FilesManager($request->getPdo());
+
+        $business = $BusinessManager->insertBusiness($request->getPost());
+
         $FILES = $request->getFiles();
-        $path = $FileManager->uploadImage($FILES['img_business_med'], 'images_businesses');
-        if (!$path == NULL) {
-            $BusinessManager->insertBusiness($request->getPost(), $path);
-        }
+        $filename = "becee_".time()."_".$business['id'];
+        $path = $FileManager->uploadImage($FILES['img_business_med'], $filename,'images_businesses');
+        $BusinessManager->insertBusinessImage($business['id'], $path);
     }
 
     public function registerAction($request)

@@ -68,9 +68,11 @@ class BusinessesManager
 
     public function getBusinessesByCity($city)
     {
-        $sql = "
-        SELECT b.name, b.description, bi.path 
-        FROM ((businesses b INNER JOIN business_addresses ba ON b.id = ba.business_id) INNER JOIN cities c ON c.id = ba.city_id) INNER JOIN business_images bi ON bi.business_id = b.id WHERE c.name =  '".$city."'
+        $sql = "SELECT b.name, b.description, bi.path 
+        		FROM ((businesses b INNER JOIN business_addresses ba ON b.id = ba.business_id)
+        			INNER JOIN cities c ON c.id = ba.city_id)
+					INNER JOIN business_images bi ON bi.business_id = b.id
+				WHERE c.name =  '".$city."'
         ;
         ";
         $business_req = $this->pdo->prepare($sql);
@@ -83,68 +85,79 @@ class BusinessesManager
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
-    public function insertBusiness($business, $image_path=NULL)
+    public function insertBusinessImage($business_id, $image_path)
     {
-        $sql = 'INSERT INTO `businesses` (name, description) VALUES( :name, :description)
-                ;
-
-                SELECT LAST_INSERT_ID() INTO @LAST_ID;
-
-                INSERT INTO test VALUES(@LAST_ID);
-                INSERT INTO `business_images` (business_id, path)
-                VALUES(
-                @LAST_ID,
-                "lol"
-                )
-                ;
-
-                INSERT INTO `provinces` (name, country_id)
-                SELECT :province, (SELECT id FROM countries WHERE countries.nicename = :country)
-                FROM dual
-                WHERE NOT EXISTS
-                (SELECT 1 from `provinces` WHERE name = :province and country_id = (SELECT id FROM `countries` WHERE countries.nicename = :country))
-                ;
-
-                INSERT INTO `cities` (name, province_id)
-                SELECT :city,
-                (SELECT id FROM provinces WHERE provinces.name = :province)
-                FROM dual
-                WHERE NOT EXISTS
-                (SELECT 1 from `cities` WHERE name = :city and province_id = (SELECT id FROM `provinces` WHERE provinces.name = :province))
-                ;
-
-                INSERT INTO test VALUES(@LAST_ID);
-
-                INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
-                VALUES(
-                @LAST_ID,
-                (SELECT id FROM cities WHERE cities.name = :city),
-                :line1, :line2, :lat, :lng )
-                ;
-
-                ';
+        $sql = "INSERT INTO `business_images` (business_id, path)
+		        VALUES(:business_id, :image_path)
+		        ;
+                ";
         
         $business_req = $this->pdo->prepare($sql); 
-        $business_req->bindValue('name', ucwords(strtolower($business['name'])), \PDO::PARAM_STR);
-        $business_req->bindValue('description', ucfirst(strtolower($business['description'])), \PDO::PARAM_STR);
-        $business_req->bindValue('province', ucwords(strtolower($business['province'])), \PDO::PARAM_STR);
-        $business_req->bindValue('country', ucwords(strtolower($business['country'])), \PDO::PARAM_STR);
-        $business_req->bindValue('city', ucwords(strtolower($business['city'])), \PDO::PARAM_STR);
-        $business_req->bindValue('line1', ucwords(strtolower($business['line1'])));
-        $business_req->bindValue('line2', ucwords(strtolower($business['line2'])));
-        $business_req->bindValue('lat', ucwords(strtolower($business['lat'])));
-        $business_req->bindValue('lng', ucwords(strtolower($business['lng'])));
+        $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
+        $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
+        $business_req->execute();
 
-        echo $sql;
+    }
+    public function insertBusiness($business, $image_path=NULL)
+    {
+        $sql = "INSERT INTO `businesses` (name, description) 
+		        VALUES 		(:name, :description)
+		        ;
 
-       
+        		SELECT 		MAX(id) 
+        		FROM 		`businesses` 
+        		INTO 		@LAST_ID
+        		;
 
-        $business_req->execute(); 
 
-        echo '<br /><br /><br />';
+		        INSERT INTO `provinces` (name, country_id)
+		        SELECT 		:province,
+		        			(SELECT c.id FROM countries c WHERE c.name = :country LIMIT 1)
+		        FROM 		dual
+		        WHERE 		NOT EXISTS 
+		            		(SELECT 1 from `provinces` WHERE name = :province and country_id = (SELECT c.id FROM provinces p INNER JOIN countries c ON p.country_id = c.id WHERE p.name = :province AND c.name = :country LIMIT 1))
+		        ;
 
-        echo $business_req->errorCode();
 
-        print_r($business_req->errorInfo());
+		        INSERT INTO `cities` (name, province_id)
+		        SELECT 		:city,
+		        			(SELECT p.id FROM provinces p INNER JOIN countries c ON p.country_id = c.id WHERE p.name = :province AND c.name = :country LIMIT 1)
+		        FROM 		dual
+		        WHERE 		NOT EXISTS 
+		        			(SELECT 1 from `cities` WHERE name = :city and province_id = (SELECT p.id FROM provinces p INNER JOIN countries c ON p.country_id = c.id WHERE p.name = :province AND c.name = :country LIMIT 1))
+		        ;
+
+
+		        INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
+		        VALUES 		(
+				            @LAST_ID,
+				            (SELECT cities.id FROM (provinces p INNER JOIN countries c ON p.country_id = c.id) INNER JOIN cities ON cities.province_id = p.id WHERE p.name = :province AND c.name = :country AND cities.name = :city LIMIT 1),
+				            :line1,
+				            :line2,
+				            :lat,
+				            :lng
+				            )
+				;
+                ";
+        
+        $business_req = $this->pdo->prepare($sql); 
+        $business_req->bindValue(':city', ucwords(strtolower($business['city'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':name', ucwords(strtolower($business['name'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':description', ucwords(strtolower($business['description'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':province', ucwords(strtolower($business['province'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':country', ucwords(strtolower($business['country'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':line1', ucwords(strtolower($business['line1'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':line2', ucwords(strtolower($business['line2'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':lat', ucwords(strtolower($business['lat'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':lng', ucwords(strtolower($business['lng'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
+        $business_req->execute();
+
+        $sql = "SELECT * FROM `businesses` WHERE id = (SELECT MAX(id) FROM `businesses`);";
+        
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->execute();
+
+        return $business_req->fetch(\PDO::FETCH_ASSOC);
     }
 }

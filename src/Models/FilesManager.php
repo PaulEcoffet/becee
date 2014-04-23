@@ -9,38 +9,36 @@ class FilesManager
 		$this->pdo = $pdo;
 	}
 
-    public function uploadImage($file, $foldername, $max_size="900000")
+    public function uploadImage($file, $filename, $foldername, $max_size="900000")
     {
 		$folder = '../media/upload/'. $foldername . '/';
-		$filename = basename($file['name']);
 		$taille = filesize($file['tmp_name']);
 		$extensions = array('.png', '.gif', '.jpg', '.jpeg');
 		$extension = strrchr($file['name'], '.'); 
-		//Début des vérifications de sécurité...
-		if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
+
+		if(!in_array($extension, $extensions)) 
 		{
-		     $erreur = '--------------- Unsupported file format ---------------';
+		     $erreur = '<br/>Unsupported file format <br/>';
 		}
 		if($taille>$max_size)
 		{
-		     $erreur = '--------------- File is too big ---------------';
+		     $erreur = '<br/>File is too big <br/>';
 		}
-		if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
+		if(!isset($erreur)) 
 		{
-		     //On formate le nom du fichier ici...
+
 		     $filename = strtr($filename, 
 		          'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
 		          'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
 		     $filename = preg_replace('/([^.a-z0-9]+)/i', '-', $filename);
-		     if(move_uploaded_file($file['tmp_name'], getcwd() . '/' . $folder . $filename)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-		     {
-		          echo '--------------- Upload completed successfully ! ---------------';
-		          return $folder . $filename;
-		     }
-		     else //Sinon (la fonction renvoie FALSE).
-		     {
-		          echo '--------------- Upload failed ! ---------------';
-		     }
+		     if (imagepng(imagecreatefromstring(file_get_contents($file['tmp_name'])), $filename . '.png')) { 
+			     if(move_uploaded_file($file['tmp_name'], getcwd() . '/' . $folder . $filename . '.png'))
+			     {
+			          echo '<br/>Upload completed successfully ! <br/>';
+			          return $folder . $filename . '.png';
+			     }
+			}
+		     echo '<br/>Upload failed ! <br/>';
 		}
 		else
 		{

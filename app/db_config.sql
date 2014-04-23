@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `businesses` (
   `verified` boolean DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `manager_id` (`manager_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 SHOW WARNINGS;
 -- --------------------------------------------------------
 
@@ -123,11 +123,11 @@ CREATE TABLE IF NOT EXISTS `business_images` (
   `user_id` int(10) unsigned DEFAULT NULL,
   `business_id` int(10) unsigned DEFAULT NULL,
   `priority` tinyint(3) unsigned DEFAULT NULL,
-  `path` varchar(255) DEFAULT NULL,
+  `path` varchar(255) DEFAULT '../media/img/default-business-img.png',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `business_id` (`business_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 SHOW WARNINGS;
 -- --------------------------------------------------------
 
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `business_tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 SHOW WARNINGS;
 --
 -- Contenu de la table `business_tags`
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `cities` (
   PRIMARY KEY (`id`),
   KEY `province_id` (`province_id`),
   UNIQUE KEY `ix_cities` (`name`, `province_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 SHOW WARNINGS;
 -- --------------------------------------------------------
 
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `numcode` smallint(6) DEFAULT NULL,
   `phonecode` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=240 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 SHOW WARNINGS;
 --
 -- Contenu de la table `countries`
