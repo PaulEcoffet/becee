@@ -58,12 +58,6 @@
         }
     },
     {
-        "name": "sers_a_rien_enleve_moi_ce_truc_bordel",
-        "route": "update",
-        "controller": "Home",
-        "action": "index"
-    },
-    {
         "name": "home",
         "route": "",
         "controller": "Home",
