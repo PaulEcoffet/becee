@@ -7,6 +7,8 @@
 {
     padding-right: 0;
     padding-left: 0;
+    margin:0;
+    text-align: left;
 }
 
 @media all and (max-width: 36em)

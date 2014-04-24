@@ -15,19 +15,13 @@
 		        	<div class="panel">
 					    <div class="panel-heading"></div>
 					    <div class="panel-body">
-							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="app.php?business/add/processing">
+							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="app.php?signup/processing">
 								{{ required_input('name') }}<hr />
-								{{ required_input('city') }}
-								{{ required_input('province') }}
-								{{ required_input('postcode') }}
+								{{ required_input('email') }}
+								{{ required_input('password') }}
+								{{ required_input('verify_password') }}
 								{{ selection_field('country', page.countries, 'required') }}<hr />
-								{{ required_input('line1') }}
-								{{ required_input('line2') }}<hr />
-								{{ input_field('lat') }}
-								{{ input_field('lng') }}
-								{{ textarea('description', 'required') }}
-								{{ input_field('website') }}<hr />
-								{{ upload('img_business_med', 'images', 500000, 'required') }}<hr />
+								{{ upload('user_avatar', 'user_avatar', 500000) }}<hr />
 								<span style="color:red">(* Required)</span>
 								{{ submit('Sign In') }}
 							</form>

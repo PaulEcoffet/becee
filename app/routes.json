@@ -21,6 +21,12 @@
         "action": "register"
     },
     {
+	    "name": "user_signup_process",
+        "route": "signup/processing",
+        "controller": "Users",
+        "action": "registerProcessing"
+    },
+    {
         "name": "lolilol",
         "route": "lol/{nb}",
         "controller": "Dummy",

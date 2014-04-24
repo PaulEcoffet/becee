@@ -30,7 +30,42 @@ class UsersManager
 	{
 		$user_req = $this->pdo->prepare('SELECT * FROM Users WHERE email = ? AND  hashed_password = SHA1(CONCAT(?, salt))');
 		$user_req->execute($user_email, $password);
-		return($user_req->fetch())
+		return($user_req->fetch());
 	}
+    public function insertUser($user)
+    {
+        $sql = "INSERT INTO `users` (name, email, hashed_password,  salt)
+		        VALUES(:name, :email, :hashed_password, :salt)
+		        ;
+                ";
+        
+        $business_req = $this->pdo->prepare($sql); 
+        $business_req->bindValue(':name', $user['name'],\PDO::PARAM_STR);
+        $business_req->bindValue(':email', $user['email'],\PDO::PARAM_STR);
+        $business_req->bindValue(':hashed_password', $user['password'],\PDO::PARAM_STR);
+        $business_req->bindValue(':salt', 'test',\PDO::PARAM_STR);
+        $business_req->execute();
 
+        $sql = "SELECT * FROM `users` WHERE id = (SELECT MAX(id) FROM `users`);";
+        
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->execute();
+
+        return $business_req->fetch(\PDO::FETCH_ASSOC);
+    }
+    public function insertUserAvatar($user_id, $avatar_path)
+    {
+    	echo $user_id,$avatar_path;
+        $sql = "UPDATE `users`
+				SET avatar_path=:avatar_path
+				WHERE id=:user_id; 
+		        ;
+                ";
+        
+        $business_req = $this->pdo->prepare($sql); 
+        $business_req->bindValue(':avatar_path', $avatar_path,\PDO::PARAM_STR);
+        $business_req->bindValue(':user_id', $user_id,\PDO::PARAM_INT);
+        $business_req->execute();
+
+    }
 }

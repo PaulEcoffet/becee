@@ -18,7 +18,7 @@ class FilesManager
 
 		if(!in_array($extension, $extensions)) 
 		{
-		     $erreur = '<br/>Unsupported file format <br/>';
+		     $erreur = '<br/>Unsupported file format ('.$extension.$filename.$foldername.') <br/>';
 		}
 		if($taille>$max_size)
 		{
@@ -44,6 +44,7 @@ class FilesManager
 		{
 		     echo $erreur;
 		}
+		echo "<br/>Default image will be set. You'll have to retry in your manager panel. ";
 	}
 
 }

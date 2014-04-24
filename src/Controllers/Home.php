@@ -15,6 +15,7 @@ class Home
         }
         $businesses = $BusinessManager->getBusinessesByCity($city);
         $cities = $BusinessManager->getCities();
-        return $request->parseTemplate('home.html.twig', array('businesses' => $businesses, 'cities' => $cities, 'current_city' => $city));
+        $tags = $BusinessManager->getTags();
+        return $request->parseTemplate('home.html.twig', array('businesses' => $businesses, 'cities' => $cities, 'current_city' => $city, 'tags' => $tags));
     }
 }

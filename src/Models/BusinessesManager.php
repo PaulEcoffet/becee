@@ -35,11 +35,11 @@ class BusinessesManager
         INNER JOIN users
         ON users.id = users.id_manager  --Getting Manager
 
-        INNER JOIN adresses
-        ON businesses.adress_id = addresses.id    --Getting adress
+        INNER JOIN business_adresses
+        ON businesses.address_id = business_adresses.id    --Getting address
 
         INNER JOIN cities
-        ON businesses.city_id = cities.id  --Getting city
+        ON business_adresses.city_id = cities.id  --Getting city
 
         INNER JOIN countries
         ON businesses.country_id = country.id     --Getting country
@@ -65,17 +65,27 @@ class BusinessesManager
         
     }
 
-
-    public function getBusinessesByCity($city)
+    public function getTags()
     {
-        $sql = "SELECT b.name, b.description, bi.path 
-        		FROM ((businesses b INNER JOIN business_addresses ba ON b.id = ba.business_id)
-        			INNER JOIN cities c ON c.id = ba.city_id)
-					INNER JOIN business_images bi ON bi.business_id = b.id
-				WHERE c.name =  '".$city."'
+        $sql = "SELECT * FROM business_tags;
         ;
         ";
         $business_req = $this->pdo->prepare($sql);
+        $business_req->execute();
+        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
+    public function getBusinessesByCity($city)
+    {
+        $sql = "SELECT b.name, b.description, ba.line1, bi.path
+        		FROM ((businesses b INNER JOIN business_addresses ba ON b.id = ba.business_id)
+        			INNER JOIN cities c ON c.id = ba.city_id)
+					INNER JOIN business_images bi ON bi.business_id = b.id
+				WHERE c.name =  :city
+        ;
+        ";
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->bindValue(':city', $city,\PDO::PARAM_STR);
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -143,7 +153,7 @@ class BusinessesManager
         $business_req = $this->pdo->prepare($sql); 
         $business_req->bindValue(':city', ucwords(strtolower($business['city'])),\PDO::PARAM_STR);
         $business_req->bindValue(':name', ucwords(strtolower($business['name'])),\PDO::PARAM_STR);
-        $business_req->bindValue(':description', ucwords(strtolower($business['description'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':description', ucfirst(strtolower($business['description'])),\PDO::PARAM_STR);
         $business_req->bindValue(':province', ucwords(strtolower($business['province'])),\PDO::PARAM_STR);
         $business_req->bindValue(':country', ucwords(strtolower($business['country'])),\PDO::PARAM_STR);
         $business_req->bindValue(':line1', ucwords(strtolower($business['line1'])),\PDO::PARAM_STR);

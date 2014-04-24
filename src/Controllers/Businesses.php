@@ -28,6 +28,10 @@ class Businesses
         $FILES = $request->getFiles();
         $filename = "becee_".time()."_".$business['id'];
         $path = $FileManager->uploadImage($FILES['img_business_med'], $filename,'images_businesses');
+        if($path==NULL)
+        {
+            $path = '../media/img/default-business-img.png';
+        }
         $BusinessManager->insertBusinessImage($business['id'], $path);
     }
 

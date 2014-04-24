@@ -508,6 +508,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(40) NOT NULL,
   `hashed_password` varchar(255) DEFAULT NULL,
   `category` int(10) unsigned DEFAULT NULL,
+  `language` varchar(80) DEFAULT 'français',
+  `avatar_path` varchar(80) DEFAULT '../media/img/default-user-avatar.png',
   `salt` varchar(255) DEFAULT NULL,
   `trustability` double DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -635,12 +637,40 @@ INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM c
 INSERT INTO `cities` (name, province_id) SELECT 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; 
 INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Bordeaux'), '15 Rue Du Placeholder', '', '0', '0' ); 
 
+-- Heiki (Bordeaux, France)
+INSERT INTO `businesses` (name, description) VALUES( 'Heiki', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id) VALUES(@LAST_ID); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Bordeaux'), '43, Place Holderswag', '', '0', '0' ); 
+
+-- Getsumen (Bordeaux, France)
+INSERT INTO `businesses` (name, description) VALUES( 'Getsumen', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id) VALUES(@LAST_ID); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Bordeaux'), '25, Place Holderswag', '', '0', '0' ); 
+
+-- Thorion (Bordeaux, France)
+INSERT INTO `businesses` (name, description) VALUES( 'Thorion', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id) VALUES(@LAST_ID); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Bordeaux'), '105, Place Holderswag', '', '0', '0' ); 
+
+-- estaurant Universitaire Cap U (Bordeaux, France)
+INSERT INTO `businesses` (name, description) VALUES( 'Restaurant Universitaire Cap U', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id) VALUES(@LAST_ID); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Aquitaine', (SELECT id FROM countries WHERE countries.nicename = 'France') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Aquitaine' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'France')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Bordeaux', (SELECT id FROM provinces WHERE provinces.name = 'Aquitaine') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Bordeaux' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Aquitaine')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Bordeaux'), '525, Place Holderswag', '', '0', '0' ); 
+
 -- The Green Pearl (New York, United States)
 INSERT INTO `businesses` (name, description) VALUES( 'The Green Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.');
 SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id, path) VALUES( @LAST_ID, '../media/upload/images_businesses/home-holder4.png' ); 
 INSERT INTO `provinces` (name, country_id) SELECT 'Manhattan', (SELECT id FROM countries WHERE countries.nicename = 'United States') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Manhattan' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'United States')) ; 
 INSERT INTO `cities` (name, province_id) SELECT 'New York', (SELECT id FROM provinces WHERE provinces.name = 'Manhattan') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'New York' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Manhattan')) ; 
-INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'New York'), '16 Rue Du Placeholder', '', '0', '0' ); 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'New York'), '43, Place Holderswag', '', '0', '0' ); 
 
 -- The Yellow Pearl (Bordeaux, France)
 INSERT INTO `businesses` (name, description) VALUES( 'The Yellow Pearl', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
@@ -656,7 +686,19 @@ INSERT INTO `provinces` (name, country_id) SELECT 'Ile-de-france', (SELECT id FR
 INSERT INTO `cities` (name, province_id) SELECT 'Paris', (SELECT id FROM provinces WHERE provinces.name = 'Ile-de-france') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Paris' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Ile-de-france')) ; 
 INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Paris'), '17 Rue Du Placeholder', '', '0', '0' ); 
  
+ -- Valkar (Tokyo, Japon)
+INSERT INTO `businesses` (name, description) VALUES( 'Valkar', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id) VALUES( @LAST_ID ); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Kanto', (SELECT id FROM countries WHERE countries.nicename = 'Japan') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Kanto' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'Japan')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Tokyo', (SELECT id FROM provinces WHERE provinces.name = 'Kanto') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Tokyo' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Kanto')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Tokyo'), '55, Place Holderswag', '', '0', '0' ); 
  
+ -- Les Cerisiers en Fleur (Tokyo, Japon)
+INSERT INTO `businesses` (name, description) VALUES( 'Les Cerisiers en Fleur', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.'); 
+SELECT LAST_INSERT_ID() INTO @LAST_ID; INSERT INTO `business_images` (business_id) VALUES( @LAST_ID ); 
+INSERT INTO `provinces` (name, country_id) SELECT 'Kanto', (SELECT id FROM countries WHERE countries.nicename = 'Japan') FROM dual WHERE NOT EXISTS (SELECT 1 from `provinces` WHERE name = 'Kanto' and country_id = (SELECT id FROM `countries` WHERE countries.nicename = 'Japan')) ; 
+INSERT INTO `cities` (name, province_id) SELECT 'Tokyo', (SELECT id FROM provinces WHERE provinces.name = 'Kanto') FROM dual WHERE NOT EXISTS (SELECT 1 from `cities` WHERE name = 'Tokyo' and province_id = (SELECT id FROM `provinces` WHERE provinces.name = 'Kanto')) ; 
+INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng) VALUES( @LAST_ID, (SELECT id FROM cities WHERE cities.name = 'Tokyo'), '285, Place Holderswag', '', '0', '0' ); 
  
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

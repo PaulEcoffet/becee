@@ -1,5 +1,5 @@
 {% extends "main_layout.html.twig" %}
-
+{% from 'general.html.twig' import navtools%}
 {% block title %}Home{% endblock %}
 
 {% block content %}
@@ -7,165 +7,164 @@
  <div class="row">
             <div class="col-md-12">
                 <div id="head" class="container">
-                    <div style="text-align:center;">
-                        <center>
-                            <img src="../media/img/leitmotiv.png" width="740" style="display:block;margin: 10px auto;margin-top:110px;"/>
-                            <form method="post" action="app.php?update">
-                                <select onchange="this.form.submit()" class="form-control input-sm" style="width:300px;height:40px;font-size:18px;display:block;margin-left:20px;margin:auto;background-color:rgba(250,250,250,0.2); border: none; color:white;text-transform:capitalize;" name='city'>
-                                    {%for city in page.cities %}
-                                    {% if city.name == page.current_city %}
-                                    <option value="{{ page.current_city }}" style="background: white; color: rgb(255,102,102) !important; font-style: italic" selected>{{ page.current_city }}</option>
-                                    {% else %}
-                                    <option value="{{ city.name }}" style="background: white; color:black">{{ city.name }}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </form>
-                        </center>
-                        <ul id="nav-tools" style="width:425px;margin:auto;margin-top:25px;float:none">
-                            <li>
-                                <a class="btn-categories btn-default" href="#">
-                                    <i class="fa fa-beer fa-lg" style="vertical-align: middle;"></i>
-                                    <span>
-                                        Bars
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="btn-categories btn-default" href="#">
-                                    <i class="fa fa-coffee fa-lg"></i>
-                                    <span>
-                                        Cafés
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="btn-categories btn-default" href="#">
-                                    <i class="fa fa-cutlery fa-lg"></i>
-                                    <span>
-                                        Restaurants
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="btn-categories btn-default" href="#">
-                                    <i class="fa fa-gear fa-lg" ></i>
-                                    <span>
-                                        Custom
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
+                    <div id="head-title">
+                        <p>HERE AT <img class="white-logo" src="../media/img/logo1.png"/> WE CONSIDER YOUR TASTES</p>
                     </div>
-
+                    <form method="post" action="app.php?update">
+                        <select onchange="this.form.submit()" id="city-selection" class="form-control input-sm" name='city'>
+                            {%for city in page.cities %}
+                            {% if city.name == page.current_city %}
+                            <option value="{{ page.current_city }}" selected>{{ page.current_city }}</option>
+                            {% else %}
+                            <option value="{{ city.name }}">{{ city.name }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
+                    {{ navtools() }}
                 </div>
             </div><!-- end col-md-12-->
         </div><!-- end row -->
-        <div style="position:absolute;width:600px;left:50%;
-    margin-left:-300px;margin-top:-25px;z-index:9999999999999999999999999999999999999999999999999999999;">
-        <img src="../media/img/s.png" style="display:inline-table;float:left" width="300px"/> <img src="../media/img/s2.png" width="300px"/>
-       </div>
-        <div id="sub_header" style="width:100%;height:auto;background:url(../media/img/map.jpg) no-repeat center fixed;background-size:cover;margin-bottom:30px;padding:100px 0">
-                <div class="container-fluid" id="center-row">
-            <div class="row">
-                <div class="col-md-12">
-                    <center>
-                    <span style="font-size:28px">HERE AT <span style="font-weight:900;">BECEE</span> WE SUGGEST YOU THE BEST PLACES NEAR <br/><br/><span style="font-weight:900;font-size:35px">{{ page.current_city }}</span></span>
-                    </center>
-                </div><!-- end col-md-12-->
-            </div><!-- end row -->
+        <div id="middle-btn-container">
+            <img src="../media/img/s.png"/><img src="../media/img/s2.png"/>
+        </div>
+        <div id="sub-header">
+            <div class="container-fluid center-row">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>HERE AT <strong>BECEE</strong> WE SUGGEST YOU THE BEST PLACES NEAR<br/><br/><strong>{{ page.current_city }}</strong>, France</p>
+                    </div><!-- end col-md-12-->
+                </div><!-- end row -->
             </div>
         </div>
-        <div class="container-fluid" id="center-row" style="margin-bottom:60px;">
-                        <div class="row">
-                <div id="main" class="col-md-12" style="height:auto;margin-bottom:20px">
+        <div class="container-fluid center-row main-container">
+            <div class="row">
+                <div id="main" class="col-md-12">
 
-                    <div class="categories" style="display:block;padding:10px;width:100%;border-left:none;height:50px;background-color:white;-moz-box-shadow: 0px 2px 5px 0px #D0D0D0;
--webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;
--o-box-shadow: 0px 1px 3px 0px #D0D0D0;
-box-shadow: 0px 1px 1px 0px #D0D0D0;
-filter:progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5);
--moz-border-radius: 1px;
--webkit-border-radius: 1px;
-border-radius: 2px;"><span style="font-family: 'Roboto'; font-size: 2em;font-weight: 800;"> Restaurant</span>
-<a href="./app.php?business/add" style="background-color:#262b2f;color:white;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin-right:5px;float:right;border-radius:3px; font-size:12px;padding:10px;border-color:#357ebd" class="btn btn-info btn-small">Add a business at 0$</a>
-</div>
+                    <div class="categories info-box"> 
+                        <img src="../media/img/label1.png" class="label-img" />
+                        <strong>Tips</strong> : You can catch two businesses and fight them until there is a winner. This fight is based upon our users preferences data but also and more importantly based upon your personal likes and dislikes, so hurry up and sign up to access those awesome features.
+                        <span style="font-style:italic; font-size:0.8em">(This feature is not available yet)</span>
+                    </div>
+                    <hr/>
+                </div>
+                <div id="main" class="col-md-12">
+                    <div class="head-categories">
+                        <img src="../media/img/logo.png" width="120px" /> | Restaurant
+                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Restaurant Indien">
+                        </div>
+
+
+                        {% for tag in page.tags %}
+                        {% if tag.id < 4 %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        {% endif %}
+                        {% endfor %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                    </div>
+               
                     {% for restaurant in page.businesses %}
                     <div class="col-md-6 home-business">
-                    <div style="-moz-box-shadow: 0px 2px 5px 0px #D0D0D0;
--webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;
--o-box-shadow: 0px 1px 3px 0px #D0D0D0;
-box-shadow: 0px 2px 4px 0px #D0D0D0;
-filter:progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5);
--moz-border-radius: 1px;
--webkit-border-radius: 1px;
-border-radius: 2px;background-color:rgb(247,247,247); padding:7px">
-                        <a href="./search.php"><div style="width=400px;height:200px;overflow:hidden;background:url({{ restaurant.path }}) no-repeat center;background-size:cover"></div></a>
-                        <div style="height:60px;border:2px dotted rgba(0,0,0,0.08);border-top:0;width:100%;text-align:left; max-width:396px; margin:auto;height:auto;position: relative;">
-                            <p style="    font-family: 'Roboto';    font-size: 1.46em;   padding:0px 15px; font-weight: 800;display:block;line-height:2; background-color:rgba(0,0,0,0.6);color:white;position: absolute; width:101.2%;top: -36px;-moz-box-shadow: 0px 2px 5px 0px #D0D0D0;
--webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;
--o-box-shadow: 0px 1px 1px 0px #D0D0D0;
-box-shadow: 0px 1px 0px 0px #000;
-filter:progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5);
--moz-border-radius: 3px;
--webkit-border-radius: 1px;
-border-radius: 0px;left:-2px">{{ restaurant.name }}<span style="float:right;display:inline-block;font-size:0.8em;padding:4px;position:absolute;right:0px;">€ € € - 3.2 km</span></p>
-                            <span style="    font-family: 'Roboto';    font-size: 1.11em;  padding:7px;  font-weight: 400; text-align : justify !important; display:block;line-height:1.06;">{{ restaurant.description }}</span>
+                        <div class="home-business-box">
+                            <div class="business-box-container" style="background:url({{ restaurant.path }}) no-repeat center;">
+                                {% for tag in page.tags %}
+                                {% if tag.id < 4 %}
+                                <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                                {% endif %}
+                                {% endfor %}
+
+                                <p class="business-info">
+                                    {{restaurant.name}}<br/>
+                                    <span style="font-size:12px">{{restaurant.line1}}</span>
+                                    <span class="secondary-info-business-box">€ € € - 3.2 km</span>
+                                </p>
+                            </div>
                         </div>
+                        <div class="description-info-business-box">
+                            <p>{{ restaurant.description[0:77] }}...</p>
                         </div>
                     </div>
                     {% endfor %}
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">Tags :</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">bio</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">discount</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">prêt-a-porter</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">ambiance</a>
-</div>
-</div> 
-                        <div class="row">
-                <div id="main" class="col-md-12" style="height:auto;margin-bottom:20px">
+                </div>
+                <div id="main" class="col-md-12">
+                    <div class="head-categories">
+                        <img src="../media/img/logo.png" width="120px" /> | Restaurant
+                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Restaurant Indien">
+                        </div>
 
-                    <div class="categories" style="display:block;padding:10px;width:100%;border-left:none;height:50px;background-color:white;-moz-box-shadow: 0px 2px 5px 0px #D0D0D0;
--webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;
--o-box-shadow: 0px 1px 3px 0px #D0D0D0;
-box-shadow: 0px 1px 1px 0px #D0D0D0;
-filter:progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5);
--moz-border-radius: 1px;
--webkit-border-radius: 1px;
-border-radius: 2px;"><span style="font-family: 'Roboto'; font-size: 2em;font-weight: 800;"> Restaurant</span>
-<a href="./app.php?business/add" style="background-color:#262b2f;color:white;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin-right:5px;float:right;border-radius:3px; font-size:12px;padding:10px;border-color:#357ebd" class="btn btn-info btn-small">Add a business at 0$</a>
-</div>
+
+                        {% for tag in page.tags %}
+                        {% if tag.id < 4 %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        {% endif %}
+                        {% endfor %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                    </div>
+               
                     {% for restaurant in page.businesses %}
                     <div class="col-md-6 home-business">
-                    <div style="-moz-box-shadow: 0px 2px 5px 0px #D0D0D0;
--webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;
--o-box-shadow: 0px 1px 3px 0px #D0D0D0;
-box-shadow: 0px 2px 4px 0px #D0D0D0;
-filter:progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5);
--moz-border-radius: 1px;
--webkit-border-radius: 1px;
-border-radius: 2px;background-color:rgb(247,247,247); padding:7px">
-                        <a href="./search.php"><div style="width=400px;height:200px;overflow:hidden;background:url({{ restaurant.path }}) no-repeat center;background-size:cover"></div></a>
-                        <div style="height:60px;border:2px dotted rgba(0,0,0,0.08);border-top:0;width:100%;text-align:left; max-width:396px; margin:auto;height:auto;position: relative;">
-                            <p style="    font-family: 'Roboto';    font-size: 1.46em;   padding:0px 15px; font-weight: 800;display:block;line-height:2; background-color:rgba(0,0,0,0.6);color:white;position: absolute; width:101.2%;top: -36px;-moz-box-shadow: 0px 2px 5px 0px #D0D0D0;
--webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;
--o-box-shadow: 0px 1px 1px 0px #D0D0D0;
-box-shadow: 0px 1px 0px 0px #000;
-filter:progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5);
--moz-border-radius: 3px;
--webkit-border-radius: 1px;
-border-radius: 0px;left:-2px">{{ restaurant.name }}<span style="float:right;display:inline-block;font-size:0.8em;padding:4px;position:absolute;right:0px;">€ € € - 3.2 km</span></p>
-                            <span style="    font-family: 'Roboto';    font-size: 1.11em;  padding:7px;  font-weight: 400; text-align : justify !important; display:block;line-height:1.06;">{{ restaurant.description }}</span>
+                        <div class="home-business-box">
+                            <div class="business-box-container" style="background:url({{ restaurant.path }}) no-repeat center;">
+                                {% for tag in page.tags %}
+                                {% if tag.id < 4 %}
+                                <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                                {% endif %}
+                                {% endfor %}
+
+                                <p class="business-info">
+                                    {{restaurant.name}}<br/>
+                                    <span style="font-size:12px">{{restaurant.line1}}</span>
+                                    <span class="secondary-info-business-box">€ € € - 3.2 km</span>
+                                </p>
+                            </div>
                         </div>
+                        <div class="description-info-business-box">
+                            <p>{{ restaurant.description[0:77] }}...</p>
                         </div>
                     </div>
                     {% endfor %}
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">Tags :</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">bio</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">discount</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">prêt-a-porter</a>
-<a href="./app.php?business/add" style="background-color:rgb(250,250,245);color:black;height:20px;margin-top:5px; margin-right:15px;line-height: 0;margin:20px 5px 0 20px;float:left;border-radius:3px; font-size:12px;padding:10px;border-color:rgb(200,200,200)" class="btn btn-info btn-small">ambiance</a>
-</div>
-</div> 
+                </div>
+                <div id="main" class="col-md-12">
+                    <div class="head-categories">
+                        <img src="../media/img/logo.png" width="120px" /> | Pubs
+                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Guinness">
+                        </div>
+
+
+                        {% for tag in page.tags %}
+                        {% if tag.id < 4 %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        {% endif %}
+                        {% endfor %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                    </div>
+               
+                </div>
+
+                <div id="main" class="col-md-12">
+                    <div class="head-categories">
+                        <img src="../media/img/logo.png" width="120px" /> | Cafés
+                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Terrasse">
+                        </div>
+
+
+                        {% for tag in page.tags %}
+                        {% if tag.id < 4 %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        {% endif %}
+                        {% endfor %}
+                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                    </div>
+                </div>
+                </div>
+            </div> 
         </div>
 {% endblock %}

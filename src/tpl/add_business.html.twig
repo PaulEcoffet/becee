@@ -22,12 +22,12 @@
 								{{ required_input('postcode') }}
 								{{ selection_field('country', page.countries, 'required') }}<hr />
 								{{ required_input('line1') }}
-								{{ required_input('line2') }}<hr />
+								{{ input_field('line2') }}<hr />
 								{{ input_field('lat') }}
 								{{ input_field('lng') }}
 								{{ textarea('description', 'required') }}
 								{{ input_field('website') }}<hr />
-								{{ upload('img_business_med', 'images', 500000, 'required') }}<hr />
+								{{ upload('img_business_med', 'images', 500000) }}<hr />
 								<span style="color:red">(* Required)</span>
 								{{ submit('Sign In') }}
 							</form>
