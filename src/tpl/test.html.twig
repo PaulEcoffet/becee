@@ -2,7 +2,14 @@
 <html>
 <body>
     <p>
-        lol, il y a {{ page['nb'] }} personne{% if page['nb'] >1 %}s{% endif %}.
+        <a href="{{ path('home') }}"><img src="{{ media('img/logo.png') }}" alt="lol" /></a>
+    </p>
+    <p>
+        lol, il y a {{ page['nb'] }} personne{% if page['nb'] >1 %}s{% endif %}.<br />
+        <a href="{{ path('lolilol', {'nb': page.nb+1}) }}">Je veux plus de lol!</a>
+        {% if page.nb > 0 %}
+        <a href="{{ path('lolilol', {'nb': page.nb-1}) }}">Je veux moins de lol!</a>
+        {% endif %}
     </p>
 </body>
 </html>
