@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div id="head" class="container">
                     <div id="head-title">
-                        <p>HERE AT <img class="white-logo" src="../media/img/logo1.png"/> WE CONSIDER YOUR TASTES</p>
+                        <p>HERE AT <img class="white-logo" src="{{ media('img/logo1.png') }}"/> WE CONSIDER YOUR TASTES</p>
                     </div>
                     <form method="post" action="app.php?update">
                         <select onchange="this.form.submit()" id="city-selection" class="form-control input-sm" name='city'>
@@ -26,7 +26,7 @@
             </div><!-- end col-md-12-->
         </div><!-- end row -->
         <div id="middle-btn-container">
-            <img src="../media/img/s.png"/><img src="../media/img/s2.png"/>
+            <img src="{{ media('img/s.png') }}"/><img src="{{ media('img/s2.png') }}"/>
         </div>
         <div id="sub-header">
             <div class="container-fluid center-row">
@@ -42,7 +42,7 @@
                 <div id="main" class="col-md-12">
 
                     <div class="categories info-box"> 
-                        <img src="../media/img/label1.png" class="label-img" />
+                        <img src="{{ media('img/label1.png') }}" class="label-img" />
                         <strong>Tips</strong> : You can catch two businesses and fight them until there is a winner. This fight is based upon our users preferences data but also and more importantly based upon your personal likes and dislikes, so hurry up and sign up to access those awesome features.
                         <span style="font-style:italic; font-size:0.8em">(This feature is not available yet)</span>
                     </div>
@@ -50,8 +50,8 @@
                 </div>
                 <div id="main" class="col-md-12">
                     <div class="head-categories">
-                        <img src="../media/img/logo.png" width="120px" /> | Restaurant
-                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Restaurant
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Restaurant Indien">
                         </div>
@@ -59,10 +59,10 @@
 
                         {% for tag in page.tags %}
                         {% if tag.id < 4 %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                         {% endif %}
                         {% endfor %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
                     </div>
                
                     {% for restaurant in page.businesses %}
@@ -71,7 +71,7 @@
                             <div class="business-box-container" style="background:url({{ restaurant.path }}) no-repeat center;">
                                 {% for tag in page.tags %}
                                 {% if tag.id < 4 %}
-                                <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                                <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                                 {% endif %}
                                 {% endfor %}
 
@@ -90,8 +90,8 @@
                 </div>
                 <div id="main" class="col-md-12">
                     <div class="head-categories">
-                        <img src="../media/img/logo.png" width="120px" /> | Restaurant
-                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Restaurant
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Restaurant Indien">
                         </div>
@@ -99,10 +99,10 @@
 
                         {% for tag in page.tags %}
                         {% if tag.id < 4 %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                         {% endif %}
                         {% endfor %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
                     </div>
                
                     {% for restaurant in page.businesses %}
@@ -111,7 +111,7 @@
                             <div class="business-box-container" style="background:url({{ restaurant.path }}) no-repeat center;">
                                 {% for tag in page.tags %}
                                 {% if tag.id < 4 %}
-                                <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                                <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                                 {% endif %}
                                 {% endfor %}
 
@@ -130,8 +130,8 @@
                 </div>
                 <div id="main" class="col-md-12">
                     <div class="head-categories">
-                        <img src="../media/img/logo.png" width="120px" /> | Pubs
-                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Pubs
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Guinness">
                         </div>
@@ -139,18 +139,18 @@
 
                         {% for tag in page.tags %}
                         {% if tag.id < 4 %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                         {% endif %}
                         {% endfor %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
                     </div>
                
                 </div>
 
                 <div id="main" class="col-md-12">
                     <div class="head-categories">
-                        <img src="../media/img/logo.png" width="120px" /> | Cafés
-                        <a href="./app.php?business/add" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
+                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Cafés
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Terrasse">
                         </div>
@@ -158,10 +158,10 @@
 
                         {% for tag in page.tags %}
                         {% if tag.id < 4 %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small tag">{{tag.name}}</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                         {% endif %}
                         {% endfor %}
-                        <a href="./app.php?business/add" class="btn btn-info btn-small special tag">Most used tags :</a>
+                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
                     </div>
                 </div>
                 </div>

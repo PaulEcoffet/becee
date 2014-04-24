@@ -10,14 +10,14 @@
 		</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		{% block stylesheet %}
-		<link rel="stylesheet" type="text/css" href="../media/bootstrap/bootstrap.css" media="all" />
-		<link rel="stylesheet" type="text/css" href="../media/styles/style.css" media="all" />
-		<link rel="stylesheet" type="text/css" href="../media/styles/custom-scrollbar.css" media="all" />
-		<link rel="stylesheet" type="text/css" href="../media/styles/bootstrap-custom.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="{{ media('bootstrap/bootstrap.css') }}" media="all" />
+		<link rel="stylesheet" type="text/css" href="{{ media('styles/style.css') }}" media="all" />
+		<link rel="stylesheet" type="text/css" href="{{ media('styles/custom-scrollbar.css') }}" media="all" />
+		<link rel="stylesheet" type="text/css" href="{{ media('styles/bootstrap-custom.css') }}" media="all" />
 	    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
 	    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300,700italic,700,800,800italic' rel='stylesheet' type='text/css'>
 	    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,900italic,100,300,300italic' rel='stylesheet' type='text/css'>
-	    <link rel="stylesheet" href="../media/bootstrap/font-awesome/css/font-awesome.min.css">
+	    <link rel="stylesheet" href="{{ media('bootstrap/font-awesome/css/font-awesome.min.css') }}">
 	    {% endblock %}
 	    {% endblock %}
 	</head>
@@ -32,18 +32,20 @@
 				  	<input type="text" class="form-control" placeholder="Restaurant Indien">
 				</div>
 				{{ navtools() }}
-				<div id="logo">
-				</div>
+				<a href="{{ path('home') }}">
+                    <div id="logo">
+				    </div>
+                </a>
 				<div id="profil-panel">
 
 				<ul id="nav-tools">
 					<li>
-						<a class="btn-categories btn-default" href="./app.php?signup">
+						<a class="btn-categories btn-default" href="{{ path('home') }}">
 						    Connexion
 						</a>
 					</li>
 					<li>
-						<a class="btn-categories btn-default" href="./app.php?signup">
+						<a class="btn-categories btn-default" href="{{ path('home') }}">
 						    Inscription
 						</a>
 					</li>
@@ -59,7 +61,7 @@
 
 		<footer>
 			{% block footer %}
-				<img class="white-logo" src="../media/img/logo1.png"/><br/>
+				<img class="white-logo" src="{{ media('img/logo1.png') }}"/><br/>
 				<p>PAR LA MEP TEAM</p>
 			{% endblock %}
 		</footer>

@@ -1,6 +1,6 @@
 [
     {
-	"name": "view_user",
+        "name": "view_user",
         "route": "user/{id}",
         "controller": "Users",
         "action": "viewUser",
@@ -9,19 +9,19 @@
         }
     },
     {
-	"name": "edit_user",
+        "name": "edit_user",
         "route": "user/edit",
         "controller": "Profile",
         "action": "edit"
     },
     {
-	    "name": "user_signup",
+        "name": "user_signup",
         "route": "signup",
         "controller": "Users",
         "action": "register"
     },
     {
-	    "name": "user_signup_process",
+        "name": "user_signup_process",
         "route": "signup/processing",
         "controller": "Users",
         "action": "registerProcessing"
@@ -36,19 +36,19 @@
         }
     },
     {
-	"name": "add_business",
+        "name": "business_add",
         "route": "business/add",
         "controller": "Businesses",
         "action": "register"
     },
     {
-	"name": "business_add_processing",
+        "name": "business_add_processing",
         "route": "business/add/processing",
         "controller": "Businesses",
         "action": "registerProcessing"
     },
     {
-	"name": "view_business",
+        "name": "view_business",
         "route": "business/{id}-{name}",
         "controller": "Businesses",
         "action": "view",
@@ -58,13 +58,13 @@
         }
     },
     {
-	"name": "sers_a_rien_enleve_moi_ce_truc_bordel",
+        "name": "sers_a_rien_enleve_moi_ce_truc_bordel",
         "route": "update",
         "controller": "Home",
         "action": "index"
     },
     {
-	"name": "home",
+        "name": "home",
         "route": "",
         "controller": "Home",
         "action": "index"

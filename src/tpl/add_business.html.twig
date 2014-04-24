@@ -9,13 +9,13 @@
 		        	<div class="panel">
 					    <div class="panel-heading"></div>
 					    <div class="panel-body">
-						    <span style="line-height: 30px; vertical-align:middle;">#Buisness_Registration_Page#</span>
+						    <span style="line-height: 30px; vertical-align:middle;">#Business_Registration_Page#</span>
 					    </div>
 					</div><!-- end panel panel-info -->
 		        	<div class="panel">
 					    <div class="panel-heading"></div>
 					    <div class="panel-body">
-							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="app.php?business/add/processing">
+							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('business_add_processing') }}">
 								{{ required_input('name') }}<hr />
 								{{ required_input('city') }}
 								{{ required_input('province') }}
