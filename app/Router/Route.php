@@ -15,7 +15,7 @@ class Route
     private $action = null;
     private $route = null;
     private $regexPattern = null;
-    private $variables = null;
+    private $variablesList = null;
 
     public function __construct($name, $route, $controller, $action, $variables=null)
     {
@@ -23,6 +23,10 @@ class Route
         $this->setRoute($route);
         $this->setController($controller);
         $this->setAction($action);
+        if(is_array($variables))
+        {
+            $this->setVariablesList(array_keys($variables));
+        }
         $this->setRegexPatternFromRoute($route, $variables);
     }
 
@@ -31,11 +35,16 @@ class Route
         $this->route = $route;
     }
 
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
     public function setName($name)
     {
         $this->name = $name;
     }
-    
+
     public function getName()
     {
         return $this->name;
@@ -81,6 +90,16 @@ class Route
     public function getAction()
     {
         return $this->action;
+    }
+
+    public function setVariablesList(Array $variablesList)
+    {
+        $this->variablesList = $variablesList;
+    }
+
+    public function getVariablesList()
+    {
+        return $this->variablesList;
     }
 
     public function is_url_for_this_route($url)
