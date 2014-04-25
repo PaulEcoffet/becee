@@ -9,7 +9,6 @@ require_once 'config.php';
 
 class Request
 {
-    private $db_connection;
     private $config;
     private $get_vars;
     private $uri_vars;
@@ -19,29 +18,6 @@ class Request
     {
         $this->config = get_config();
         $this->app = $app;
-        try
-        {
-            $this->db_connection = new PDO('mysql:host='. $this->config['mysql_host'] .
-                ';dbname='.$this->config['mysql_dbname'], $this->config['mysql_user'],
-                $this->config['mysql_password'],
-                array(PDO::ATTR_PERSISTENT => true));
-        }
-        catch (Exception $exception)
-        {
-            exit('<strong>Unexpected exception:</strong> '. $exception->getMessage());
-        }
-        $this->get_vars = $this->build_get();
-    }
-
-    protected function build_get()
-    {
-        $args_str_array = explode('?', $_SERVER['QUERY_STRING'], 2);
-        $args_array = array();
-        if (count($args_str_array) > 1)
-        {
-            parse_str(end($args_str_array), $args_array);
-        }
-        return $args_array;
     }
 
     public function parseTemplate($file, $page_data)
@@ -56,16 +32,21 @@ class Request
 
     public function getPdo()
     {
-        return $this->db_connection;
+        return $this->app->getPdo();
+    }
+
+    public function getApp()
+    {
+        return $this->app;
     }
 
     public function getQuery($key=null)
     {
         if(!empty($key))
         {
-            return $this->get_vars[$key];
+            return $this->$_GET[$key];
         }
-        return $this->get_vars;
+        return $_GET;
     }
 
     public function setParamsUri($params)

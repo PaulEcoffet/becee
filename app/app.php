@@ -14,10 +14,13 @@ class App
     protected $router = null;
     protected $twig = null;
     protected $routes_root = null;
+    protected $becee_root = null;
+    protected $db_connection;
 
     public function __construct()
     {
         $this->router = new Router();
+        $this->becee_root = realpath(dirname(__FILE__).'/../');
         $this->config = \get_config();
         $this->router->addRoutesFromJsonFile('routes.json');
         $loader = new \Twig_Loader_Filesystem('../src/tpl');
@@ -31,6 +34,8 @@ class App
             $this->routes_root = '/' . $this->config['server_root']. '/';
 
         $this->addTwigFunctions();
+
+        $this->createPdoConnection();
 
     }
 
@@ -56,6 +61,31 @@ class App
         return new $managerName($this);
     }
 
+    public function getBeceeRoot()
+    {
+        return $this->becee_root;
+    }
+
+    public function getMediaPath()
+    {
+        return realpath($this->becee_root.'/media/');
+    }
+
+    public function getCachePath()
+    {
+        return realpath($this->becee_root.'/cache/');
+    }
+
+    public function getTmpPath()
+    {
+        return realpath($this->becee_root.'/tmp/');
+    }
+
+    public function getPdo()
+    {
+        return $this->db_connection;
+    }
+
     protected function addTwigFunctions()
     {
         $path_function = new \Twig_SimpleFunction('path', function ($name, $args=null) {
@@ -67,6 +97,21 @@ class App
 
         $this->twig->addFunction($path_function);
         $this->twig->addFunction($media_function);
+    }
+
+    protected function createPdoConnection()
+    {
+        try
+        {
+            $this->db_connection = new \PDO('mysql:host='. $this->config['mysql_host'] .
+                ';dbname='.$this->config['mysql_dbname'], $this->config['mysql_user'],
+                $this->config['mysql_password'],
+                array(\PDO::ATTR_PERSISTENT => true));
+        }
+        catch (Exception $exception)
+        {
+            exit('<strong>Unexpected exception:</strong> '. $exception->getMessage());
+        }
     }
 }
 
