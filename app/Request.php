@@ -102,6 +102,6 @@ class Request
 
     public function getManager($name)
     {
-        // TODO
+        return $this->app->getManager($name);
     }
 }

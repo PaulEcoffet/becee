@@ -50,6 +50,12 @@ class App
         return $this->twig;
     }
 
+    public function getManager($name)
+    {
+        $managerName = 'Becee\\Models\\'.ucfirst($name).'Manager';
+        return new $managerName($this);
+    }
+
     protected function addTwigFunctions()
     {
         $path_function = new \Twig_SimpleFunction('path', function ($name, $args=null) {
