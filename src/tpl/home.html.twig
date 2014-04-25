@@ -10,7 +10,7 @@
                     <div id="head-title">
                         <p>HERE AT <img class="white-logo" src="{{ media('img/logo1.png') }}"/> WE CONSIDER YOUR TASTES</p>
                     </div>
-                    <form method="post" action="app.php?update">
+                    <form method="post" action="{{ path('home') }}">
                         <select onchange="this.form.submit()" id="city-selection" class="form-control input-sm" name='city'>
                             {%for city in page.cities %}
                             {% if city.name == page.current_city %}
@@ -68,7 +68,7 @@
                     {% for restaurant in page.businesses %}
                     <div class="col-md-6 home-business">
                         <div class="home-business-box">
-                            <div class="business-box-container" style="background:url({{ restaurant.path }}) no-repeat center;">
+                            <div class="business-box-container" style="background:url({{ media(restaurant.path) }}) no-repeat center;">
                                 {% for tag in page.tags %}
                                 {% if tag.id < 4 %}
                                 <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
@@ -108,7 +108,7 @@
                     {% for restaurant in page.businesses %}
                     <div class="col-md-6 home-business">
                         <div class="home-business-box">
-                            <div class="business-box-container" style="background:url({{ restaurant.path }}) no-repeat center;">
+                            <div class="business-box-container" style="background:url({{ media(restaurant.path) }}) no-repeat center;">
                                 {% for tag in page.tags %}
                                 {% if tag.id < 4 %}
                                 <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
