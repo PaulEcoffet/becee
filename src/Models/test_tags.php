@@ -37,11 +37,14 @@
         $sql = 'SELECT *        -- ATM get everything, will later only get what matters
         FROM businesses, business_tags
 
-        --INNER JOIN users
-        --ON users.id = users.id_manager  --Getting Manager
+         INNER JOIN users 
+         ON businesses.manager_id = users.id  --Getting Manager
 
-        INNER JOIN businesses_addresses
+        INNER JOIN business_addresses
         ON businesses.adress_id = addresses.id    --Getting adress
+
+        INNER JOIN business_addresses 
+        ON business_addresses.business_id = businesses.id 
 
         --INNER JOIN cities
         --ON businesses.city_id = cities.id  --Getting city
