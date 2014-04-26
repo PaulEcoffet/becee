@@ -263,13 +263,16 @@ CREATE TABLE `cities` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
   `province_id` int(10) unsigned DEFAULT NULL,
+  `zone_id` int(10) unsigned DEFAULT NULL,
   `lat` double DEFAULT NULL,
   `lng` double DEFAULT NULL,
   `code` varchar(9) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_cities` (`name`,`province_id`),
   KEY `province_id` (`province_id`),
-  CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`)
+  KEY `zone_id` (`zone_id`),
+  CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`),
+  CONSTRAINT `cities_ibfk_2` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -279,10 +282,36 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Bordeaux',1,44.837789,-0.57918,''),(2,'New York',2,40.7143528,-74.0059731,''),(3,'Paris',3,48.856614,2.3522219,''),(4,'Tokyo',4,35.6894875,139.6917064,'');
+INSERT INTO `cities` VALUES (1,'Bordeaux',1,1,44.837789,-0.57918,''),(2,'New York',2,2,40.7143528,-74.0059731,''),(3,'Paris',3,3,48.856614,2.3522219,''),(4,'Tokyo',4,4,35.6894875,139.6917064,'');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `zones`
+--
+
+DROP TABLE IF EXISTS `zones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zones` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_zones` (`city_id`),
+  KEY `city_id` (`city_id`),
+  CONSTRAINT `zones_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cities`
+--
+
+LOCK TABLES `zones` WRITE;
+/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
+INSERT INTO `zones` (city_id) VALUES (1),(2),(3),(4);
+/*!40000 ALTER TABLE `cities` ENABLE KEYS */;
+UNLOCK TABLES;
 --
 -- Table structure for table `countries`
 --
