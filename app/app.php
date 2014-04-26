@@ -19,15 +19,25 @@ class App
 
     public function __construct()
     {
-        $this->router = new Router();
+        // PHP SPECIFIC
+        session_start();
+
+
+        //Setting the config
         $this->becee_root = realpath(dirname(__FILE__).'/../');
         $this->config = \get_config();
+
+        //Setting up the router
+        $this->router = new Router();
         $this->router->addRoutesFromJsonFile('routes.json');
+
+        //Setting up the template engine
         $loader = new \Twig_Loader_Filesystem('../src/tpl');
         $this->twig = new \Twig_Environment($loader, array(
             'cache' => '../cache/tpl',
             'debug' => \get_config()['debug']));
 
+        //Determine if url_rewritting is set and define how routes should behave
         if (strpos($_SERVER['REQUEST_URI'], 'app/app.php/') !== false)
             $this->routes_root = explode('app/app.php/', $_SERVER['REQUEST_URI'], 2)[0] . 'app/app.php/';
         else
@@ -84,6 +94,42 @@ class App
     public function getPdo()
     {
         return $this->db_connection;
+    }
+
+    public function setSession($name, $value)
+    {
+        $_SESSION[$name] = $value;
+    }
+
+    public function getSession($name)
+    {
+        return $_SESSION[$name];
+    }
+
+    public function hasSession($name)
+    {
+        return isset($_SESSION[$name]);
+    }
+
+    public function setCookie($name, $value, $expiration)
+    {
+        setcookie($name, $value, $expiration);
+    }
+
+    public function getCookie($name)
+    {
+        return $_COOKIE[$name];
+    }
+
+    public function hasCookie($name)
+    {
+        return isset($_COOKIE[$name]);
+    }
+
+    public function deleteCookie($name)
+    {
+        unset($_COOKIE[$name]);
+        setcookie($name, '', time()-3600*24*366);
     }
 
     protected function addTwigFunctions()
