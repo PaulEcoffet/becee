@@ -34,32 +34,32 @@
 
         $new_business = new Business();
 
-        $sql = 'SELECT *        -- ATM get everything, will later only get what matters
+        $sql = 'SELECT *   --GROUP_CONCAT(business_tags)     -- ATM get everything, will later only get what matters
         FROM businesses, business_tags
 
          INNER JOIN users 
          ON businesses.manager_id = users.id  --Getting Manager
 
-        INNER JOIN business_addresses
-        ON businesses.adress_id = addresses.id    --Getting adress
-
         INNER JOIN business_addresses 
-        ON business_addresses.business_id = businesses.id 
+        ON business_addresses.business_id = businesses.id  --Getting adresse
 
-        --INNER JOIN cities
-        --ON businesses.city_id = cities.id  --Getting city
+        INNER JOIN cities 
+        ON business_addresses.city_id = cities.id  --Getting cities
 
-        --INNER JOIN countries
-        --ON businesses.country_id = country.id     --Getting country
+        INNER JOIN provinces
+        ON cities.province_id = provinces.id -- Getting province
 
-        --INNER JOIN provinces
-        --ON businesses.province_id = provinces.id -- Getting province
+        INNER JOIN countries
+        ON province.country_id = countries.id     --Getting country
 
-        --INNER JOIN business_images
-        --ON businesses.id = business_images.business_id    --Getting Images
+        INNER JOIN business_images
+        ON businesses.id = business_images.business_id    --Getting Images (Path)
 
-        --INNER JOIN link_business_tags                                   --TODO, Getting tags for this business
-        --ON link_business_tags.id_business = businesses.id AND business_tags.id = link_business_tags.id_business_tag
+       INNER JOIN link_business_tags 
+       ON link_business_id = businesses.id                   --Getting alltags, separated by ","
+       INNER JOIN business_tags 
+       ON business_tags.id = link_business_tags.tag_id
+
 
         --INNER JOIN business_vist
         --ON business_visits.business_id = businesses.id ;-- Getting visit

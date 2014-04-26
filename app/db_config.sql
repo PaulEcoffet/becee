@@ -153,7 +153,7 @@ CREATE TABLE `business_tags` (
 
 LOCK TABLES `business_tags` WRITE;
 /*!40000 ALTER TABLE `business_tags` DISABLE KEYS */;
-INSERT INTO `business_tags` VALUES (1,'chinois'),(2,'restaurant'),(3,'italien'),(4,'regional'),(5,'pirate'),(6,'vin'),(7,'bar'),(8,'restaurant'),(9,'commerce');
+INSERT INTO `business_tags` VALUES (1,'chinois'),(3,'italien'),(4,'regional'),(5,'pirate'),(6,'vin'),(7,'bar'),(8,'restaurant'),(9,'commerce');
 /*!40000 ALTER TABLE `business_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,6 +202,7 @@ CREATE TABLE `businesses` (
   `email` varchar(255) DEFAULT NULL,
   `phone_number` varchar(15) DEFAULT NULL,
   `verified` tinyint(1) DEFAULT NULL,
+  `price` smallint(5) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `manager_id` (`manager_id`),
   CONSTRAINT `businesses_ibfk_1` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`)
@@ -214,7 +215,7 @@ CREATE TABLE `businesses` (
 
 LOCK TABLES `businesses` WRITE;
 /*!40000 ALTER TABLE `businesses` DISABLE KEYS */;
-INSERT INTO `businesses` VALUES (1,'The Black Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL),(2,'Heiki','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL),(3,'Getsumen','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL),(4,'Thorion','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL),(5,'Restaurant Universitaire Cap U','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',2,NULL,NULL,NULL,NULL),(6,'The Green Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',2,NULL,NULL,NULL,NULL),(7,'The Yellow Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL),(8,'The Blue Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL),(9,'Valkar','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL),(10,'Les Cerisiers en Fleur','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL);
+INSERT INTO `businesses` VALUES (1,'The Black Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL,NULL),(2,'Heiki','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL,NULL),(3,'Getsumen','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL,NULL),(4,'Thorion','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',1,NULL,NULL,NULL,NULL,NULL),(5,'Restaurant Universitaire Cap U','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',2,NULL,NULL,NULL,NULL,NULL),(6,'The Green Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',2,NULL,NULL,NULL,NULL,NULL),(7,'The Yellow Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL,NULL),(8,'The Blue Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL,NULL),(9,'Valkar','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL,NULL),(10,'Les Cerisiers en Fleur','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam.',3,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `businesses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,6 +263,9 @@ CREATE TABLE `cities` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
   `province_id` int(10) unsigned DEFAULT NULL,
+  `lat` double DEFAULT NULL,
+  `lng` double DEFAULT NULL,
+  `code` varchar(9) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_cities` (`name`,`province_id`),
   KEY `province_id` (`province_id`),
@@ -275,7 +279,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Bordeaux',1),(2,'New York',2),(3,'Paris',3),(4,'Tokyo',4);
+INSERT INTO `cities` VALUES (1,'Bordeaux',1,0,0,''),(2,'New York',2,0,0,''),(3,'Paris',3,0,0,''),(4,'Tokyo',4,0,0,'');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,6 +313,28 @@ INSERT INTO `countries` VALUES (1,'AF','AFGHANISTAN','Afghanistan','AFG',4,93),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `link_business_category`
+--
+
+DROP TABLE IF EXISTS `link_business_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `link_business_category` (
+  `business_id` mediumint(5) unsigned NOT NULL,
+  `category_id` mediumint(5) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `link_business_category`
+--
+
+LOCK TABLES `link_business_category` WRITE;
+/*!40000 ALTER TABLE `link_business_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `link_business_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `link_business_tags`
 --
 
@@ -333,34 +359,8 @@ CREATE TABLE `link_business_tags` (
 
 LOCK TABLES `link_business_tags` WRITE;
 /*!40000 ALTER TABLE `link_business_tags` DISABLE KEYS */;
+INSERT INTO `link_business_tags` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
 /*!40000 ALTER TABLE `link_business_tags` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `link_features_tags`
---
-
-DROP TABLE IF EXISTS `link_features_tags`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link_features_tags` (
-  `feature_id` int(10) unsigned DEFAULT NULL,
-  `tag_id` int(10) unsigned DEFAULT NULL,
-  `pertinence` double DEFAULT NULL,
-  KEY `tag_id` (`tag_id`),
-  KEY `feature_id` (`feature_id`),
-  CONSTRAINT `link_features_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
-  CONSTRAINT `link_features_tags_ibfk_2` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `link_features_tags`
---
-
-LOCK TABLES `link_features_tags` WRITE;
-/*!40000 ALTER TABLE `link_features_tags` DISABLE KEYS */;
-/*!40000 ALTER TABLE `link_features_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -429,7 +429,7 @@ CREATE TABLE `user_categories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -438,7 +438,7 @@ CREATE TABLE `user_categories` (
 
 LOCK TABLES `user_categories` WRITE;
 /*!40000 ALTER TABLE `user_categories` DISABLE KEYS */;
-INSERT INTO `user_categories` VALUES (1,'plébien'),(2,'modo'),(3,'admin');
+INSERT INTO `user_categories` VALUES (1,'plébien'),(2,'modo'),(3,'admin'),(4,'dummy');
 /*!40000 ALTER TABLE `user_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,6 +459,7 @@ CREATE TABLE `users` (
   `avatar_path` varchar(80) DEFAULT '../media/img/default-user-avatar.png',
   `salt` varchar(255) DEFAULT NULL,
   `trustability` double DEFAULT NULL,
+  `inscription` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `category` (`category`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`category`) REFERENCES `user_categories` (`id`)
@@ -471,7 +472,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL);
+INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -484,4 +485,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-25 20:00:05
+-- Dump completed on 2014-04-26 14:24:16
