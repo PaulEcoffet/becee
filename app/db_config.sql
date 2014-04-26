@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.17, for Linux (x86_64)
 --
 -- Host: localhost    Database: becee
 -- ------------------------------------------------------
--- Server version	5.6.12-log
+-- Server version	5.6.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -279,7 +279,7 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Bordeaux',1,0,0,''),(2,'New York',2,0,0,''),(3,'Paris',3,0,0,''),(4,'Tokyo',4,0,0,'');
+INSERT INTO `cities` VALUES (1,'Bordeaux',1,44.837789,-0.57918,''),(2,'New York',2,40.7143528,-74.0059731,''),(3,'Paris',3,48.856614,2.3522219,''),(4,'Tokyo',4,35.6894875,139.6917064,'');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,6 +361,33 @@ LOCK TABLES `link_business_tags` WRITE;
 /*!40000 ALTER TABLE `link_business_tags` DISABLE KEYS */;
 INSERT INTO `link_business_tags` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
 /*!40000 ALTER TABLE `link_business_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `link_features_tags`
+--
+
+DROP TABLE IF EXISTS `link_features_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `link_features_tags` (
+  `feature_id` int(10) unsigned DEFAULT NULL,
+  `tag_id` int(10) unsigned DEFAULT NULL,
+  `pertinence` double DEFAULT NULL,
+  KEY `tag_id` (`tag_id`),
+  KEY `feature_id` (`feature_id`),
+  CONSTRAINT `link_features_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
+  CONSTRAINT `link_features_tags_ibfk_2` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `link_features_tags`
+--
+
+LOCK TABLES `link_features_tags` WRITE;
+/*!40000 ALTER TABLE `link_features_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `link_features_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -485,4 +512,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-26 14:24:16
+-- Dump completed on 2014-04-26 15:49:02
