@@ -85,7 +85,7 @@ class BusinessesManager
         ;
         ";
         $business_req = $this->pdo->prepare($sql);
-        $business_req->bindValue(':city_id', $city_id,\PDO::PARAM_STR);
+        $business_req->bindValue(':city_id', $city_id,\PDO::PARAM_INT);
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }

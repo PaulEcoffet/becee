@@ -12,7 +12,7 @@ class Home
         $user = $request->getManager('CurrentUser');
         $POST = $request->getPost();
         if(isset($POST['city']))
-        { // Need to be an ID!
+        {
             $user->setPrefferedCity($POST['city']);
         }
         if($user->hasPrefferedCity() === false)
