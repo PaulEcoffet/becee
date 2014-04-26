@@ -26,9 +26,20 @@ class CurrentUserManager
         return $this->app->hasSession('user_preffered_city');
     }
 
-    public function setPrefferedCityFromGeoLoc()
+    public function setPrefferedCityFromGeoLoc() //Warning: Do not work in local
     {
-        $this->setPrefferedCity(1); //TODO
+        if($this->app->getConfig()['debug'])
+        {
+            $ip = '88.190.16.36'; // Paris ip
+            //$ip = '90.55.18.3'; //Le Barp ip
+        }
+        else
+        {
+            $ip = $this->app->getClientIp();
+        }
+        $geocode = $this->app->getGeocoder()->geocode($ip);
+        $nearestcity = $this->app->getManager('Location')->getNearestCity($geocode->getLatitude(), $geocode->getLongitude());
+        $this->setPrefferedCity($nearestcity->id);
     }
 
     public function setPrefferedCity($city_id)
