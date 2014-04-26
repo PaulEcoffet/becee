@@ -68,4 +68,10 @@ class UsersManager
         $business_req->execute();
 
     }
+
+    public function createDummyUser()
+    {
+        //TODO: Create a user without any information and with category 'Dummy'
+        return (object) array('id' => 1); //return a User entity with the dummyuser information.
+    }
 }
