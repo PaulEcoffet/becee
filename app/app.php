@@ -16,6 +16,7 @@ class App
     protected $routes_root = null;
     protected $becee_root = null;
     protected $db_connection;
+    protected $geocoder;
 
     public function __construct()
     {
@@ -46,6 +47,8 @@ class App
         $this->addTwigFunctions();
 
         $this->createPdoConnection();
+
+        $this->createGeocoder();
 
     }
 
@@ -132,6 +135,21 @@ class App
         setcookie($name, '', time()-3600*24*366);
     }
 
+    public function getGeocoder()
+    {
+        return $this->geocoder;
+    }
+
+    public function getClientIp()
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
     protected function addTwigFunctions()
     {
         $path_function = new \Twig_SimpleFunction('path', function ($name, $args=null) {
@@ -158,6 +176,18 @@ class App
         {
             exit('<strong>Unexpected exception:</strong> '. $exception->getMessage());
         }
+    }
+
+    protected function createGeocoder()
+    {
+        $geocoder = new \Geocoder\Geocoder();
+        $adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
+        $chain    = new \Geocoder\Provider\ChainProvider(array(
+            new \Geocoder\Provider\FreeGeoIpProvider($adapter),
+            new \Geocoder\Provider\HostIpProvider($adapter),
+            new \Geocoder\Provider\GoogleMapsProvider($adapter, 'fr_FR', 'France', true)));
+        $geocoder->registerProvider($chain);
+        $this->geocoder = $geocoder;
     }
 }
 
