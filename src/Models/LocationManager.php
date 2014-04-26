@@ -33,7 +33,7 @@ class LocationManager
         return $cities;
     }
 
-    public function getNearestCity($lat, $lng)
+    public function getNearestZone($lat, $lng)
     {
         $sql = 'SELECT c.id as city_id, c.name as city_name, c.lat as city_lat, c.lng as city_lng,
                 p.id as province_id, p.name as province_name, countries.id as country_id,
@@ -41,6 +41,7 @@ class LocationManager
             FROM cities c
             INNER JOIN provinces p ON c.province_id = p.id
             INNER JOIN countries ON p.country_id = countries.id
+            INNER JOIN zones ON c.id = zones.id
             ORDER BY
             ((ACOS(SIN(:lat * PI() / 180) * SIN(c.lat * PI() / 180) + COS(:lat * PI() / 180) * COS(c.lat * PI() / 180) * COS((:lng - c.lng) * PI() / 180)) * 180 / PI()) * 60 * 1.1515) -- from http://zcentric.com/2010/03/11/calculate-distance-in-mysql-with-latitude-and-longitude/
             ASC

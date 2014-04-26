@@ -38,7 +38,7 @@ class CurrentUserManager
             $ip = $this->app->getClientIp();
         }
         $geocode = $this->app->getGeocoder()->geocode($ip);
-        $nearestcity = $this->app->getManager('Location')->getNearestCity($geocode->getLatitude(), $geocode->getLongitude());
+        $nearestcity = $this->app->getManager('Location')->getNearestZone($geocode->getLatitude(), $geocode->getLongitude());
         $this->setPrefferedCity($nearestcity->id);
     }
 
