@@ -308,9 +308,9 @@ CREATE TABLE `zones` (
 --
 
 LOCK TABLES `zones` WRITE;
-/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
+/*!40000 ALTER TABLE `zones` DISABLE KEYS */;
 INSERT INTO `zones` (city_id) VALUES (1),(2),(3),(4);
-/*!40000 ALTER TABLE `cities` ENABLE KEYS */;
+/*!40000 ALTER TABLE `zones` ENABLE KEYS */;
 UNLOCK TABLES;
 --
 -- Table structure for table `countries`
