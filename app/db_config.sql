@@ -335,32 +335,54 @@ LOCK TABLES `link_business_category` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `link_business_tags`
+-- Table structure for table `link_business_tag`
 --
 
-DROP TABLE IF EXISTS `link_business_tags`;
+DROP TABLE IF EXISTS `link_business_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link_business_tags` (
+CREATE TABLE `link_business_tag` (
   `business_id` int(10) unsigned DEFAULT NULL,
   `tag_id` int(10) unsigned DEFAULT NULL,
   `nb_yes` smallint(5) unsigned DEFAULT NULL,
   `nb_no` smallint(5) unsigned DEFAULT NULL,
   KEY `tag_id` (`tag_id`),
   KEY `business_id` (`business_id`),
-  CONSTRAINT `link_business_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
-  CONSTRAINT `link_business_tags_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
+  CONSTRAINT `link_business_tag_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
+  CONSTRAINT `link_business_tag_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `link_business_tags`
+-- Dumping data for table `link_business_tag`
 --
 
-LOCK TABLES `link_business_tags` WRITE;
-/*!40000 ALTER TABLE `link_business_tags` DISABLE KEYS */;
-INSERT INTO `link_business_tags` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
-/*!40000 ALTER TABLE `link_business_tags` ENABLE KEYS */;
+LOCK TABLES `link_business_tag` WRITE;
+/*!40000 ALTER TABLE `link_business_tag` DISABLE KEYS */;
+INSERT INTO `link_business_tag` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
+/*!40000 ALTER TABLE `link_business_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `link_category_feature`
+--
+
+DROP TABLE IF EXISTS `link_category_feature`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `link_category_feature` (
+  `id_category` smallint(5) unsigned NOT NULL,
+  `id_feature` smallint(5) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `link_category_feature`
+--
+
+LOCK TABLES `link_category_feature` WRITE;
+/*!40000 ALTER TABLE `link_category_feature` DISABLE KEYS */;
+/*!40000 ALTER TABLE `link_category_feature` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
