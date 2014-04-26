@@ -13,10 +13,10 @@
                     <form method="post" action="{{ path('home') }}">
                         <select onchange="this.form.submit()" id="city-selection" class="form-control input-sm" name='city'>
                             {%for city in page.cities %}
-                            {% if city.name == page.current_city %}
-                            <option value="{{ page.current_city }}" selected>{{ page.current_city }}</option>
+                            {% if city.id == page.current_city.id %}
+                            <option value="{{ city.id }}" selected>{{ city.name }}</option>
                             {% else %}
-                            <option value="{{ city.name }}">{{ city.name }}</option>
+                            <option value="{{ city.id }}">{{ city.name }}</option>
                             {% endif %}
                             {% endfor %}
                         </select>
@@ -32,7 +32,7 @@
             <div class="container-fluid center-row">
                 <div class="row">
                     <div class="col-md-12">
-                        <p>HERE AT <strong>BECEE</strong> WE SUGGEST YOU THE BEST PLACES NEAR<br/><br/><strong>{{ page.current_city }}</strong>, France</p>
+                        <p>HERE AT <strong>BECEE</strong> WE SUGGEST YOU THE BEST PLACES NEAR<br/><br/><strong>{{ page.current_city.name }}</strong>, France</p>
                     </div><!-- end col-md-12-->
                 </div><!-- end row -->
             </div>
