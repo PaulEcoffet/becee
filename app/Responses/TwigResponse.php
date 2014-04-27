@@ -15,7 +15,7 @@ class TwigResponse implements Response
             $this->layout = $layout;
         }
 
-        $this->namespace = $namespace;
+        $this->setNamespace($namespace);
         if ($data !== null)
         {
             $this->data[$this->namespace] = $data;
@@ -38,9 +38,16 @@ class TwigResponse implements Response
         return $this->layout;
     }
 
-    public function addData($name, $value)
+    public function addData($name, $value=null)
     {
-        $this->data[$this->namespace][$name] = $value;
+        if (is_array($name))
+        {
+            $this->data[$this->namespace] = array_merge($name, $this->data[$this->namespace]);
+        }
+        else
+        {
+            $this->data[$this->namespace][$name] = $value;
+        }
     }
 
     public function deleteData($name, $namespace=null)
@@ -52,5 +59,6 @@ class TwigResponse implements Response
     public function setNamespace($namespace)
     {
         $this->namespace = $namespace;
+        $this->data[$this->namespace] = array();
     }
 }
