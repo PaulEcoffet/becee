@@ -18,6 +18,7 @@ class App
     protected $db_connection;
     protected $geocoder;
     protected $managers = array();
+    protected $hooks = array();
 
     public function __construct()
     {
@@ -61,7 +62,12 @@ class App
         $request->setParamsUri($route->parse_params($path));
         $controller_str = $route->getController();
         $controller = new $controller_str();
-        echo call_user_func(array($controller, $route->getAction()), $request);
+        $response = call_user_func(array($controller, $route->getAction()), $request);
+        foreach($this->hooks as $hook)
+        {
+            $hook->run($this, $response);
+        }
+        echo $response->run($this);
     }
 
     public function getTwig()
@@ -71,7 +77,7 @@ class App
 
     public function getManager($name)
     {
-        if (isset($this->managers[$name]))
+        if (array_key_exists($name, $this->managers) === false)
         {
             $managerName = 'Becee\\Models\\'.ucfirst($name).'Manager';
             $this->managers[$name] = new $managerName($this);
@@ -116,7 +122,7 @@ class App
 
     public function hasSession($name)
     {
-        return isset($_SESSION[$name]);
+        return (array_key_exists($name, $_SESSION));
     }
 
     public function setCookie($name, $value, $expiration)
@@ -131,7 +137,7 @@ class App
 
     public function hasCookie($name)
     {
-        return isset($_COOKIE[$name]);
+        return array_key_exists($name, $_COOKIE);
     }
 
     public function deleteCookie($name)
@@ -153,6 +159,16 @@ class App
     public function getConfig()
     {
         return $this->config;
+    }
+
+    public function addHook(\QDE\Hook $hook)
+    {
+        $this->hooks[$hook->getName()] = $hook;
+    }
+
+    public function removeHook($hookname)
+    {
+        unset($this->hooks[$hookname]);
     }
 
     protected function addTwigFunctions()
