@@ -6,9 +6,10 @@ class BusinessesManager
 {
     private $pdo = NULL;
 
-    public function __construct($app)
+    public function __construct(\QDE\App $app)
     {
-        $this->pdo = $app->getPdo();
+        $this->app = $app;
+        $this->pdo = $this->app->getPdo();
     }
 
     public function getBusinessByIdWithoutManager($business_id) //Get the busines name, longitude, latitude, website by using his id

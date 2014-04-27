@@ -4,12 +4,14 @@ namespace Becee\Entities;
 
 class Country
 {
-    public $name;
     public $id;
+    public $iso;
+    public $name;
+    public $nicename;
+    public $iso3;
+    public $numcode;
 
-    public function __construct($id=null, $name=null)
+    public function __construct(array $data=null)
     {
-        $this->id = $id;
-        $this->name = $name;
     }
 }

@@ -2,13 +2,11 @@
 
 namespace Becee\Controllers;
 
-use \Becee\Models\BusinessesManager;
-
 class Home
 {
     public function indexAction($request)
     {
-        $BusinessManager = new BusinessesManager($request->getPdo());
+        $BusinessManager = $request->getManager('Businesses');
         $user = $request->getManager('CurrentUser');
         $POST = $request->getPost();
         if(isset($POST['city']))

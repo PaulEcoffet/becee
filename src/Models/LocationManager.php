@@ -3,6 +3,8 @@
 namespace Becee\Models;
 
 use \Becee\Entities\City;
+use \Becee\Entities\Country;
+
 
 class LocationManager
 {
@@ -33,6 +35,34 @@ class LocationManager
         return $cities;
     }
 
+   /* public function getZones()
+    {
+        $sql = '-- TODO';
+        $zones_req = $this->pdo->prepare($sql);
+        $zones_req->execute();
+        $results = $zones_req->fetchAll(\PDO::FETCH_ASSOC);
+        $zones = array();
+        foreach($results as $result)
+        {
+            $zones[] = new Zone($result);
+        }
+        return $zones;
+    }
+
+    public function getProvinces()
+    {
+        $sql = '-- TODO';
+        $provinces_req = $this->pdo->prepare($sql);
+        $provinces_req->execute();
+        $results = $provinces_req->fetchAll(\PDO::FETCH_ASSOC);
+        $provinces = array();
+        foreach($results as $result)
+        {
+            $provinces[] = new Province($result);
+        }
+        return $provinces;
+    } */
+
     public function getCountries()
     {
         $sql = "
@@ -42,7 +72,14 @@ class LocationManager
         ";
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute();
-        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+        $results = $business_req->fetchAll(\PDO::FETCH_ASSOC);
+        return $results;
+        //$countries = array();
+        //foreach($results as $result)
+        //{
+        //    $countries[] = new Country($result);
+        //}
+        //return $countries;
     }
 
     public function getNearestZone($lat, $lng)
