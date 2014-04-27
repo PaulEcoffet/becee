@@ -37,7 +37,7 @@
 				    </div>
                 </a>
 				<div id="profil-panel">
-
+                {% if not user.is_logged %}
 				<ul id="nav-tools">
 					<li>
 						<a class="btn-categories btn-default" href="{{ path('home') }}">
@@ -50,6 +50,9 @@
 						</a>
 					</li>
 				</ul>
+                {% else %}
+                <p>Salut à toi, {{ user.name }}! <a href="{{path('view_user', {"id": user.id })}}">Voir mon profil</a></p>
+                {% endif %}
 				</div>
 			</header>
 
