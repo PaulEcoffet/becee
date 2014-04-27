@@ -57,10 +57,8 @@
                         </div>
 
 
-                        {% for tag in page.tags %}
-                        {% if tag.id < 4 %}
+                        {% for tag in page.tags|slice(0, 4) %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
-                        {% endif %}
                         {% endfor %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
                     </div>
@@ -69,10 +67,8 @@
                     <div class="col-md-6 home-business">
                         <div class="home-business-box">
                             <div class="business-box-container" style="background:url({{ media(restaurant.path) }}) no-repeat center;">
-                                {% for tag in page.tags %}
-                                {% if tag.id < 4 %}
+                                {% for tag in page.tags|slice(0, 4) %}
                                 <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
-                                {% endif %}
                                 {% endfor %}
 
                                 <p class="business-info">
@@ -97,10 +93,8 @@
                         </div>
 
 
-                        {% for tag in page.tags %}
-                        {% if tag.id < 4 %}
+                        {% for tag in page.tags|slice(0, 4) %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
-                        {% endif %}
                         {% endfor %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
                     </div>
