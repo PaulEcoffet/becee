@@ -6,9 +6,9 @@ class BusinessesManager
 {
     private $pdo = NULL;
 
-    public function __construct($pdo)
+    public function __construct($app)
     {
-        $this->pdo = $pdo;
+        $this->pdo = $app->getPdo();
     }
 
     public function getBusinessByIdWithoutManager($business_id) //Get the busines name, longitude, latitude, website by using his id
@@ -32,7 +32,7 @@ class BusinessesManager
 
         $new_business = new Business();
 
-        $sql = 'SELECT *--GROUP_CONCAT(business_tags.name) as tags, GROUP_CONCAT(business_categories.name) as category   
+        $sql = 'SELECT businesses.name GROUP_CONCAT(business_tags.name) as tags, GROUP_CONCAT(business_categories.name) as category   
         FROM businesses, business_tags   -- ATM get everything, will later only get what matters
 
         INNER JOIN users 

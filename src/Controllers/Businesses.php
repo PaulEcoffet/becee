@@ -9,13 +9,15 @@ class Businesses
 {
     public function viewBusinessAction($request, $id) //Send information needed to generate a business page (using the id)
     {
-        $reponse = $getbusiness($id);
-        return $reponse;
+
+        //Need to create business_page.html.twig
+        $reponse = $getbusiness($request, $id);
+        return new \QDE\Responses\TwigResponse('view_business.html.twig', array('countries' => $LocationManager->getCountries('nicename')));;
     }
 
     public function getBusiness($request, $id) //Call manager which get the whole business by id
     {
-        $manager = new businessManager($request->getPdo());
+        $manager = $request->getManager('businesses');
         $manager->getBusinessById($id);
     }
 
