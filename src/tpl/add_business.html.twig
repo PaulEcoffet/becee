@@ -2,38 +2,50 @@
 {% from 'forms.html.twig' import submit, textarea, upload, required_input, selection as selection_field, input as input_field %}
 {% block title %}#business_registration#{% endblock %}
 
+{% block stylesheet %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ media('vendor/jquery-plugins/chosen/chosen.min.css') }}" media="all" />
+{% endblock %}
+
+{% block scripts %}
+{{ parent() }}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="{{ media('vendor/jquery-plugins/chosen/chosen.jquery.min.js') }}"></script>
+{% endblock %}
+
+
 {% block content %}
-		<div class="container-fluid" id="center-row">
-		    <div class="row">
-		        <div id="main" class="col-md-12">
-		        	<div class="panel">
-					    <div class="panel-heading"></div>
-					    <div class="panel-body">
-						    <span style="line-height: 30px; vertical-align:middle;">#Business_Registration_Page#</span>
-					    </div>
-					</div><!-- end panel panel-info -->
-		        	<div class="panel">
-					    <div class="panel-heading"></div>
-					    <div class="panel-body">
-							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('business_add_processing') }}">
-								{{ required_input('name') }}<hr />
-								{{ required_input('city') }}
-								{{ required_input('province') }}
-								{{ required_input('postcode') }}
-								{{ selection_field('country', page.countries, 'required') }}<hr />
-								{{ required_input('line1') }}
-								{{ input_field('line2') }}<hr />
-								{{ input_field('lat') }}
-								{{ input_field('lng') }}
-								{{ textarea('description', 'required') }}
-								{{ input_field('website') }}<hr />
-								{{ upload('img_business_med', 'images', 500000) }}<hr />
-								<span style="color:red">(* Required)</span>
-								{{ submit('Sign In') }}
-							</form>
-					    </div>
-					</div><!-- end panel panel-info -->
-		        </div><!-- end col-md-12-->
-		    </div><!-- end row -->
-		</div>
+	<div class="container-fluid" id="center-row">
+	    <div class="row">
+	        <div id="main" class="col-md-12">
+	        	<div class="panel">
+				    <div class="panel-heading"></div>
+				    <div class="panel-body">
+					    <span style="line-height: 30px; vertical-align:middle;">#Business_Registration_Page#</span>
+				    </div>
+				</div><!-- end panel panel-info -->
+	        	<div class="panel">
+				    <div class="panel-heading"></div>
+				    <div class="panel-body">
+						<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('business_add_processing') }}">
+							{{ required_input('name') }}<hr />
+							{{ required_input('city') }}
+							{{ required_input('province') }}
+							{{ required_input('postcode') }}
+							{{ selection_field('country', page.countries, 'required') }}<hr />
+							{{ required_input('line1') }}
+							{{ input_field('line2') }}<hr />
+							{{ input_field('lat') }}
+							{{ input_field('lng') }}
+							{{ textarea('description', 'required') }}
+							{{ input_field('website') }}<hr />
+							{{ upload('img_business_med', 'images', 500000) }}<hr />
+							<span style="color:red">(* Required)</span>
+							{{ submit('Sign In') }}
+						</form>
+				    </div>
+				</div><!-- end panel panel-info -->
+	        </div><!-- end col-md-12-->
+	    </div><!-- end row -->
+	</div>
 {% endblock %}

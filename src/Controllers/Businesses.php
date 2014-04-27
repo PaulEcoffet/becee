@@ -4,7 +4,7 @@ namespace Becee\Controllers;
 
 use \Becee\Models\BusinessesManager;
 use \Becee\Models\FilesManager;
-use \Becee\Models\GeneralManager;
+use \Becee\Models\LocationManager;
 
 class Businesses
 {
@@ -37,8 +37,8 @@ class Businesses
 
     public function registerAction($request)
     {
-        $GeneralManager = new GeneralManager($request->getPdo());
-        return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $GeneralManager->getCountries('nicename')));
+        $LocationManager = $request->getManager('Location');
+        return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $LocationManager->getCountries('nicename')));
     }
 }
 

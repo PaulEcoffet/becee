@@ -33,6 +33,19 @@ class LocationManager
         return $cities;
     }
 
+    public function getCountries($fields="*")
+    {
+        $sql = "
+        SELECT :fields 
+        FROM `countries`
+        ;
+        ";
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->bindValue(':fields',$fields);
+        $business_req->execute();
+        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
     public function getNearestZone($lat, $lng)
     {
         $sql = 'SELECT c.id as city_id, c.name as city_name, c.lat as city_lat, c.lng as city_lng,
