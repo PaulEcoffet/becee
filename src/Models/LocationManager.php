@@ -33,15 +33,14 @@ class LocationManager
         return $cities;
     }
 
-    public function getCountries($fields="*")
+    public function getCountries()
     {
         $sql = "
-        SELECT :fields 
+        SELECT * 
         FROM `countries`
         ;
         ";
         $business_req = $this->pdo->prepare($sql);
-        $business_req->bindValue(':fields',$fields);
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }

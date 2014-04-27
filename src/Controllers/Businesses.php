@@ -41,6 +41,8 @@ class Businesses
     public function registerAction($request)
     {
         $LocationManager = $request->getManager('Location');
-        return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $LocationManager->getCountries('nicename')));
+        $countries = $LocationManager->getCountries();
+        $cities = $LocationManager->getCities();
+        return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $countries, 'cities' => $cities));
     }
 }

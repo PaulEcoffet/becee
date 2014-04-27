@@ -15,7 +15,7 @@
 	        	<div class="panel">
 				    <div class="panel-heading"></div>
 				    <div class="panel-body">
-					    <span style="line-height: 30px; vertical-align:middle;">#Business_Registration_Page#</span>
+					    <span style="line-height: 30px; vertical-align:middle;">Business Registration</span>
 				    </div>
 				</div><!-- end panel panel-info -->
 	        	<div class="panel">
@@ -24,10 +24,27 @@
 						<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('business_add_processing') }}">
 
 							{{ required_input('name') }}<hr />
-							{{ required_input('city') }}
+						    <div class="form-group">
+						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">country <span style="color:red">*</span></label>
+						        <div class="col-sm-9">
+							        <select for="inputEmail3" data-placeholder="Choose a Country..." id="countries" class="col-sm-3 control-label chosen-select" style="text-align:left;margin-bottom:7px; width:400px" tabindex="-1">
+							        	{%for value in page.countries %}
+						                <option value="{{ loop.index0 }}">{{ value.nicename }}</option>
+						                {% endfor %}
+							        </select>
+						        </div>
+						    </div>
+						    <div class="form-group">
+						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">city <span style="color:red">*</span></label>
+						        <div class="col-sm-9">
+							        <select for="inputEmail3" data-placeholder="Choose a city..." id="cities" class="col-sm-3 control-label chosen-select-city" style="text-align:left;margin-bottom:7px; width:400px" tabindex="-1">
+							        </select>
+						        </div>
+						    </div>
+						    <hr />
 							{{ required_input('province') }}
 							{{ required_input('postcode') }}
-							{{ selection_field('country', page.countries, 'required') }}<hr />
+						    <hr />
 							{{ required_input('line1') }}
 							{{ input_field('line2') }}<hr />
 							{{ input_field('lat') }}
@@ -36,21 +53,6 @@
 							{{ input_field('website') }}<hr />
 							{{ upload('img_business_med', 'images', 500000) }}<hr />
 							<span style="color:red">(* Required)</span>
-
-				          <select data-placeholder="Choose a Country..." class="chosen-select" style="width: 350px; display: none;" tabindex="-1">
-				            <option value=""></option>
-				            <option value="United States">United States</option>
-				          </select>
-				          <div title="" style="width: 350px;" class="chosen-container chosen-container-single">
-					          <a class="chosen-single chosen-default" tabindex="-1">
-					          	<span>Choose a Country...</span>
-					          	<div><b></b></div>
-					          </a>
-					          <div class="chosen-drop">
-					          	<div class="chosen-search"><input tabindex="2" autocomplete="off" type="text"></div>
-					          	<ul class="chosen-results"><li data-option-array-index="1" style="" class="active-result">United States</li></ul>
-					          </div>
-					       </div>
 
 							{{ submit('Sign In') }}
 						</form>
@@ -63,18 +65,30 @@
 
 {% block scripts %}
 {{ parent() }}
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" src="{{ media('vendor/jquery-plugins/chosen/chosen.jquery.min.js') }}"></script>
 <script type="text/javascript">
-var config = {
-  '.chosen-select'           : {}
-  //'.chosen-select-deselect'  : {allow_single_deselect:true},
-  //'.chosen-select-no-single' : {disable_search_threshold:10},
-  //'.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-  //'.chosen-select-width'     : {width:"95%"}
-}
-for (var selector in config) {
-  $(selector).chosen(config[selector]);
-}
+	$(document).ready(function() {
+	var config = {
+	  '.chosen-select'           : {},
+	  //'.chosen-select-deselect'  : {allow_single_deselect:true},
+	  //'.chosen-select-no-single' : {disable_search_threshold:10},
+	  '.chosen-select-city': {no_results_text:'Oups, nous gérons pas encore cette endroit. Nous prenons en compte votre demande et allons rajouter un secteur contenant votre ville rapidement.'}
+	  //'.chosen-select-width'     : {width:"95%"}
+	}
+	for (var selector in config) {
+	  	$(selector).chosen(config[selector]);
+	}
+    $("#countries").change(function() {
+        var val = $(this).val();
+        $("#cities").html(options[val]);
+        $("#cities").trigger("chosen:updated");
+    });
+
+
+    var options = [
+		{% for country in page.countries %}"{% for city in page.cities %}{% if city.country.id == country.id %}<option value='{{ city.name }}'>{{ city.name }}</option>{% endif %}{% endfor %}",{% endfor %}
+        ];
+        	console.debug(options);
+});
 </script>
 {% endblock %}
