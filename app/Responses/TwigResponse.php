@@ -14,11 +14,12 @@ class TwigResponse implements Response
         {
             $this->layout = $layout;
         }
+
+        $this->namespace = $namespace;
         if ($data !== null)
         {
-            $this->data = $data;
+            $this->data[$this->namespace] = $data;
         }
-        $this->namespace = $namespace;
     }
 
     public function run(\QDE\App $app)
