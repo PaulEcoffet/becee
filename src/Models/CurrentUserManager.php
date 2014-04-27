@@ -34,8 +34,8 @@ class CurrentUserManager
 
     public function isLogged()
     {
-        return (!$this->app->hasSession('user_session_type')
-            || $this->app->getSession('user_session_type') === 'dummy');
+        return ($this->app->hasSession('user_session_type') === true
+            && $this->app->getSession('user_session_type') !== 'dummy');
     }
 
     public function getName()
@@ -45,7 +45,7 @@ class CurrentUserManager
 
     public function getId()
     {
-            $this->app->getSession('user_id');
+        return $this->app->getSession('user_id');
     }
 
     public function setPrefferedCityFromGeoLoc() //Warning: Do not work in local
