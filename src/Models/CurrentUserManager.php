@@ -26,6 +26,11 @@ class CurrentUserManager
         return $this->app->hasSession('user_preffered_city');
     }
 
+    public function connectUser()
+    {
+        //TODO
+    }
+
     public function setPrefferedCityFromGeoLoc() //Warning: Do not work in local
     {
         if($this->app->getConfig()['debug'])
