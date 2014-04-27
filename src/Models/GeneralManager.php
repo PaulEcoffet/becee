@@ -12,11 +12,12 @@ class GeneralManager
     public function getCountries($fields="*")
     {
         $sql = "
-        SELECT ".$fields." 
+        SELECT :fields 
         FROM `countries`
         ;
         ";
         $business_req = $this->pdo->prepare($sql);
+        $business_req->bindValue(':fields' => $fields);
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
