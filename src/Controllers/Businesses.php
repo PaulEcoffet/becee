@@ -38,7 +38,7 @@ class Businesses
     public function registerAction($request)
     {
         $GeneralManager = new GeneralManager($request->getPdo());
-        return $request->parseTemplate('add_business.html.twig', array('countries' => $GeneralManager->getCountries('nicename')));
+        return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $GeneralManager->getCountries('nicename')));
     }
 }
 

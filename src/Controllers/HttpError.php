@@ -7,6 +7,6 @@ class HttpError
     public function error404Action($request)
     {
         $url = $request->getParamsUri('url');
-        $request->parseTemplate('HttpError/404.html.twig', array('url' => $url));
+        return new \QDE\Responses\TwigResponse('HttpError/404.html.twig', array('url' => $url));
     }
 }

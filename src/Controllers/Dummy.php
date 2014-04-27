@@ -7,6 +7,6 @@ class Dummy
     public function viewAction($request)
     {
         $filesManager = $request->getManager('Files');
-        return $request->parseTemplate('test.html.twig', array('nb' => $request->getParamsUri('nb')));
+        return new \QDE\Responses\TwigResponse('test.html.twig', array('nb' => $request->getParamsUri('nb')));
     }
 }

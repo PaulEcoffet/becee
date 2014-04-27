@@ -11,7 +11,7 @@ class Users
     public function registerAction($request, $city="Bordeaux")
     {
         $GeneralManager = new GeneralManager($request->getPdo());
-        return $request->parseTemplate('add_user.html.twig', array('countries' => $GeneralManager->getCountries('nicename')));
+        return new \QDE\Responses\TwigResponse('add_user.html.twig', array('countries' => $GeneralManager->getCountries('nicename')));
     }
     public function registerProcessingAction($request)
     {
