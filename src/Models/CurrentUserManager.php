@@ -17,6 +17,7 @@ class CurrentUserManager
         {
             $user = $app->getManager('Users')->createDummyUser();
             $this->app->setSession('user_id', $user->id);
+            $this->app->setSession('user_session_type', 'dummy');
             $this->app->setCookie('user_id', $user->id, time()+3600*24*31);
         }
     }
@@ -29,6 +30,22 @@ class CurrentUserManager
     public function connectUser()
     {
         //TODO
+    }
+
+    public function isLogged()
+    {
+        return (!$this->app->hasSession('user_session_type')
+            || $this->app->getSession('user_session_type') === 'dummy');
+    }
+
+    public function getName()
+    {
+        return ($this->app->hasSession('user_name'))?$this->app->hasSession('user_name'):'visitor';
+    }
+
+    public function getId()
+    {
+            $this->app->getSession('user_id');
     }
 
     public function setPrefferedCityFromGeoLoc() //Warning: Do not work in local
