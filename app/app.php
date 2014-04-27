@@ -65,7 +65,7 @@ class App
         $response = call_user_func(array($controller, $route->getAction()), $request);
         foreach($this->hooks as $hook)
         {
-            $hook->run($this, $response);
+            $hook->run($response);
         }
         echo $response->run($this);
     }
@@ -213,4 +213,5 @@ class App
 }
 
 $app = new App();
+$app->addHook(new \Becee\Hooks\UserHook($app));
 $app->run();
