@@ -55,11 +55,21 @@
 							{{ input_field('website') }}<hr />
 							{{ upload('img_business_med', 'images', 500000) }}<hr />
 							<span style="color:red">(* Required)</span>
-							  <select class="chosen-select" data-placeholder="Select Your Options">
-							    <option value="1">Option 1</option>
-							    <option value="2" selected>Option 2</option>
-							    <option value="3" disabled>Option 3</option>
-							  </select>
+
+				          <select data-placeholder="Choose a Country..." class="chosen-select" style="width: 350px; display: none;" tabindex="-1">
+				            <option value=""></option>
+				            <option value="United States">United States</option>
+				          </select>
+				          <div title="" style="width: 350px;" class="chosen-container chosen-container-single">
+					          <a class="chosen-single chosen-default" tabindex="-1">
+					          	<span>Choose a Country...</span>
+					          	<div><b></b></div>
+					          </a>
+					          <div class="chosen-drop">
+					          	<div class="chosen-search"><input tabindex="2" autocomplete="off" type="text"></div>
+					          	<ul class="chosen-results"><li data-option-array-index="1" style="" class="active-result">United States</li></ul>
+					          </div>
+					       </div>
 
 							{{ submit('Sign In') }}
 						</form>
