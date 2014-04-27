@@ -25,41 +25,65 @@ class BusinessesManager
         return($business_req->fetch());
     }
 
-    public function getBusinessById($business_id)// NOT OVER
+    public function getBusinessById($business_id)
+
     {
+        $bdd = new PDO('mysql:host=localhost;dbname=becee', 'root', '');
+
         $new_business = new Business();
 
-        $sql = 'SELECT *        -- ATM get everything, will later only get what matters
-        FROM businesses, business_tags
+        $sql = 'SELECT *--GROUP_CONCAT(business_tags.name) as tags, GROUP_CONCAT(business_categories.name) as category   
+        FROM businesses, business_tags   -- ATM get everything, will later only get what matters
 
-        INNER JOIN users
-        ON users.id = users.id_manager  --Getting Manager
+        INNER JOIN users 
+        ON businesses.manager_id = users.id  --Getting Manager
 
-        INNER JOIN business_adresses
-        ON businesses.address_id = business_adresses.id    --Getting address
+        INNER JOIN business_addresses 
+        ON business_addresses.business_id = businesses.id  --Getting addresse
 
-        INNER JOIN cities
-        ON business_adresses.city_id = cities.id  --Getting city
-
-        INNER JOIN countries
-        ON businesses.country_id = country.id     --Getting country
+        INNER JOIN cities 
+        ON business_addresses.city_id = cities.id  --Getting cities
 
         INNER JOIN provinces
-        ON businesses.province_id = provinces.id -- Getting province
+        ON cities.province_id = provinces.id -- Getting province
+
+        INNER JOIN countries
+        ON province.country_id = countries.id     --Getting country
 
         INNER JOIN business_images
-        ON businesses.id = business_images.business_id    --Getting Images
+        ON businesses.id = business_images.business_id    --Getting Images (Path)
 
-        INNER JOIN link_business_tags                                   --TODO, Getting tags for this business
-        ON link_business_tags.id_business = businesses.id AND business_tags.id = link_business_tags.id_business_tag
+       INNER JOIN link_business_tags 
+       ON link_business_tags.business_id = businesses.id                   --Getting alltags, separated by ","
+       INNER JOIN business_tags 
+       ON business_tags.id = link_business_tags.tag_id
+
+        INNER JOIN link_business_category
+        ON link_business_category.business_id = businesses.id                   --Getting all categories, separated by ","
+        INNER JOIN business_categories
+        ON business_categories.id = link_business_catgories.category_id
+
+        INNER JOIN link_category_features
+        ON link_category_features.category_id = business_categories.id
+        INNER JOIN business_features                                --Getting features
+        ON business_features.id = link_category_features.feature_id
 
         INNER JOIN business_vist
-        ON business_visits.business_id = businesses.id ;-- Getting visit';
+        ON business_visits.business_id = businesses.id               -- Getting visit
+
+        WHERE businesses.id = ?
+        ;'
+        ;
 
          //Need checking and testing, seems shitty
 
 
-        $business_req = $this->pdo->prepare($sql);
+        $business_req = $bdd->prepare($sql);
+        $business_req->execute($id);
+
+        printf($business_req->fetch());
+
+        return $business_req->fetch(\PDO::FETCH_ASSOC);
 
 
 
