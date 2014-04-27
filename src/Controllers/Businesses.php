@@ -4,7 +4,6 @@ namespace Becee\Controllers;
 
 use \Becee\Models\BusinessesManager;
 use \Becee\Models\FilesManager;
-use \Becee\Models\LocationManager;
 
 class Businesses
 {

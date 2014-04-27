@@ -15,6 +15,19 @@
 
 
 {% block content %}
+
+  <script type="text/javascript">
+    var config = {
+      '.chosen-select'           : {}
+      //'.chosen-select-deselect'  : {allow_single_deselect:true},
+      //'.chosen-select-no-single' : {disable_search_threshold:10},
+      //'.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+      //'.chosen-select-width'     : {width:"95%"}
+    }
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
+  </script>
 	<div class="container-fluid" id="center-row">
 	    <div class="row">
 	        <div id="main" class="col-md-12">
@@ -28,6 +41,7 @@
 				    <div class="panel-heading"></div>
 				    <div class="panel-body">
 						<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('business_add_processing') }}">
+
 							{{ required_input('name') }}<hr />
 							{{ required_input('city') }}
 							{{ required_input('province') }}
@@ -41,6 +55,12 @@
 							{{ input_field('website') }}<hr />
 							{{ upload('img_business_med', 'images', 500000) }}<hr />
 							<span style="color:red">(* Required)</span>
+							  <select class="chosen-select" data-placeholder="Select Your Options">
+							    <option value="1">Option 1</option>
+							    <option value="2" selected>Option 2</option>
+							    <option value="3" disabled>Option 3</option>
+							  </select>
+
 							{{ submit('Sign In') }}
 						</form>
 				    </div>
