@@ -1,8 +1,8 @@
-G-- MySQL dump 10.13  Distrib 5.6.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.17, for Linux (x86_64)
 --
 -- Host: localhost    Database: becee
 -- ------------------------------------------------------
--- Server version	5.6.12-log
+-- Server version	5.6.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -253,29 +253,6 @@ LOCK TABLES `businesses_comparaisons` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `categories`
---
-
-DROP TABLE IF EXISTS `categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `categories` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `category` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `business_categories`
---
-
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `business_categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `business_categories` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `cities`
 --
 
@@ -286,13 +263,16 @@ CREATE TABLE `cities` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
   `province_id` int(10) unsigned DEFAULT NULL,
+  `zone_id` int(10) unsigned DEFAULT NULL,
   `lat` double DEFAULT NULL,
   `lng` double DEFAULT NULL,
   `code` varchar(9) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_cities` (`name`,`province_id`),
   KEY `province_id` (`province_id`),
-  CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`)
+  KEY `zone_id` (`zone_id`),
+  CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`),
+  CONSTRAINT `cities_ibfk_2` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -302,10 +282,60 @@ CREATE TABLE `cities` (
 
 LOCK TABLES `cities` WRITE;
 /*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `cities` VALUES (1,'Bordeaux',1,44.837789,-0.57918,''),(2,'New York',2,40.7143528,-74.0059731,''),(3,'Paris',3,48.856614,2.3522219,''),(4,'Tokyo',4,35.6894875,139.6917064,'');
+INSERT INTO `cities` VALUES (1,'Bordeaux',1,1,44.837789,-0.57918,''),(2,'New York',2,2,40.7143528,-74.0059731,''),(3,'Paris',3,3,48.856614,2.3522219,''),(4,'Tokyo',4,4,35.6894875,139.6917064,'');
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `zones`
+--
+
+DROP TABLE IF EXISTS `zones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zones` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_zones` (`city_id`),
+  KEY `city_id` (`city_id`),
+  CONSTRAINT `zones_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `business_categories`
+--
+
+DROP TABLE IF EXISTS `business_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `business_categories` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `category` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `business_categories`
+--
+
+LOCK TABLES `business_categories` WRITE;
+/*!40000 ALTER TABLE `business_categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `business_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `cities`
+--
+
+LOCK TABLES `zones` WRITE;
+/*!40000 ALTER TABLE `zones` DISABLE KEYS */;
+INSERT INTO `zones` (city_id) VALUES (1),(2),(3),(4);
+/*!40000 ALTER TABLE `zones` ENABLE KEYS */;
+UNLOCK TABLES;
 --
 -- Table structure for table `countries`
 --
@@ -557,4 +587,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-27 18:36:27
+-- Dump completed on 2014-04-26 15:49:02
