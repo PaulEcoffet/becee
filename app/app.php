@@ -17,6 +17,7 @@ class App
     protected $becee_root = null;
     protected $db_connection;
     protected $geocoder;
+    protected $managers = array();
 
     public function __construct()
     {
@@ -70,8 +71,12 @@ class App
 
     public function getManager($name)
     {
-        $managerName = 'Becee\\Models\\'.ucfirst($name).'Manager';
-        return new $managerName($this);
+        if (isset($this->managers[$name]))
+        {
+            $managerName = 'Becee\\Models\\'.ucfirst($name).'Manager';
+            $this->managers[$name] = new $managerName($this);
+        }
+        return $this->managers[$name];
     }
 
     public function getBeceeRoot()
