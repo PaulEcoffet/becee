@@ -59,6 +59,14 @@ class TwigResponse implements Response
     public function setNamespace($namespace)
     {
         $this->namespace = $namespace;
-        $this->data[$this->namespace] = array();
+        if(!isset($this->data[$this->namespace]))
+        {
+            $this->data[$this->namespace] = array();
+        }
+    }
+
+    public function getNamespace()
+    {
+        return $this->namespace;
     }
 }

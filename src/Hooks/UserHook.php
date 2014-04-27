@@ -18,6 +18,7 @@ class UserHook implements \QDE\Hook
     {
         if($response instanceof \QDE\Responses\TwigResponse)
         {
+            $oldnamespace = $response->getNamespace();
             $response->setNamespace('user');
             $curuser = $this->app->getManager('CurrentUser');
             $data = array('is_logged' => $curuser->isLogged());
@@ -27,6 +28,7 @@ class UserHook implements \QDE\Hook
                 $data['id'] = $curuser->getId();
             }
             $response->addData($data);
+            $response->setNamespace($oldnamespace);
         }
         return $response;
     }
