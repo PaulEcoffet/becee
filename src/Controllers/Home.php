@@ -31,6 +31,6 @@ class Home
             }
         }
         $tags = $BusinessManager->getTags();
-        return $request->parseTemplate('home.html.twig', array('businesses' => $businesses, 'cities' => $cities, 'current_city' => $current_city, 'tags' => $tags));
+        return new \QDE\Responses\TwigResponse('home.html.twig', array('businesses' => $businesses, 'cities' => $cities, 'current_city' => $current_city, 'tags' => $tags));
     }
 }
