@@ -8,14 +8,16 @@ use \Becee\Models\LocationManager;
 
 class Businesses
 {
-    public function viewBusinessAction($request, $id) //Renvoi les infos nécessaire pour générer la page
+    public function viewBusinessAction($request, $id) //Send information needed to generate a business page (using the id)
     {
-        // TODO
+        $reponse = $getbusiness($id);
+        return $reponse;
     }
 
-    public function getBusiness() // TOUT DEDANS
+    public function getBusiness($request, $id) //Call manager which get the whole business by id
     {
-        // TODO
+        $manager = new businessManager($request->getPdo());
+        $manager->getBusinessById($id);
     }
 
     public function registerProcessingAction($request)
@@ -41,6 +43,3 @@ class Businesses
         return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $LocationManager->getCountries('nicename')));
     }
 }
-
-
-
