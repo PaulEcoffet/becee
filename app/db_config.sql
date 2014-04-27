@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.17, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.12, for Win64 (x86_64)
 --
 -- Host: localhost    Database: becee
 -- ------------------------------------------------------
--- Server version	5.6.17
+-- Server version	5.6.12-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -44,6 +44,29 @@ LOCK TABLES `business_addresses` WRITE;
 /*!40000 ALTER TABLE `business_addresses` DISABLE KEYS */;
 INSERT INTO `business_addresses` VALUES (1,'15 Rue Du Placeholder','',0,0,1,1),(2,'43, Place Holderswag','',0,0,1,2),(3,'25, Place Holderswag','',0,0,1,3),(4,'105, Place Holderswag','',0,0,1,4),(5,'525, Place Holderswag','',0,0,1,5),(6,'43, Place Holderswag','',0,0,2,6),(7,'16 Rue Du Placeholder','',0,0,1,7),(8,'17 Rue Du Placeholder','',0,0,3,8),(9,'55, Place Holderswag','',0,0,4,9),(10,'285, Place Holderswag','',0,0,4,10);
 /*!40000 ALTER TABLE `business_addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `business_categories`
+--
+
+DROP TABLE IF EXISTS `business_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `business_categories` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `category` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `business_categories`
+--
+
+LOCK TABLES `business_categories` WRITE;
+/*!40000 ALTER TABLE `business_categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `business_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -253,6 +276,29 @@ LOCK TABLES `businesses_comparaisons` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `category` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cities`
 --
 
@@ -286,56 +332,6 @@ INSERT INTO `cities` VALUES (1,'Bordeaux',1,1,44.837789,-0.57918,''),(2,'New Yor
 /*!40000 ALTER TABLE `cities` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `zones`
---
-
-DROP TABLE IF EXISTS `zones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `zones` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `city_id` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_zones` (`city_id`),
-  KEY `city_id` (`city_id`),
-  CONSTRAINT `zones_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `business_categories`
---
-
-DROP TABLE IF EXISTS `business_categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `business_categories` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `category` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `business_categories`
---
-
-LOCK TABLES `business_categories` WRITE;
-/*!40000 ALTER TABLE `business_categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `business_categories` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `cities`
---
-
-LOCK TABLES `zones` WRITE;
-/*!40000 ALTER TABLE `zones` DISABLE KEYS */;
-INSERT INTO `zones` (city_id) VALUES (1),(2),(3),(4);
-/*!40000 ALTER TABLE `zones` ENABLE KEYS */;
-UNLOCK TABLES;
 --
 -- Table structure for table `countries`
 --
@@ -424,8 +420,8 @@ DROP TABLE IF EXISTS `link_category_feature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `link_category_feature` (
-  `id_category` smallint(5) unsigned NOT NULL,
-  `id_feature` smallint(5) unsigned NOT NULL
+  `category_id` smallint(5) unsigned NOT NULL,
+  `feature_id` smallint(5) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -577,6 +573,33 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `zones`
+--
+
+DROP TABLE IF EXISTS `zones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zones` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_zones` (`city_id`),
+  KEY `city_id` (`city_id`),
+  CONSTRAINT `zones_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `zones`
+--
+
+LOCK TABLES `zones` WRITE;
+/*!40000 ALTER TABLE `zones` DISABLE KEYS */;
+INSERT INTO `zones` VALUES (1,1),(2,2),(3,3),(4,4);
+/*!40000 ALTER TABLE `zones` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -587,4 +610,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-26 15:49:02
+-- Dump completed on 2014-04-27 20:03:08
