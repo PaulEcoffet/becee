@@ -3,8 +3,54 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e445a1f2bd5f48642f50fe77de6f7233",
+    "hash": "7439ae764703b8ad6de538f9f5e4306f",
     "packages": [
+        {
+            "name": "facebook/php-sdk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facebook/facebook-php-sdk.git",
+                "reference": "8a992afce97122556c4e42b0f1c1d60b9d49276d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk/zipball/8a992afce97122556c4e42b0f1c1d60b9d49276d",
+                "reference": "8a992afce97122556c4e42b0f1c1d60b9d49276d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Facebook",
+                    "homepage": "https://github.com/facebook/facebook-php-sdk/contributors"
+                }
+            ],
+            "description": "Facebook PHP SDK",
+            "homepage": "https://github.com/facebook/facebook-php-sdk",
+            "keywords": [
+                "facebook",
+                "sdk"
+            ],
+            "time": "2014-04-04 02:27:38"
+        },
         {
             "name": "twig/twig",
             "version": "v1.15.1",
@@ -134,7 +180,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "willdurand/geocoder": 0
+        "willdurand/geocoder": 0,
+        "facebook/php-sdk": 20
     },
     "platform": [
 

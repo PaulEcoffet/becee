@@ -8,6 +8,7 @@ function get_config()
         'mysql_user' => 'becee',
         'mysql_password' => 'becee_ftw',
         'server_root' => 'becee',
-        'debug' => true
+        'debug' => true,
+        'facebook_app_id' => ''
     );
 }

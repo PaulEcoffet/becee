@@ -2,74 +2,93 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-	<head>
-		{% block head %}
-		<meta charset="utf-8">
-		<title>
-			BECEE | {% block title %}Compare, Review, Explore{% endblock %}
-		</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		{% block stylesheet %}
-		<link rel="stylesheet" type="text/css" href="{{ media('vendor/bootstrap/bootstrap.css') }}" media="all" />
-		<link rel="stylesheet" type="text/css" href="{{ media('styles/style.css') }}" media="all" />
-		<link rel="stylesheet" type="text/css" href="{{ media('styles/custom-scrollbar.css') }}" media="all" />
-		<link rel="stylesheet" type="text/css" href="{{ media('styles/bootstrap-custom.css') }}" media="all" />
-	    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-	    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300,700italic,700,800,800italic' rel='stylesheet' type='text/css'>
-	    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,900italic,100,300,300italic' rel='stylesheet' type='text/css'>
-	    <link rel="stylesheet" href="{{ media('bootstrap/font-awesome/css/font-awesome.min.css') }}">
-	    {% endblock %}
-	    {% endblock %}
-	</head>
+    <head>
+        {% block head %}
+        <meta charset="utf-8">
+        <title>
+            BECEE | {% block title %}Compare, Review, Explore{% endblock %}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        {% block stylesheet %}
+        <link rel="stylesheet" type="text/css" href="{{ media('vendor/bootstrap/bootstrap.css') }}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{{ media('styles/style.css') }}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{{ media('styles/custom-scrollbar.css') }}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{{ media('styles/bootstrap-custom.css') }}" media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300,700italic,700,800,800italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,900italic,100,300,300italic' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ media('bootstrap/font-awesome/css/font-awesome.min.css') }}">
+        {% endblock %}
+        {% endblock %}
+    </head>
 
-	<body onload="initialize()">
-		<div class="wrapper">
-			<header class="container-fluid">
-				<div class="input-group">
-				  	<span class="input-group-addon">
-				  		<span class="glyphicon glyphicon-search"></span>
-					</span>
-				  	<input type="text" class="form-control" placeholder="Restaurant Indien">
-				</div>
-				{{ navtools() }}
-				<a href="{{ path('home') }}">
+    <body onload="initialize()">
+        <div class="wrapper">
+            <header class="container-fluid">
+                <div class="input-group">
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-search"></span>
+                    </span>
+                      <input type="text" class="form-control" placeholder="Restaurant Indien">
+                </div>
+                {{ navtools() }}
+                <a href="{{ path('home') }}">
                     <div id="logo">
-				    </div>
+                    </div>
                 </a>
-				<div id="profil-panel">
+                <div id="profil-panel">
                 {% if not user.is_logged %}
-				<ul id="nav-tools">
-					<li>
-						<a class="btn-categories btn-default" href="{{ path('home') }}">
-						    Connexion
-						</a>
-					</li>
-					<li>
-						<a class="btn-categories btn-default" href="{{ path('user_signup') }}">
-						    Inscription
-						</a>
-					</li>
-				</ul>
+                <ul id="nav-tools">
+                    <li>
+                        <a class="btn-categories btn-default" href="{{ path('home') }}">
+                            Connexion
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn-categories btn-default" href="{{ path('user_signup') }}">
+                            Inscription
+                        </a>
+                    </li>
+                </ul>
                 {% else %}
                 <p>Salut à toi, {{ user.name }}! <a href="{{path('view_user', {"id": user.id })}}">Voir mon profil</a></p>
                 {% endif %}
-				</div>
-			</header>
+                </div>
+            </header>
 
-			<div class="container-fluid main-content">
-			{% block content %}{% endblock %}
-			</div>
-			<div class="push"></div>
-		</div>
+            <div class="container-fluid main-content">
+            {% block content %}{% endblock %}
+            </div>
+            <div class="push"></div>
+        </div>
 
-		<footer>
-			{% block footer %}
-				<a href="{{ path('home') }}"><img class="white-logo" src="{{ media('img/logo1.png') }}"/></a><br/>
-				<p>PAR LA MEP TEAM</p>
-			{% endblock %}
-		</footer>
-	    {% block scripts %}
-	    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	    {% endblock %}
-		</body>
+        <footer>
+            {% block footer %}
+                <a href="{{ path('home') }}"><img class="white-logo" src="{{ media('img/logo1.png') }}"/></a><br/>
+                <p>PAR LA MEP TEAM</p>
+            {% endblock %}
+        </footer>
+        {% block scripts %}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <!-- Facebook API -->
+        <div id="fb-root"></div>
+        <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '{{ config.facebook_app_id }}',
+              status     : true,
+              xfbml      : true
+            });
+          };
+
+          (function(d, s, id){
+             var js, fjs = d.getElementsByTagName(s)[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement(s); js.id = id;
+             js.src = "//connect.facebook.net/en_US/all.js";
+             fjs.parentNode.insertBefore(js, fjs);
+           }(document, 'script', 'facebook-jssdk'));
+        </script>
+        {% endblock %}
+        </body>
 </html>

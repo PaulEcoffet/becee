@@ -1,7 +1,8 @@
  {
     "require": {
         "twig/twig": "1.*",
-        "willdurand/geocoder": "@stable"
+        "willdurand/geocoder": "@stable",
+        "facebook/php-sdk": "dev-master"
     },
     "autoload": {
         "psr-4": {"Becee\\": "src/",

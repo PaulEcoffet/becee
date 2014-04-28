@@ -12,6 +12,7 @@ use \QDE\Router\Router;
 class App
 {
     protected $router = null;
+    protected $config = null;
     protected $twig = null;
     protected $routes_root = null;
     protected $becee_root = null;
@@ -214,4 +215,5 @@ class App
 
 $app = new App();
 $app->addHook(new \Becee\Hooks\UserHook($app));
+$app->addHook(new \Becee\Hooks\ConfigHook($app));
 $app->run();
