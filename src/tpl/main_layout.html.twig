@@ -49,6 +49,9 @@
                             Inscription
                         </a>
                     </li>
+                    <li>
+                        <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>
+                    </li>
                 </ul>
                 {% else %}
                 <p>Salut à toi, {{ user.name }}! <a href="{{path('view_user', {"id": user.id })}}">Voir mon profil</a></p>
