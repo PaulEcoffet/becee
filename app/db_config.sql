@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.17, for Linux (x86_64)
 --
 -- Host: localhost    Database: becee
 -- ------------------------------------------------------
--- Server version	5.6.12-log
+-- Server version	5.6.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -44,29 +44,6 @@ LOCK TABLES `business_addresses` WRITE;
 /*!40000 ALTER TABLE `business_addresses` DISABLE KEYS */;
 INSERT INTO `business_addresses` VALUES (1,'15 Rue Du Placeholder','',0,0,1,1),(2,'43, Place Holderswag','',0,0,1,2),(3,'25, Place Holderswag','',0,0,1,3),(4,'105, Place Holderswag','',0,0,1,4),(5,'525, Place Holderswag','',0,0,1,5),(6,'43, Place Holderswag','',0,0,2,6),(7,'16 Rue Du Placeholder','',0,0,1,7),(8,'17 Rue Du Placeholder','',0,0,3,8),(9,'55, Place Holderswag','',0,0,4,9),(10,'285, Place Holderswag','',0,0,4,10);
 /*!40000 ALTER TABLE `business_addresses` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `business_categories`
---
-
-DROP TABLE IF EXISTS `business_categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `business_categories` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `category` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `business_categories`
---
-
-LOCK TABLES `business_categories` WRITE;
-/*!40000 ALTER TABLE `business_categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `business_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -276,29 +253,6 @@ LOCK TABLES `businesses_comparaisons` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `categories`
---
-
-DROP TABLE IF EXISTS `categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `categories` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `category` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categories`
---
-
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `cities`
 --
 
@@ -413,6 +367,35 @@ INSERT INTO `link_business_tag` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL
 UNLOCK TABLES;
 
 --
+-- Table structure for table `link_business_tags`
+--
+
+DROP TABLE IF EXISTS `link_business_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `link_business_tags` (
+  `business_id` int(10) unsigned DEFAULT NULL,
+  `tag_id` int(10) unsigned DEFAULT NULL,
+  `nb_yes` smallint(5) unsigned DEFAULT NULL,
+  `nb_no` smallint(5) unsigned DEFAULT NULL,
+  KEY `tag_id` (`tag_id`),
+  KEY `business_id` (`business_id`),
+  CONSTRAINT `link_business_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
+  CONSTRAINT `link_business_tags_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `link_business_tags`
+--
+
+LOCK TABLES `link_business_tags` WRITE;
+/*!40000 ALTER TABLE `link_business_tags` DISABLE KEYS */;
+INSERT INTO `link_business_tags` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
+/*!40000 ALTER TABLE `link_business_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `link_category_feature`
 --
 
@@ -420,8 +403,8 @@ DROP TABLE IF EXISTS `link_category_feature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `link_category_feature` (
-  `category_id` smallint(5) unsigned NOT NULL,
-  `feature_id` smallint(5) unsigned NOT NULL
+  `id_category` smallint(5) unsigned NOT NULL,
+  `id_feature` smallint(5) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -558,6 +541,7 @@ CREATE TABLE `users` (
   `salt` varchar(255) DEFAULT NULL,
   `trustability` double DEFAULT NULL,
   `inscription` date DEFAULT NULL,
+  `facebook_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `category` (`category`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`category`) REFERENCES `user_categories` (`id`)
@@ -570,7 +554,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL);
+INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -610,4 +594,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-27 20:03:08
+-- Dump completed on 2014-04-28 11:48:56
