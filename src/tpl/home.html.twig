@@ -21,34 +21,53 @@
                             {% endfor %}
                         </select>
                     </form>
-                    {{ navtools() }}
+                    <ul id="nav-tools">
+                        <li>
+                            <a class="btn-categories btn-default" href="#" style="border-color: rgba(250,250,250,0.35); background-color:rgba(0,0,0,0.1) !important; color:white; ">
+                                <i class="fa fa-beer fa-lg"></i><span>Bars</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn-categories btn-default" href="#" style="border-color: rgba(250,250,250,0.35); background-color:rgba(0,0,0,0.1) !important; color:white">
+                                <i class="fa fa-coffee fa-lg"></i><span>Cafés</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn-categories btn-default" href="#" style="border-color: rgba(250,250,250,0.35); background-color:rgba(0,0,0,0.1) !important; color:white">
+                                <i class="fa fa-cutlery fa-lg"></i><span>Restaurants</span></a>
+                        </li>
+                        <li>
+                            <a class="btn-categories btn-default" href="#" style="border-color: rgba(250,250,250,0.35); background-color:rgba(0,0,0,0.1) !important; color:white">
+                                <i class="fa fa-gear fa-lg" ></i><span>Custom</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div><!-- end col-md-12-->
         </div><!-- end row -->
-        <div id="middle-btn-container">
-            <img src="{{ media('img/s.png') }}"/><img src="{{ media('img/s2.png') }}"/>
-        </div>
+
         <div id="sub-header">
-            <div class="container-fluid center-row">
-                <div class="row">
-                    <div class="col-md-12">
-                        <p>HERE AT <strong>BECEE</strong> WE SUGGEST YOU THE BEST PLACES NEAR<br/><br/><strong>{{ page.current_city.name }}</strong>, France</p>
-                    </div><!-- end col-md-12-->
-                </div><!-- end row -->
+            <div class="container-fluid">
+                <div class="row center-row">
+                    <div class="col-md-7">
+                        <a href="#" class="sub-header-btn" style="border-bottom: 2px solid red" >Restaurants</a>
+                        <a href="#" class="sub-header-btn">Boutiques</a>
+                        <a href="#" class="sub-header-btn">Coiffeurs</a>
+                        <a href="#" class="sub-header-btn">Alimentaire</a>
+                        <a href="#" class="sub-header-btn">Loisirs</a>
+                        <a href="#" class="sub-header-btn">Opéra</a>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group" style="width:100%">
+                            <input type="text" class="form-control" placeholder="Restaurant Indien">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="container-fluid center-row main-container">
-            <div class="row">
-                <div id="main" class="col-md-12">
-
-                    <div class="categories info-box"> 
-                        <img src="{{ media('img/label1.png') }}" class="label-img" />
-                        <strong>Tips</strong> : You can catch two businesses and fight them until there is a winner. This fight is based upon our users preferences data but also and more importantly based upon your personal likes and dislikes, so hurry up and sign up to access those awesome features.
-                        <span style="font-style:italic; font-size:0.8em">(This feature is not available yet)</span>
-                    </div>
-                    <hr/>
-                </div>
-                <div id="main" class="col-md-12">
+        <div class="container-fluid main-container">
+            <div class="row center-row">
+                <div class="col-md-12">
                     <div class="head-categories">
                         <img src="{{ media('img/logo.png') }}" width="120px" /> | Restaurant
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
@@ -64,7 +83,7 @@
                     </div>
                
                     {% for restaurant in page.businesses %}
-                    <div class="col-md-6 home-business">
+                    <div class="col-md-4 home-business">
                         <div class="home-business-box">
                             <div class="business-box-container" style="background:url({{ media(restaurant.path) }}) no-repeat center;">
                                 {% for tag in page.tags|slice(0, 4) %}
@@ -84,7 +103,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                <div id="main" class="col-md-12">
+                <div class="col-md-12" style="margin: 10px 0">
                     <div class="head-categories">
                         <img src="{{ media('img/logo.png') }}" width="120px" /> | Restaurant
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
@@ -122,43 +141,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                <div id="main" class="col-md-12">
-                    <div class="head-categories">
-                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Pubs
-                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Guinness">
-                        </div>
-
-
-                        {% for tag in page.tags %}
-                        {% if tag.id < 4 %}
-                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
-                        {% endif %}
-                        {% endfor %}
-                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
-                    </div>
-               
-                </div>
-
-                <div id="main" class="col-md-12">
-                    <div class="head-categories">
-                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Cafés
-                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Terrasse">
-                        </div>
-
-
-                        {% for tag in page.tags %}
-                        {% if tag.id < 4 %}
-                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
-                        {% endif %}
-                        {% endfor %}
-                        <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
-                    </div>
-                </div>
-                </div>
-            </div> 
-        </div>
+            </div>
+        </div> 
+    </div>
 {% endblock %}
