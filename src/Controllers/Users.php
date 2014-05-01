@@ -13,7 +13,7 @@ class Users
     {
         $UsersManager = $request->getManager('users');
         $user = $UsersManager->insertUser($request->getPost());
-        echo "<br/><a href='..'>Back to Home</a>";
+        return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Successful inscription'));
     }
     public function logInAction($request)
     {
@@ -29,13 +29,15 @@ class Users
         if(isset($user))
         {
             $CurrentUserManager -> connectUser($user);
+            return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Login successful'));
         }
+        return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Login or password incorrect'));
     }
     public function logOutAction($request)
     {
         $CurrentUserManager = $request->getManager('currentuser');
         $CurrentUserManager -> disconnectUser();
-        echo "<br/><a href='..'>Back to Home</a>";
+        return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Logout successful'));
     }
     public function managerAction($request)
     {
