@@ -35,10 +35,10 @@ class UsersManager
         $user_req->execute(array($user_email, $password));
         $result = $user_req->fetch();
 		if ($result['nbr'] == 1) {
-			echo "Login successful";
+			echo "Login successful <br/> <a href='..'>Back to Home</a>";
 			return($result);
 		}
-		echo "Login or password incorrect";
+		echo "Login or password incorrect <br/> <a href='..'>Back to Home</a>";
 	}
 
     public function insertUser($user)

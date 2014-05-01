@@ -13,6 +13,7 @@ class Users
     {
         $UsersManager = $request->getManager('users');
         $user = $UsersManager->insertUser($request->getPost());
+        echo "<br/><a href='..'>Back to Home</a>";
     }
     public function logInAction($request)
     {
@@ -34,6 +35,7 @@ class Users
     {
         $CurrentUserManager = $request->getManager('currentuser');
         $CurrentUserManager -> disconnectUser();
+        echo "<br/><a href='..'>Back to Home</a>";
     }
     public function managerAction($request)
     {

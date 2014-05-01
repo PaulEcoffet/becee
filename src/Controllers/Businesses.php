@@ -33,6 +33,7 @@ class Businesses
             $path = '../media/img/default-business-img.png';
         }
         $BusinessManager->insertBusinessImage($business['id'], $path);
+        echo "<br/><a href='../../'>Back to Home</a>";
     }
 
     public function registerAction($request)
