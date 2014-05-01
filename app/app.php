@@ -68,10 +68,7 @@ class App
         {
             $hook->run($response);
         }
-        if($response instanceof \QDE\Responses\TwigResponse)
-        {
-            echo $response->run($this);
-        }
+        echo $response->run($this);
     }
 
     public function getTwig()
@@ -180,10 +177,20 @@ class App
         unset($this->hooks[$hookname]);
     }
 
+    public function getPath($name, $args=null)
+    {
+        return $this->routes_root . $this->router->getUrl($name, $args);
+    }
+
+    public function setHeader($data)
+    {
+        header($data);
+    }
+
     protected function addTwigFunctions()
     {
         $path_function = new \Twig_SimpleFunction('path', function ($name, $args=null) {
-            return $this->routes_root . $this->router->getUrl($name, $args);
+            return $this->getPath($name, $args);
         });
         $media_function = new \Twig_SimpleFunction('media', function ($url) {
             return '/' . $this->config['server_root'] . '/media/' . $url;
