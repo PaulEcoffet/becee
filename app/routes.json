@@ -51,7 +51,7 @@
         "name": "view_business",
         "route": "business/{id}-{name}",
         "controller": "Businesses",
-        "action": "view",
+        "action": "viewBusiness",
         "variables": {
             "id": "\\d+",
             "name": "[-A-Z0-9a-z]+"

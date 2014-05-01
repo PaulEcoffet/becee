@@ -4,18 +4,13 @@ namespace Becee\Controllers;
 
 class Businesses
 {
-    public function viewBusinessAction($request, $id) //Send information needed to generate a business page (using the id)
+    public function viewBusinessAction($request) //Send information needed to generate a business page (using the id)
     {
 
-        //Need to create business_page.html.twig
-        $reponse = $getbusiness($request, $id);
-        return new \QDE\Responses\TwigResponse('view_business.html.twig', array('business' => $response));;
-    }
-
-    public function getBusiness($request, $id) //Call manager which get the whole business by id
-    {
         $manager = $request->getManager('businesses');
-        $manager->getBusinessById($id);
+        $response = $manager->getBusinessById($request->getParamsUri('id'));
+        print_r($response);
+        return new \QDE\Responses\TwigResponse('view_business.html.twig', array('business' => $response));
     }
 
     public function registerProcessingAction($request)

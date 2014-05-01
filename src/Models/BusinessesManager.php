@@ -1,6 +1,7 @@
 <?php
 
 namespace Becee\Models;
+use \Becee\Entities\Business;
 
 class BusinessesManager
 {
@@ -29,12 +30,10 @@ class BusinessesManager
     public function getBusinessById($business_id)
 
     {
-        $bdd = new PDO('mysql:host=localhost;dbname=becee', 'root', '');
-
         $new_business = new Business();
 
         $sql = 'SELECT businesses.name, businesses.id, business_addresses.line1,
-        GROUP_CONCAT(business_categories.category) as category,
+        GROUP_CONCAT(business_categories.name) as category,
         businesses.website,
         businesses.email,
         businesses.phone_number,
@@ -95,14 +94,10 @@ class BusinessesManager
         ;'
         ;
 
-         //Seems to work on PhpMyAdmin (y)
-
-
-        $business_req = $bdd->prepare($sql);
-        $business_req->execute($id);
-
-        printf($business_req->fetch());
-
+        $business_req = $this->pdo->prepare($sql); 
+        $business_req->execute(array($business_id));
+        echo $business_id;
+        printf($business_req->fetch(\PDO::FETCH_ASSOC));
         return $business_req->fetch(\PDO::FETCH_ASSOC);
 
 

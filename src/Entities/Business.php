@@ -1,5 +1,5 @@
 <?php
-
+namespace Becee\Entities;
 class Business
 {
 
