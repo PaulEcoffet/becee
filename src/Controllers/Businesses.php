@@ -9,7 +9,7 @@ class Businesses
 
         //Need to create business_page.html.twig
         $reponse = $getbusiness($request, $id);
-        return new \QDE\Responses\TwigResponse('view_business.html.twig', array('countries' => $LocationManager->getCountries('nicename')));;
+        return new \QDE\Responses\TwigResponse('view_business.html.twig', array('business' => $response));;
     }
 
     public function getBusiness($request, $id) //Call manager which get the whole business by id
