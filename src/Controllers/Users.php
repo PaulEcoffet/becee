@@ -31,7 +31,7 @@ class Users
             $CurrentUserManager -> connectUser($user);
             return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Login successful'));
         }
-        return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Login or password incorrect'));
+        return new \QDE\Responses\TwigResponse('login.html.twig', array('info' => 'Incorrect email or password'));
     }
     public function logOutAction($request)
     {
