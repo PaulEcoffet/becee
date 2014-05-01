@@ -23,7 +23,7 @@ class Users
     public function logInProcessingAction($request)
     {
         $UsersManager = $request->getManager('users');
-        $CurrentUserManager = $request->getManager('currentuser');
+        $CurrentUserManager = $request->getManager('CurrentUser');
         $post = $request->getPost();
         $user = $UsersManager -> checkValidAuth($post['email'], $post['password']);
         if(isset($user))
@@ -35,7 +35,7 @@ class Users
     }
     public function logOutAction($request)
     {
-        $CurrentUserManager = $request->getManager('currentuser');
+        $CurrentUserManager = $request->getManager('CurrentUser');
         $CurrentUserManager -> disconnectUser();
         return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Logout successful'));
     }
