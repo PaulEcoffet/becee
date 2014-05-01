@@ -16,8 +16,8 @@
 
 
 {% block content %}
-	<div class="container-fluid" id="center-row">
-	    <div class="row">
+    <div class="container-fluid">
+        <div class="row" id="center-row" style="width:800px;margin:auto">
 	        <div id="main" class="col-md-12">
 	        	<div class="panel">
 				    <div class="panel-heading"></div>
@@ -34,7 +34,7 @@
 						    <div class="form-group">
 						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">country <span style="color:red">*</span></label>
 						        <div class="col-sm-9">
-							        <select for="inputEmail3" data-placeholder="Choose a Country..." id="countries" class="col-sm-3 control-label form-control chosen-select" style="text-align:left;margin-bottom:7px;" tabindex="-1">
+							        <select name="country" for="inputEmail3" data-placeholder="Choose a Country..." id="countries" class="col-sm-3 control-label form-control chosen-select" style="text-align:left;margin-bottom:7px;" tabindex="-1">
 							        	{%for value in page.countries %}
 						                <option value="{{ loop.index0 }}">{{ value.nicename }}</option>
 						                {% endfor %}
@@ -44,14 +44,14 @@
 						    <div class="form-group">
 						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">City <span style="color:red">*</span></label>
 							    <div class="col-sm-9">
-							      <input type="{{ type }}" name="city" class="form-control" id="autocomplete-city" placeholder="{{ exemple }}" autocomplete=off>
+							      <input name="city" class="form-control" id="autocomplete-city" autocomplete=off>
 							    </div>
 						    </div>
 						    <hr />
 						    <div class="form-group">
 						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Province <span style="color:red">*</span></label>
 							    <div class="col-sm-9">
-							      <input type="{{ type }}" name="province" class="form-control" id="autocomplete-province" placeholder="{{ exemple }}" autocomplete=off>
+							      <input name="province" class="form-control" id="autocomplete-province" autocomplete=off>
 							    </div>
 						    </div>
 							{{ required_input('postcode') }}

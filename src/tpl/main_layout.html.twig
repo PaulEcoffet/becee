@@ -32,10 +32,14 @@
                       <input type="text" class="form-control" placeholder="Restaurant Indien">
                 </div>
                 {{ navtools() }}
+                <a href="{{ path('home') }}">
+                    <div id="logo">
+                    </div>
+                </a>
                 {% if not user.is_logged %}
                 <ul id="nav-tools" style="float:right; margin-top:2px">
                     <li>
-                        <a class="btn-categories btn-default" href="{{ path('home') }}" style="border-color:rgb(200,200,200)">
+                        <a class="btn-categories btn-default" href="{{ path('user_login') }}" style="border-color:rgb(200,200,200)">
                         <i class="fa fa-key fa-lg" ></i><span>LOG IN</span>
                         </a>
                     </li>
@@ -49,7 +53,23 @@
                     </li>
                 </ul>
                 {% else %}
-                <p>Salut à toi, {{ user.name }}! <a href="{{path('view_user', {"id": user.id })}}">Voir mon profil</a></p>
+                <ul id="nav-tools" style="float:right; margin-top:2px">
+                    <li>
+                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}" style="border-color:rgb(200,200,200)">
+                        <i class="fa fa-key fa-lg" ></i><span>Go to profil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'businesses'}) }}" style="border-color:rgb(200,200,200)">
+                        <i class="fa fa-rocket fa-lg" ></i><span>Hi, {{ user.name }}!</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn-categories btn-default" href="{{ path('user_logout') }}" style="border-color:rgb(200,200,200)">
+                        <i class="fa fa-sign-out fa-lg" ></i><span>Log Out</span>
+                        </a>
+                    </li>
+                </ul>
                 {% endif %}
 
             </header>
@@ -68,6 +88,7 @@
         </footer>
         {% block scripts %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="{{ media('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
         <!-- Facebook API -->
         <div id="fb-root"></div>
         <script>

@@ -9,9 +9,12 @@ class CurrentUserManager
     public function __construct(\QDE\App $app)
     {
         $this->app = $app;
+        $this->pdo = $this->app->getPdo();
         if($this->app->hasSession('user_id') === false && $this->app->hasCookie('user_id') === true)
         {
-            $this->connectUser($this->app->getCookie('user_id'));
+            echo $this->app->getCookie('user_id');
+            $this->connectUser(array('id' => $this->app->getCookie('user_id'), 'name' => 'visitor'));
+
         }
         elseif($this->app->hasSession('user_id') === false) //We create a fake account waiting for the user to sign in or sign up
         {
@@ -27,9 +30,23 @@ class CurrentUserManager
         return $this->app->hasSession('user_preffered_city');
     }
 
-    public function connectUser()
+    public function connectUser($user)
     {
-        //TODO
+        $this->app->setSession('user_id', $user['id']);
+        $this->app->setSession('user_name', $user['name']);
+        $this->app->setSession('user_session_type', 'normal');
+        $this->app->setCookie('user_id', $user['id'], time()+3600*24*31);
+        
+        $business_req = $this->pdo->prepare("UPDATE `users` SET last_visit_time=NOW() WHERE id = ?;"); 
+        $business_req->execute(array($user['id']));
+    }
+
+    public function disconnectUser()
+    {
+        $this->app->deleteSession('user_id');
+        $this->app->deleteSession('user_name');
+        $this->app->deleteSession('user_session_type');
+        $this->app->deleteCookie('user_id');
     }
 
     public function isLogged()
@@ -40,7 +57,7 @@ class CurrentUserManager
 
     public function getName()
     {
-        return ($this->app->hasSession('user_name'))?$this->app->hasSession('user_name'):'visitor';
+        return $this->app->getSession('user_name');
     }
 
     public function getId()
@@ -52,8 +69,8 @@ class CurrentUserManager
     {
         if($this->app->getConfig()['debug'])
         {
-            $ip = '88.190.16.36'; // Paris ip
-            //$ip = '90.55.18.3'; //Le Barp ip
+            //$ip = '88.190.16.36'; // Paris ip
+            $ip = '90.55.18.3'; //Le Barp ip
         }
         else
         {
@@ -72,5 +89,25 @@ class CurrentUserManager
     public function getPrefferedCity()
     {
         return $this->app->getSession('user_preffered_city');
+    }
+
+    public function setAvatarImage()
+    {
+        $FileManager = $this->app->getManager('files');
+        $tmp_files = $this->app->getFiles();
+        $filename = 'becee_'.time().'_'.$user->id;
+        $foldername = 'avatars_users';
+        $path = $FileManager->uploadImage($tmp_files['user_avatar'], $filename, $foldername);
+        if($path==NULL)
+        {
+            $path = '../media/img/default-user-avatar.png';
+        }
+        $sql = "UPDATE `users` SET avatar_path=:avatar_path WHERE id = :user_id;";
+        
+        $business_req = $this->pdo->prepare($sql); 
+        $business_req->bindValue(':avatar_path', $path,\PDO::PARAM_STR);
+        $business_req->bindValue(':user_id', $user->id,\PDO::PARAM_INT);
+        $business_req->execute();
+
     }
 }

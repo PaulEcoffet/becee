@@ -68,7 +68,10 @@ class App
         {
             $hook->run($response);
         }
-        echo $response->run($this);
+        if($response instanceof \QDE\Responses\TwigResponse)
+        {
+            echo $response->run($this);
+        }
     }
 
     public function getTwig()
@@ -119,6 +122,11 @@ class App
     public function getSession($name)
     {
         return $_SESSION[$name];
+    }
+
+    public function deleteSession($name)
+    {
+        unset($_SESSION[$name]);
     }
 
     public function hasSession($name)

@@ -62,5 +62,33 @@
         "route": "",
         "controller": "Home",
         "action": "index"
+    },
+    {
+        "name": "user_login",
+        "route": "login",
+        "controller": "Users",
+        "action": "logIn"
+    },
+    {
+        "name": "user_logout",
+        "route": "logout",
+        "controller": "Users",
+        "action": "logOut"
+    },
+    {
+        "name": "user_login_processing",
+        "route": "login/processing",
+        "controller": "Users",
+        "action": "logInProcessing"
+    },
+    {
+        "name": "user_manager",
+        "route": "user/{id}/settings/{section}",
+        "controller": "Users",
+        "action": "manager",
+        "variables": {
+            "id": "\\d+",
+            "section": "[-A-Z0-9a-z]?|[-A-Z0-9a-z]+"
+        }
     }
 ]

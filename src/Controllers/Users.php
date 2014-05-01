@@ -2,31 +2,42 @@
 
 namespace Becee\Controllers;
 
-use \Becee\Models\UsersManager;
-use \Becee\Models\FilesManager;
-use \Becee\Models\GeneralManager;
-
 class Users
 {
     public function registerAction($request, $city="Bordeaux")
     {
-        $GeneralManager = new GeneralManager($request->getPdo());
-        return new \QDE\Responses\TwigResponse('add_user.html.twig', array('countries' => $GeneralManager->getCountries('nicename')));
+        $LocationManager = $request->getManager('location');
+        return new \QDE\Responses\TwigResponse('add_user.html.twig', array('countries' => $LocationManager->getCountries('nicename')));
     }
     public function registerProcessingAction($request)
     {
-        $UsersManager = new UsersManager($request->getPdo());
-        $FileManager = new FilesManager($request->getPdo());
-
+        $UsersManager = $request->getManager('users');
         $user = $UsersManager->insertUser($request->getPost());
-
-        $FILES = $request->getFiles();
-        $filename = "becee_".time()."_".$user['id'];
-        $path = $FileManager->uploadImage($FILES['user_avatar'], $filename,'avatars_users');
-        if($path==NULL)
+    }
+    public function logInAction($request)
+    {
+        $UsersManager = $request->getManager('users');
+        return new \QDE\Responses\TwigResponse('login.html.twig', array());
+    }
+    public function logInProcessingAction($request)
+    {
+        $UsersManager = $request->getManager('users');
+        $CurrentUserManager = $request->getManager('currentuser');
+        $post = $request->getPost();
+        $user = $UsersManager -> checkValidAuth($post['email'], $post['password']);
+        if(isset($user))
         {
-            $path = '../media/img/default-user-avatar.png';
+            $CurrentUserManager -> connectUser($user);
         }
-        $UsersManager->insertUserAvatar($user['id'], $path);
+    }
+    public function logOutAction($request)
+    {
+        $CurrentUserManager = $request->getManager('currentuser');
+        $CurrentUserManager -> disconnectUser();
+    }
+    public function managerAction($request)
+    {
+        $UsersManager = $request->getManager('users');
+        return new \QDE\Responses\TwigResponse('user_manager.html.twig', array('section' => $request->getParamsUri('section')));
     }
 }

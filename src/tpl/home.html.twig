@@ -69,14 +69,17 @@
             <div class="row center-row">
                 <div class="col-md-12">
                     <div class="head-categories">
-                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Restaurant
+                        <img src="{{ media('img/logo.png') }}" style="display:inline-block;vertical-align:top" width="100px" />
+                        <span style="display:inline-block; margin:0px;position:relative;vertical-align:top;font-size:32px">
+                        Restaurant
+                        </span>
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Restaurant Indien">
                         </div>
 
 
-                        {% for tag in page.tags|slice(0, 4) %}
+                        {% for tag in page.tags|slice(0, 3) %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                         {% endfor %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
@@ -105,19 +108,22 @@
                 </div>
                 <div class="col-md-12" style="margin: 10px 0">
                     <div class="head-categories">
-                        <img src="{{ media('img/logo.png') }}" width="120px" /> | Restaurant
+                        <img src="{{ media('img/logo.png') }}" style="display:inline-block;vertical-align:top" width="100px" />
+                        <span style="display:inline-block; margin:0px;position:relative;vertical-align:top;font-size:32px">
+                        Restaurant
+                        </span>
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small add-business-btn">Add a business at 0$</a>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Restaurant Indien">
                         </div>
 
 
-                        {% for tag in page.tags|slice(0, 4) %}
+                        {% for tag in page.tags|slice(0, 3) %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small tag">{{tag.name}}</a>
                         {% endfor %}
                         <a href="{{ path('business_add') }}" class="btn btn-info btn-small special tag">Most used tags :</a>
                     </div>
-               
+                    
                     {% for restaurant in page.businesses %}
                     <div class="col-md-6 home-business">
                         <div class="home-business-box">

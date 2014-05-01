@@ -1,0 +1,52 @@
+{% extends "main_layout.html.twig" %}
+{% import 'user_manager_panels.html.twig' as panels %}
+
+{% block content %}
+    <div class="container-fluid" id="center-row" style="max-width:1100px;">
+        <div class="row">
+            <div class="col-md-3" style="margin-top:34px">
+                <div style="height:150px;width:150px;margin:auto;border:2px solid rgb(200,200,200);padding:3px;background:url({{ media('./img/header.gif') }}) no-repeat center white; background-size:cover;position:relative;margin:auto">
+                </div>
+                <div class="panel" style="padding-top:100px;margin-top:-95px;">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        <span style="line-height: 30px; vertical-align:middle;">{{user.name}}</span>
+                        <br/>
+                        <span style="font-size:12px;font-weight:300">Grade suprême : Docteur Henry Castafolte</span>
+                        <hr/>
+                        <div class="progress progress-striped active">
+                          <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                            <span>45% Complete</span>
+                          </div>
+                        </div>
+                        <hr/>
+                        <ul class="nav nav-pills nav-stacked" style="font-size:15px">
+                          <li>
+                            <a href="{{ path('user_manager',{'id':user.id, 'section':'account'}) }}">Account</a>
+                          </li>
+                          <li>
+                            <a href="{{ path('user_manager',{'id':user.id, 'section':'businesses'}) }}">My Businesses</a>
+                          </li>
+                        </ul>
+                    </div>
+                </div><!-- end panel panel-info -->
+            </div><!-- end col-md-12-->
+            <div class="col-md-9" style="margin-top:84px">
+                <div style="height:150px;width:70%;width: calc(100% - 20px);;margin:auto;border:2px solid rgb(200,200,200);padding:3px;background:url({{ media('./img/header.gif') }}) no-repeat center white; background-size:cover; top:-50px;left:10px;position:absolute">
+                </div>
+                <div class="panel" style="padding-top:100px;margin:5px;">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        {% if page.section == "businesses" %}
+                                {{ panels.business() }}
+                        {% else %}
+                                {{ panels.account() }}
+                        {% endif %}
+                    </div>
+                </div><!-- end panel panel-info -->
+            </div><!-- end col-md-12-->
+        </div><!-- end row -->
+    </div>
+{% endblock %}

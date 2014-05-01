@@ -534,13 +534,14 @@ CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `name` varchar(40) NOT NULL,
-  `hashed_password` varchar(255) DEFAULT NULL,
-  `category` int(10) unsigned DEFAULT NULL,
-  `language` varchar(80) DEFAULT 'français',
+  `hashed_password` varchar(255) NOT NULL,
+  `category` int(10) unsigned DEFAULT 1,
+  `language` varchar(80) DEFAULT 'FR',
   `avatar_path` varchar(80) DEFAULT '../media/img/default-user-avatar.png',
   `salt` varchar(255) DEFAULT NULL,
+  `inscription_time` timestamp not null default now(),
+  `last_visit_time` timestamp not null default now(),
   `trustability` double DEFAULT NULL,
-  `inscription` date DEFAULT NULL,
   `facebook_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `category` (`category`),
@@ -554,7 +555,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'français','../media/img/default-user-avatar.png',NULL,NULL,NULL,NULL);
+INSERT INTO `users` (id,email,name,hashed_password) VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih'),(2,'tagadapwet@hotmail.com','Jb','qshfsouih'),(3,'jeanbob@aol.com','Eric','qshfsouih');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

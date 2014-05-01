@@ -192,6 +192,7 @@
 	-webkit-border-radius: 1px;
 	border-radius: 2px;
 	margin: 10px 0;
+	vertical-align: middle;
 }
 .business-box-container
 {
@@ -396,8 +397,8 @@ h3
 	float: right;
 	background: url(../img/logo.png) no-repeat center center;
     margin-top:8px;
-	background-size: 180px;
-	width: 180px;
+	background-size: 110px;
+	width: 110px;
 	height: 35px;
 }
 

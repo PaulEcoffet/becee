@@ -3,11 +3,13 @@ namespace Becee\Models;
 class UsersManager
 {
 	private $pdo = NULL;
+    protected $app;
 
-	public function __construct($pdo)
-	{
-		$this->pdo = $pdo;
-	}
+    public function __construct(\QDE\App $app)
+    {
+        $this->app = $app;
+        $this->pdo = $this->app->getPdo();
+    }
 
 	public function getUserById($user_id)
 	// return the user corresponding to the parameters $user_id (id in our database Users), 
@@ -17,6 +19,7 @@ class UsersManager
 
 		return($user_req->fetch());
 	}
+
 	public function getUserbyMail($user_mail)
 	// return the user corresponding to the parameter $user_email (email in our databse Users )
 	{
@@ -28,14 +31,20 @@ class UsersManager
 	public function checkValidAuth($user_email, $password)
 	// return the user corresponding to the parameter $user_mail, if the password correspond, else FALSE is returned
 	{
-		$user_req = $this->pdo->prepare('SELECT * FROM Users WHERE email = ? AND  hashed_password = SHA1(CONCAT(?, salt))');
-		$user_req->execute($user_email, $password);
-		return($user_req->fetch());
+        $user_req = $this->pdo->prepare('SELECT COUNT(id) nbr, id, hashed_password, name FROM `Users` WHERE email = ? AND hashed_password = SHA1(?) GROUP BY id;');
+        $user_req->execute(array($user_email, $password));
+        $result = $user_req->fetch();
+		if ($result['nbr'] == 1) {
+			echo "Login successful";
+			return($result);
+		}
+		echo "Login or password incorrect";
 	}
+
     public function insertUser($user)
     {
-        $sql = "INSERT INTO `users` (name, email, hashed_password,  salt)
-		        VALUES(:name, :email, :hashed_password, :salt)
+        $sql = "INSERT INTO `users` (name, email, hashed_password, salt, inscription_time)
+		        VALUES(:name, :email, SHA1(:hashed_password), :salt, NOW())
 		        ;
                 ";
         
@@ -52,21 +61,6 @@ class UsersManager
         $business_req->execute();
 
         return $business_req->fetch(\PDO::FETCH_ASSOC);
-    }
-    public function insertUserAvatar($user_id, $avatar_path)
-    {
-    	echo $user_id,$avatar_path;
-        $sql = "UPDATE `users`
-				SET avatar_path=:avatar_path
-				WHERE id=:user_id; 
-		        ;
-                ";
-        
-        $business_req = $this->pdo->prepare($sql); 
-        $business_req->bindValue(':avatar_path', $avatar_path,\PDO::PARAM_STR);
-        $business_req->bindValue(':user_id', $user_id,\PDO::PARAM_INT);
-        $business_req->execute();
-
     }
 
     public function createDummyUser()

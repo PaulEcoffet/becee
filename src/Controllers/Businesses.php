@@ -2,9 +2,6 @@
 
 namespace Becee\Controllers;
 
-use \Becee\Models\BusinessesManager;
-use \Becee\Models\FilesManager;
-
 class Businesses
 {
     public function viewBusinessAction($request, $id) //Send information needed to generate a business page (using the id)
@@ -23,14 +20,14 @@ class Businesses
 
     public function registerProcessingAction($request)
     {
-        $BusinessManager = new BusinessesManager($request->getPdo());
-        $FileManager = new FilesManager($request->getPdo());
+        $BusinessManager = $request->getManager('businesses');
+        $FilesManager = $request->getManager('files');
 
         $business = $BusinessManager->insertBusiness($request->getPost());
 
         $FILES = $request->getFiles();
         $filename = "becee_".time()."_".$business['id'];
-        $path = $FileManager->uploadImage($FILES['img_business_med'], $filename,'images_businesses');
+        $path = $FilesManager->uploadImage($FILES['img_business_med'], $filename,'images_businesses');
         if($path==NULL)
         {
             $path = '../media/img/default-business-img.png';

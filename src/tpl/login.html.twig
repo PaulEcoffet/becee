@@ -1,0 +1,38 @@
+{% extends "main_layout.html.twig" %}
+{% from 'forms.html.twig' import submit, textarea, upload, required_input, selection as selection_field, input as input_field %}
+{% block title %}#business_registration#{% endblock %}
+
+{% block content %}
+        <div class="container-fluid">
+            <div class="row" id="center-row" style="width:800px;margin:auto">
+                <div id="main" class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+                            <span style="line-height: 30px; vertical-align:middle;">Log In</span>
+                        </div>
+                    </div><!-- end panel panel-info -->
+                    <div class="panel">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{path('user_login_processing')}}">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">E-mail</label>
+                                    <div class="col-sm-9">
+                                      <input required type="email" name="email" class="form-control" id="inputEmail3">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Password</label>
+                                    <div class="col-sm-9">
+                                      <input required type="password" name="password" class="form-control" id="inputEmail3">
+                                    </div>
+                                </div>
+                                {{ submit('LOG IN') }}
+                            </form>
+                        </div>
+                    </div><!-- end panel panel-info -->
+                </div><!-- end col-md-12-->
+            </div><!-- end row -->
+        </div>
+{% endblock %}
