@@ -33,50 +33,69 @@ class BusinessesManager
 
         $new_business = new Business();
 
-        $sql = 'SELECT businesses.name GROUP_CONCAT(business_tags.name) as tags, GROUP_CONCAT(business_categories.name) as category   
-        FROM businesses, business_tags   -- ATM get everything, will later only get what matters
+        $sql = 'SELECT businesses.name, businesses.id, business_addresses.line1,
+        GROUP_CONCAT(business_categories.category) as category,
+        businesses.website,
+        businesses.email,
+        businesses.phone_number,
+        businesses.price,
+        users.name,
+        business_addresses.line1,
+        business_addresses.line2,
+        cities.name,
+        provinces.name,
+        countries.nicename
+
+
+        /*
+        GROUP_CONCAT(business_images.path),
+        GROUP_CONCAT(business_tags.name) as tags,                            -- Will move to new request 
+        GROUP_CONCAT(business_features.name) as features,
+        GROUP_CONCAT(business_visits) as visits   */     
+
+        FROM businesses
 
         INNER JOIN users 
-        ON businesses.manager_id = users.id  --Getting Manager
+        ON businesses.manager_id = users.id  /* Getting Manager */
 
         INNER JOIN business_addresses 
-        ON business_addresses.business_id = businesses.id  --Getting addresse
+        ON business_addresses.business_id = businesses.id  /* Getting addresse */
 
         INNER JOIN cities 
-        ON business_addresses.city_id = cities.id  --Getting cities
+        ON business_addresses.city_id = cities.id  /* Getting cities */
 
         INNER JOIN provinces
-        ON cities.province_id = provinces.id -- Getting province
+        ON cities.province_id = provinces.id    /* Getting province */
 
         INNER JOIN countries
-        ON province.country_id = countries.id     --Getting country
+        ON provinces.country_id = countries.id     /* Getting country */
 
         INNER JOIN business_images
-        ON businesses.id = business_images.business_id    --Getting Images (Path)
+        ON businesses.id = business_images.business_id    /* Getting Images (Path) */
 
-       INNER JOIN link_business_tags 
-       ON link_business_tags.business_id = businesses.id                   --Getting alltags, separated by ","
-       INNER JOIN business_tags 
-       ON business_tags.id = link_business_tags.tag_id
+        INNER JOIN link_business_tags 
+        ON link_business_tags.business_id = businesses.id   /* NEED SEPARATED REQUEST !!, Getting alltags, separated by "," */
+        INNER JOIN business_tags                            /* =========================== */
+        ON business_tags.id = link_business_tags.tag_id
 
         INNER JOIN link_business_category
-        ON link_business_category.business_id = businesses.id                   --Getting all categories, separated by ","
+        ON link_business_category.business_id = businesses.id   /* Getting all categories, separated by "," */
         INNER JOIN business_categories
-        ON business_categories.id = link_business_catgories.category_id
+        ON business_categories.id = link_business_category.category_id
 
-        INNER JOIN link_category_features
-        ON link_category_features.category_id = business_categories.id
-        INNER JOIN business_features                                --Getting features
-        ON business_features.id = link_category_features.feature_id
+        INNER JOIN link_category_feature
+        ON link_category_feature.category_id = business_categories.id
+        INNER JOIN business_features                                /* Getting features */
+        ON business_features.id = link_category_feature.feature_id
 
-        INNER JOIN business_vist
-        ON business_visits.business_id = businesses.id               -- Getting visit
+        INNER JOIN business_visits
+        ON business_visits.business_id = businesses.id               /* Getting visit */
 
         WHERE businesses.id = ?
         ;'
         ;
 
-         //Need checking and testing, seems shitty
+         //Seems to work on PhpMyAdmin (y)
 
 
         $business_req = $bdd->prepare($sql);
