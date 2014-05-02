@@ -13,6 +13,7 @@ class Users
     {
         $usersManager = $request->getManager('users');
         $error = false;
+        $errorMessage = '';
         $data = array();
         try
         {
@@ -35,7 +36,7 @@ class Users
                 // TODO Email verification with a preg_match
                 if($usersManager->getUserByMail($data['email']) === false)
                 {
-                    $user = $usersManager->insertUser($data);
+                    $user = $usersManager->insertUser($data); //TODO Shall we connect the user?
                 }
                 else
                 {
@@ -51,9 +52,9 @@ class Users
 
         }
         if(!$error)
-            return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Successful inscription'));
+            return new \QDE\Responses\RedirectResponse('home');
         else
-            return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'user_signup', 'info' => $errorMessage));
+            return new \QDE\Responses\RedirectResponse('user_signup', null, array('message' => $errorMessage));
     }
     public function logInAction($request)
     {
@@ -69,9 +70,9 @@ class Users
         if(isset($user))
         {
             $CurrentUserManager -> connectUser($user);
-            return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Login successful'));
+            return new \QDE\Responses\TwigResponse('home');
         }
-        return new \QDE\Responses\TwigResponse('login.html.twig', array('info' => 'Incorrect email or password'));
+        return new \QDE\Responses\RedirectResponse('user_login');
     }
     public function logOutAction($request)
     {
