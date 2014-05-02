@@ -4,6 +4,8 @@ namespace Becee\Hooks;
 
 class ConfigHook extends \QDE\Hook
 {
+    protected $app = null;
+
     public function __construct(\QDE\App &$app)
     {
         $this->app = $app;
