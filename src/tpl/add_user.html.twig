@@ -4,6 +4,13 @@
 
 {% block content %}
         <div class="container-fluid">
+             {% if page.flash.error is defined %}
+            <div class="row"> <!-- I'm UGLY -->
+                <p class="col-md-12 alert alert-warning">
+                {{ page.flash.error }}
+                </p>
+            </div>
+            {% endif %}
             <div class="row" id="center-row" style="width:800px;margin:auto">
                 <div id="main" class="col-md-12">
                     <div class="panel">

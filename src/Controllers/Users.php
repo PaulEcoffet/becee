@@ -6,8 +6,18 @@ class Users
 {
     public function registerAction($request, $city="Bordeaux")
     {
+        try
+        {
+            $flash = $request->getCustomVariable('flash');
+        }
+        catch (\Exception $e)
+        {
+            $flash = array();
+        }
         $LocationManager = $request->getManager('location');
-        return new \QDE\Responses\TwigResponse('add_user.html.twig', array('countries' => $LocationManager->getCountries('nicename')));
+        return new \QDE\Responses\TwigResponse('add_user.html.twig',
+            array('countries' => $LocationManager->getCountries('nicename'),
+                'flash' => $flash));
     }
     public function registerProcessingAction($request)
     {
@@ -54,12 +64,20 @@ class Users
         if(!$error)
             return new \QDE\Responses\RedirectResponse('home');
         else
-            return new \QDE\Responses\RedirectResponse('user_signup', null, array('message' => $errorMessage));
+            return new \QDE\Responses\RedirectResponse('user_signup', null, array('error' => $errorMessage));
     }
     public function logInAction($request)
     {
+        try
+        {
+            $flash = $request->getCustomVariable('flash');
+        }
+        catch (\Exception $e)
+        {
+            $flash = array();
+        }
         $UsersManager = $request->getManager('users');
-        return new \QDE\Responses\TwigResponse('login.html.twig', array());
+        return new \QDE\Responses\TwigResponse('login.html.twig', array('flash' => $flash));
     }
     public function logInProcessingAction($request)
     {
@@ -70,9 +88,9 @@ class Users
         if(isset($user))
         {
             $CurrentUserManager -> connectUser($user);
-            return new \QDE\Responses\TwigResponse('home');
+            return new \QDE\Responses\RedirectResponse('home');
         }
-        return new \QDE\Responses\RedirectResponse('user_login');
+        return new \QDE\Responses\RedirectResponse('user_login', null, array('error' => 'Invalid email/password combination'));
     }
     public function logOutAction($request)
     {
