@@ -16,6 +16,7 @@ class App
     protected $twig = null;
     protected $routes_root = null;
     protected $becee_root = null;
+    protected $route_name = null;
     protected $db_connection;
     protected $geocoder;
     protected $managers = array();
@@ -58,6 +59,7 @@ class App
     {
         $path = explode($this->routes_root, $_SERVER['REQUEST_URI'], 2)[1];
         $route = $this->router->getRoute($path);
+        $this->setRouteName($route->getName());
         $request = new Request($this);
         $request->setParamsUri($route->parse_params($path));
         $controller_str = $route->getController();
@@ -121,7 +123,14 @@ class App
 
     public function getSession($name)
     {
-        return $_SESSION[$name];
+        if (isset($_SESSION[$name]))
+        {
+            return $_SESSION[$name];
+        }
+        else
+        {
+            throw new \Exception("Non existing session"); // TODO Custom exception
+        }
     }
 
     public function deleteSession($name)
@@ -195,6 +204,16 @@ class App
         header($data);
     }
 
+    public function setRouteName($routename)
+    {
+        $this->route_name = $routename;
+    }
+
+    public function getRouteName()
+    {
+        return $this->route_name;
+    }
+
     protected function addTwigFunctions()
     {
         $path_function = new \Twig_SimpleFunction('path', function ($name, $args=null) {
@@ -239,4 +258,5 @@ class App
 $app = new App();
 $app->addHook(new \Becee\Hooks\UserHook($app));
 $app->addHook(new \Becee\Hooks\ConfigHook($app));
+$app->addHook(new \Becee\Hooks\FlashHook($app));
 $app->run();
