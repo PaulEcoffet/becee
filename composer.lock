@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/facebook-php-sdk.git",
-                "reference": "8a992afce97122556c4e42b0f1c1d60b9d49276d"
+                "reference": "b31c5a7911773a0684e89c7d1d84b0ca575e6cc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/facebook-php-sdk/zipball/8a992afce97122556c4e42b0f1c1d60b9d49276d",
-                "reference": "8a992afce97122556c4e42b0f1c1d60b9d49276d",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk/zipball/b31c5a7911773a0684e89c7d1d84b0ca575e6cc8",
+                "reference": "b31c5a7911773a0684e89c7d1d84b0ca575e6cc8",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "facebook",
                 "sdk"
             ],
-            "time": "2014-04-04 02:27:38"
+            "time": "2014-05-01 04:58:13"
         },
         {
             "name": "twig/twig",
