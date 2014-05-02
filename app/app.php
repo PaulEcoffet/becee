@@ -64,12 +64,12 @@ class App
         $controller = new $controller_str();
         foreach($this->hooks as $hook)
         {
-            $hook->runAscending($request);
+            $request = $hook->runAscending($request);
         }
         $response = call_user_func(array($controller, $route->getAction()), $request);
         foreach($this->hooks as $hook)
         {
-            $hook->runDescending($response);
+            $response = $hook->runDescending($response);
         }
         echo $response->run($this);
     }
