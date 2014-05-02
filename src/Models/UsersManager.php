@@ -2,7 +2,7 @@
 namespace Becee\Models;
 class UsersManager
 {
-	private $pdo = NULL;
+    private $pdo = NULL;
     protected $app;
 
     public function __construct(\QDE\App $app)
@@ -11,50 +11,51 @@ class UsersManager
         $this->pdo = $this->app->getPdo();
     }
 
-	public function getUserById($user_id)
-	// return the user corresponding to the parameters $user_id (id in our database Users), 
-	{
-		$user_req = $this->pdo->prepare('SELECT * FROM Users WHERE id = ?');
-		$user_req->execute($user_id);
+    public function getUserById($user_id)
+    // return the user corresponding to the parameters $user_id (id in our database Users),
+    {
+        $user_req = $this->pdo->prepare('SELECT * FROM users WHERE id = ?');
+        $user_req->execute($user_id);
 
-		return($user_req->fetch());
-	}
+        return($user_req->fetch());
+    }
 
-	public function getUserbyMail($user_mail)
-	// return the user corresponding to the parameter $user_email (email in our databse Users )
-	{
-		$user = $this->pdo->prepare('SELECT * FROM Users WHERE name = ?');
-		$user_req->execute($user_name);
-		return($user_req->fetch());
-	}
+    public function getUserByMail($user_mail)
+    // return the user corresponding to the parameter $user_email (email in our databse Users )
+    {
+        $user_req = $this->pdo->prepare('SELECT * FROM users WHERE email = ?');
+        $user_req->execute(array($user_mail));
+        return($user_req->fetch());
+    }
 
-	public function checkValidAuth($user_email, $password)
-	// return the user corresponding to the parameter $user_mail, if the password correspond, else FALSE is returned
-	{
-        $user_req = $this->pdo->prepare('SELECT COUNT(id) nbr, id, hashed_password, name FROM `Users` WHERE email = ? AND hashed_password = SHA1(?) GROUP BY id;');
+    public function checkValidAuth($user_email, $password)
+    // return the user corresponding to the parameter $user_mail, if the password correspond, else FALSE is returned
+    {
+        $user_req = $this->pdo->prepare('SELECT COUNT(id) nbr, id, hashed_password, name FROM `Users` WHERE email = ? AND hashed_password = SHA1(CONCAT(?, salt)) GROUP BY id;');
         $user_req->execute(array($user_email, $password));
         $result = $user_req->fetch();
-		if ($result['nbr'] == 1) {
-			return($result);
-		}
-	}
+        if ($result['nbr'] == 1) {
+            return($result);
+        }
+    }
 
     public function insertUser($user)
     {
         $sql = "INSERT INTO `users` (name, email, hashed_password, salt, inscription_time)
-		        VALUES(:name, :email, SHA1(:hashed_password), :salt, NOW())
-		        ;
+                VALUES(:name, :email, SHA1(CONCAT(:hashed_password, :salt)), :salt, NOW())
+                ;
                 ";
-        
-        $business_req = $this->pdo->prepare($sql); 
+
+        $business_req = $this->pdo->prepare($sql);
         $business_req->bindValue(':name', $user['name'],\PDO::PARAM_STR);
         $business_req->bindValue(':email', $user['email'],\PDO::PARAM_STR);
         $business_req->bindValue(':hashed_password', $user['password'],\PDO::PARAM_STR);
-        $business_req->bindValue(':salt', 'test',\PDO::PARAM_STR);
+        $business_req->bindValue(':salt', uniqid(),\PDO::PARAM_STR);
         $business_req->execute();
 
+        //TODO Very ugly, must find a better solution!
         $sql = "SELECT * FROM `users` WHERE id = (SELECT MAX(id) FROM `users`);";
-        
+
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute();
 

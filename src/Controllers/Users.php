@@ -11,9 +11,49 @@ class Users
     }
     public function registerProcessingAction($request)
     {
-        $UsersManager = $request->getManager('users');
-        $user = $UsersManager->insertUser($request->getPost());
-        return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Successful inscription'));
+        $usersManager = $request->getManager('users');
+        $error = false;
+        $data = array();
+        try
+        {
+            $data['name'] = htmlspecialchars($request->getPost('name'));
+            $data['password'] = $request->getPost('password');
+            $verifypassword = $request->getPost('verifypassword');
+            $data['email'] = htmlentities($request->getPost('email'));
+            $country = $request->getPost('country'); // TODO USELESS
+
+        }
+        catch (Exception $e)
+        {
+            $error = true;
+            $errorMessage = 'A field was not properly filled';
+        }
+        if (!$error)
+        {
+            if($data['password'] === $verifypassword)
+            {
+                // TODO Email verification with a preg_match
+                if($usersManager->getUserByMail($data['email']) === false)
+                {
+                    $user = $usersManager->insertUser($data);
+                }
+                else
+                {
+                    $error = true;
+                    $errorMessage = 'This email is already used';
+                }
+            }
+            else
+            {
+                $error = true;
+                $errorMessage = 'Passwords are not the same';
+            }
+
+        }
+        if(!$error)
+            return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Successful inscription'));
+        else
+            return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'user_signup', 'info' => $errorMessage));
     }
     public function logInAction($request)
     {
