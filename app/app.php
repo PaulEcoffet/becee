@@ -172,6 +172,11 @@ class App
         $this->hooks[$hook->getName()] = $hook;
     }
 
+    public function getHook($hookname)
+    {
+        return $this->hooks[$hookname];
+    }
+
     public function removeHook($hookname)
     {
         unset($this->hooks[$hookname]);
