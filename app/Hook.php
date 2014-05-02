@@ -2,9 +2,18 @@
 
 namespace QDE;
 
-interface Hook
+abstract class Hook
 {
-    public function __construct(\QDE\App &$app);
-    public function getName();
-    public function run($response);
+    abstract public function __construct(\QDE\App &$app);
+    abstract public function getName();
+
+    public function runDescending($response)
+    {
+        return $response;
+    }
+
+    public function runAscending($request)
+    {
+        return $request;
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace Becee\Hooks;
 
-class UserHook implements \QDE\Hook
+class UserHook extends \QDE\Hook
 {
+    protected $app = null;
+
     public function __construct(\QDE\App &$app)
     {
         $this->app = $app;
@@ -14,7 +16,7 @@ class UserHook implements \QDE\Hook
         return 'user_hook';
     }
 
-    public function run($response)
+    public function runDescending($response)
     {
         if($response instanceof \QDE\Responses\TwigResponse)
         {

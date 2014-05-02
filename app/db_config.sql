@@ -540,8 +540,13 @@ CREATE TABLE `users` (
   `language` varchar(80) DEFAULT 'FR',
   `avatar_path` varchar(80) DEFAULT '../media/img/default-user-avatar.png',
   `salt` varchar(255) DEFAULT NULL,
+<<<<<<< HEAD
   `inscription_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_visit_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+=======
+  `inscription_time` datetime not null,
+  `last_visit_time` datetime not null,
+>>>>>>> 9e42b1d97b797279238968c19c6ba00af963eae8
   `trustability` double DEFAULT NULL,
   `facebook_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),

@@ -12,6 +12,7 @@ class Request
     private $config;
     private $get_vars;
     private $uri_vars;
+    protected $custom_vars;
     protected $app;
 
     public function __construct(App &$app)
@@ -84,5 +85,22 @@ class Request
     public function getManager($name)
     {
         return $this->app->getManager($name);
+    }
+
+    public function setCustomVariable($name, $variable)
+    {
+        $this->custom_vars[$name] = $variable;
+    }
+
+    public function getCustomVariable($name)
+    {
+        if(isset($this->custom_vars[$name]))
+        {
+            return $this->custom_vars[$name];
+        }
+        else
+        {
+            throw new \Exception('Undefined Custom Variable');
+        }
     }
 }

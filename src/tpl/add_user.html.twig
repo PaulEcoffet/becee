@@ -4,39 +4,57 @@
 
 {% block content %}
         <div class="container-fluid">
+             {% if page.flash.error is defined %}
+            <div class="row"> <!-- I'm UGLY -->
+                <p class="col-md-12 alert alert-warning">
+                {{ page.flash.error }}
+                </p>
+            </div>
+            {% endif %}
             <div class="row" id="center-row" style="width:800px;margin:auto">
-		        <div id="main" class="col-md-12">
-		        	<div class="panel">
-					    <div class="panel-heading"></div>
-					    <div class="panel-body">
-						    <span style="line-height: 30px; vertical-align:middle;">Inscription</span>
-					    </div>
-					</div><!-- end panel panel-info -->
-		        	<div class="panel">
-					    <div class="panel-heading"></div>
-					    <div class="panel-body">
-							<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('user_signup_process') }}">
-								{{ required_input('name') }}<hr />
+                <div id="main" class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+                            <span style="line-height: 30px; vertical-align:middle;">Inscription</span>
+                        </div>
+                    </div><!-- end panel panel-info -->
+                    <div class="panel">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('user_signup_process') }}">
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">E-mail <span style="color:red">*</span></label>
+                                    <label for="inputName" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Votre Nom</label>
                                     <div class="col-sm-9">
-                                      <input required type="email" name="email" class="form-control" id="inputEmail3">
+                                      <input required type="text" name="name" class="form-control" id="inputName">
                                     </div>
                                 </div>
-							    <div class="form-group">
-							        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Password <span style="color:red">*</span></label>
-							        <div class="col-sm-9">
-							          <input required type="password" name="password" class="form-control" id="inputEmail3">
-							        </div>
-							    </div>
-								{{ required_input('verify_password') }}
-								{{ selection_field('country', page.countries, 'required') }}<hr />
-								<span style="color:red">(* Required)</span>
-								{{ submit('Sign In') }}
-							</form>
-					    </div>
-					</div><!-- end panel panel-info -->
-		        </div><!-- end col-md-12-->
-		    </div><!-- end row -->
-		</div>
+                                <hr />
+                                <div class="form-group">
+                                    <label for="inputEmail" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">E-mail <span style="color:red">*</span></label>
+                                    <div class="col-sm-9">
+                                      <input required type="email" name="email" class="form-control" id="inputEmail">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Mot de passe <span style="color:red">*</span></label>
+                                    <div class="col-sm-9">
+                                      <input required type="password" name="password" class="form-control" id="inputPassword">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputVerifyPassword" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Retapez votre mot de passe <span style="color:red">*</span></label>
+                                    <div class="col-sm-9">
+                                      <input required type="password" name="verifypassword" class="form-control" id="inputVerifyPassword">
+                                    </div>
+                                </div>
+                                {{ selection_field('country', page.countries, 'required') }}<hr />
+                                <span style="color:red">(* Required)</span>
+                                {{ submit('Sign In') }}
+                            </form>
+                        </div>
+                    </div><!-- end panel panel-info -->
+                </div><!-- end col-md-12-->
+            </div><!-- end row -->
+        </div>
 {% endblock %}

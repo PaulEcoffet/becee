@@ -16,6 +16,7 @@ class App
     protected $twig = null;
     protected $routes_root = null;
     protected $becee_root = null;
+    protected $route_name = null;
     protected $db_connection;
     protected $geocoder;
     protected $managers = array();
@@ -52,21 +53,25 @@ class App
         $this->createPdoConnection();
 
         $this->createGeocoder();
-
     }
 
     public function run()
     {
         $path = explode($this->routes_root, $_SERVER['REQUEST_URI'], 2)[1];
         $route = $this->router->getRoute($path);
+        $this->setRouteName($route->getName());
         $request = new Request($this);
         $request->setParamsUri($route->parse_params($path));
         $controller_str = $route->getController();
         $controller = new $controller_str();
+        foreach($this->hooks as $hook)
+        {
+            $request = $hook->runAscending($request);
+        }
         $response = call_user_func(array($controller, $route->getAction()), $request);
         foreach($this->hooks as $hook)
         {
-            $hook->run($response);
+            $response = $hook->runDescending($response);
         }
         echo $response->run($this);
     }
@@ -118,7 +123,14 @@ class App
 
     public function getSession($name)
     {
-        return $_SESSION[$name];
+        if (isset($_SESSION[$name]))
+        {
+            return $_SESSION[$name];
+        }
+        else
+        {
+            throw new \Exception("Non existing session"); // TODO Custom exception
+        }
     }
 
     public function deleteSession($name)
@@ -172,6 +184,11 @@ class App
         $this->hooks[$hook->getName()] = $hook;
     }
 
+    public function getHook($hookname)
+    {
+        return $this->hooks[$hookname];
+    }
+
     public function removeHook($hookname)
     {
         unset($this->hooks[$hookname]);
@@ -185,6 +202,16 @@ class App
     public function setHeader($data)
     {
         header($data);
+    }
+
+    public function setRouteName($routename)
+    {
+        $this->route_name = $routename;
+    }
+
+    public function getRouteName()
+    {
+        return $this->route_name;
     }
 
     protected function addTwigFunctions()
@@ -231,4 +258,5 @@ class App
 $app = new App();
 $app->addHook(new \Becee\Hooks\UserHook($app));
 $app->addHook(new \Becee\Hooks\ConfigHook($app));
+$app->addHook(new \Becee\Hooks\FlashHook($app));
 $app->run();
