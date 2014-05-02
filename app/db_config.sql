@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.17, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.12, for Win64 (x86_64)
 --
 -- Host: localhost    Database: becee
 -- ------------------------------------------------------
--- Server version	5.6.17
+-- Server version	5.6.12-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -47,6 +47,30 @@ INSERT INTO `business_addresses` VALUES (1,'15 Rue Du Placeholder','',0,0,1,1),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `business_categories`
+--
+
+DROP TABLE IF EXISTS `business_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `business_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `business_categories`
+--
+
+LOCK TABLES `business_categories` WRITE;
+/*!40000 ALTER TABLE `business_categories` DISABLE KEYS */;
+INSERT INTO `business_categories` VALUES (1,'restaurant'),(2,'hotel'),(3,'boutique'),(4,'service'),(5,'nightlife');
+/*!40000 ALTER TABLE `business_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `business_comments`
 --
 
@@ -67,7 +91,7 @@ CREATE TABLE `business_comments` (
   KEY `business_id` (`business_id`),
   CONSTRAINT `business_comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `business_comments_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,6 +100,7 @@ CREATE TABLE `business_comments` (
 
 LOCK TABLES `business_comments` WRITE;
 /*!40000 ALTER TABLE `business_comments` DISABLE KEYS */;
+INSERT INTO `business_comments` VALUES (5,1,2,'Ultra cool, gg','2014-05-02 10:40:05',NULL,NULL,NULL),(6,2,2,'Super, cimer','2014-05-02 10:40:06',NULL,NULL,NULL),(7,2,1,'Ambiance de malade, (y)','2014-05-02 10:40:05',NULL,NULL,NULL),(8,3,2,'Un gros pouce vert/bleu','2014-05-02 10:40:05',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `business_comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +115,7 @@ CREATE TABLE `business_features` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +124,7 @@ CREATE TABLE `business_features` (
 
 LOCK TABLES `business_features` WRITE;
 /*!40000 ALTER TABLE `business_features` DISABLE KEYS */;
-INSERT INTO `business_features` VALUES (1,'location'),(2,'choice'),(3,'ambiance'),(4,'quality/price'),(5,'quality');
+INSERT INTO `business_features` VALUES (1,'bien placé'),(2,'diversité du choix'),(3,'ambiance'),(4,'rapport qualité prix'),(5,'qualité globale'),(6,'rapidité du service'),(7,'on est bien conseillé');
 /*!40000 ALTER TABLE `business_features` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +179,7 @@ CREATE TABLE `business_tags` (
 
 LOCK TABLES `business_tags` WRITE;
 /*!40000 ALTER TABLE `business_tags` DISABLE KEYS */;
-INSERT INTO `business_tags` VALUES (1,'chinois'),(3,'italien'),(4,'regional'),(5,'pirate'),(6,'vin'),(7,'bar'),(8,'restaurant'),(9,'commerce');
+INSERT INTO `business_tags` VALUES (1,'chinois'),(3,'italien'),(4,'regional'),(5,'pirate'),(6,'vin'),(7,'bar');
 /*!40000 ALTER TABLE `business_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,13 +194,13 @@ CREATE TABLE `business_visits` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL,
   `business_id` int(10) unsigned DEFAULT NULL,
-  `visit_date` timestamp not null DEFAULT now(),
+  `visit_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `business_id` (`business_id`),
   CONSTRAINT `business_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `business_visits_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +209,7 @@ CREATE TABLE `business_visits` (
 
 LOCK TABLES `business_visits` WRITE;
 /*!40000 ALTER TABLE `business_visits` DISABLE KEYS */;
-INSERT INTO `business_visits` (user_id, business_id) VALUES (1,1),(2,2),(1,1),(2,3),(3,3);
+INSERT INTO `business_visits` VALUES (1,1,1,'2014-05-02 07:55:46'),(2,2,2,'2014-05-02 07:55:46'),(3,1,1,'2014-05-02 07:55:46'),(4,2,3,'2014-05-02 07:55:46'),(5,3,3,'2014-05-02 07:55:46');
 /*!40000 ALTER TABLE `business_visits` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -318,107 +343,78 @@ INSERT INTO `countries` VALUES (1,'AF','AFGHANISTAN','Afghanistan','AFG',4,93),(
 UNLOCK TABLES;
 
 --
--- Table structure for table `link_business_category`
+-- Table structure for table `link_businesses_categories`
 --
 
-DROP TABLE IF EXISTS `link_business_category`;
+DROP TABLE IF EXISTS `link_businesses_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link_business_category` (
+CREATE TABLE `link_businesses_categories` (
   `business_id` mediumint(5) unsigned NOT NULL,
   `category_id` mediumint(5) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `link_business_category`
+-- Dumping data for table `link_businesses_categories`
 --
 
-LOCK TABLES `link_business_category` WRITE;
-/*!40000 ALTER TABLE `link_business_category` DISABLE KEYS */;
-INSERT INTO `link_business_category` VALUES (1,1),(1,5),(1,2),(2,2),(3,1),(4,2);
-/*!40000 ALTER TABLE `link_business_category` ENABLE KEYS */;
+LOCK TABLES `link_businesses_categories` WRITE;
+/*!40000 ALTER TABLE `link_businesses_categories` DISABLE KEYS */;
+INSERT INTO `link_businesses_categories` VALUES (1,1),(1,5),(1,2),(2,2),(3,1),(4,2);
+/*!40000 ALTER TABLE `link_businesses_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `link_business_tag`
+-- Table structure for table `link_businesses_tags`
 --
 
-DROP TABLE IF EXISTS `link_business_tag`;
+DROP TABLE IF EXISTS `link_businesses_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link_business_tag` (
+CREATE TABLE `link_businesses_tags` (
   `business_id` int(10) unsigned DEFAULT NULL,
   `tag_id` int(10) unsigned DEFAULT NULL,
   `nb_yes` smallint(5) unsigned DEFAULT NULL,
   `nb_no` smallint(5) unsigned DEFAULT NULL,
   KEY `tag_id` (`tag_id`),
   KEY `business_id` (`business_id`),
-  CONSTRAINT `link_business_tag_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
-  CONSTRAINT `link_business_tag_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
+  CONSTRAINT `link_businesses_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
+  CONSTRAINT `link_businesses_tags_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `link_business_tag`
+-- Dumping data for table `link_businesses_tags`
 --
 
-LOCK TABLES `link_business_tag` WRITE;
-/*!40000 ALTER TABLE `link_business_tag` DISABLE KEYS */;
-INSERT INTO `link_business_tag` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
-/*!40000 ALTER TABLE `link_business_tag` ENABLE KEYS */;
+LOCK TABLES `link_businesses_tags` WRITE;
+/*!40000 ALTER TABLE `link_businesses_tags` DISABLE KEYS */;
+INSERT INTO `link_businesses_tags` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
+/*!40000 ALTER TABLE `link_businesses_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `link_business_tags`
+-- Table structure for table `link_categories_features`
 --
 
-DROP TABLE IF EXISTS `link_business_tags`;
+DROP TABLE IF EXISTS `link_categories_features`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link_business_tags` (
-  `business_id` int(10) unsigned DEFAULT NULL,
-  `tag_id` int(10) unsigned DEFAULT NULL,
-  `nb_yes` smallint(5) unsigned DEFAULT NULL,
-  `nb_no` smallint(5) unsigned DEFAULT NULL,
-  KEY `tag_id` (`tag_id`),
-  KEY `business_id` (`business_id`),
-  CONSTRAINT `link_business_tags_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `business_tags` (`id`),
-  CONSTRAINT `link_business_tags_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `link_business_tags`
---
-
-LOCK TABLES `link_business_tags` WRITE;
-/*!40000 ALTER TABLE `link_business_tags` DISABLE KEYS */;
-INSERT INTO `link_business_tags` VALUES (1,7,NULL,NULL),(1,6,NULL,NULL),(2,5,NULL,NULL),(1,1,NULL,NULL);
-/*!40000 ALTER TABLE `link_business_tags` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `link_category_feature`
---
-
-DROP TABLE IF EXISTS `link_category_feature`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link_category_feature` (
+CREATE TABLE `link_categories_features` (
   `category_id` smallint(5) unsigned NOT NULL,
   `feature_id` smallint(5) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `link_category_feature`
+-- Dumping data for table `link_categories_features`
 --
 
-LOCK TABLES `link_category_feature` WRITE;
-/*!40000 ALTER TABLE `link_category_feature` DISABLE KEYS */;
-INSERT INTO `link_category_feature` VALUES (1,7),(1,6),(2,5),(1,1);
-/*!40000 ALTER TABLE `link_category_feature` ENABLE KEYS */;
+LOCK TABLES `link_categories_features` WRITE;
+/*!40000 ALTER TABLE `link_categories_features` DISABLE KEYS */;
+INSERT INTO `link_categories_features` VALUES (1,7),(1,6),(2,5),(1,1);
+/*!40000 ALTER TABLE `link_categories_features` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -529,31 +525,6 @@ INSERT INTO `user_categories` VALUES (1,'plébien'),(2,'modo'),(3,'admin'),(4,'d
 UNLOCK TABLES;
 
 --
--- Table structure for table `business_categories`
---
-
-DROP TABLE IF EXISTS `business_categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `business_categories` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `business_categories`
---
-
-LOCK TABLES `business_categories` WRITE;
-/*!40000 ALTER TABLE `business_categories` DISABLE KEYS */;
-INSERT INTO `business_categories` VALUES (1,'restaurant'),(2,'hotel'),(3,'shop'),(4,'dummy'),(5,'bar');
-/*!40000 ALTER TABLE `business_categories` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
 -- Table structure for table `users`
 --
 
@@ -565,12 +536,12 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `name` varchar(40) NOT NULL,
   `hashed_password` varchar(255) NOT NULL,
-  `category` int(10) unsigned DEFAULT 1,
+  `category` int(10) unsigned DEFAULT '1',
   `language` varchar(80) DEFAULT 'FR',
   `avatar_path` varchar(80) DEFAULT '../media/img/default-user-avatar.png',
   `salt` varchar(255) DEFAULT NULL,
-  `inscription_time` timestamp not null default now(),
-  `last_visit_time` timestamp not null default now(),
+  `inscription_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_visit_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `trustability` double DEFAULT NULL,
   `facebook_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -585,7 +556,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (id,email,name,hashed_password) VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih'),(2,'tagadapwet@hotmail.com','Jb','qshfsouih'),(3,'jeanbob@aol.com','Eric','qshfsouih');
+INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 08:03:41',NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -625,4 +596,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-28 11:48:56
+-- Dump completed on 2014-05-02 11:34:21
