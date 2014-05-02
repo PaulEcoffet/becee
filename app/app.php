@@ -52,7 +52,6 @@ class App
         $this->createPdoConnection();
 
         $this->createGeocoder();
-
     }
 
     public function run()
@@ -63,10 +62,14 @@ class App
         $request->setParamsUri($route->parse_params($path));
         $controller_str = $route->getController();
         $controller = new $controller_str();
+        foreach($this->hooks as $hook)
+        {
+            $hook->runAscending($request);
+        }
         $response = call_user_func(array($controller, $route->getAction()), $request);
         foreach($this->hooks as $hook)
         {
-            $hook->run($response);
+            $hook->runDescending($response);
         }
         echo $response->run($this);
     }
