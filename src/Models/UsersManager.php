@@ -31,7 +31,7 @@ class UsersManager
     public function checkValidAuth($user_email, $password)
     // return the user corresponding to the parameter $user_mail, if the password correspond, else FALSE is returned
     {
-        $user_req = $this->pdo->prepare('SELECT COUNT(id) nbr, id, hashed_password, name FROM `Users` WHERE email = ? AND hashed_password = SHA1(CONCAT(?, salt)) GROUP BY id;');
+        $user_req = $this->pdo->prepare('SELECT COUNT(id) nbr, id, hashed_password, name FROM users WHERE email = ? AND hashed_password = SHA1(CONCAT(?, salt))');
         $user_req->execute(array($user_email, $password));
         $result = $user_req->fetch();
         if ($result['nbr'] == 1) {
