@@ -138,7 +138,6 @@ a.sub-header-btn {color: #222; text-align: center; text-decoration: none;}
 @media all and (max-width: 80em) {header > .nav-tools {display: none;} header > .nav-tools-dropdown, header > .nav-tools-dropdown-right {display: block;} #logo{float: center; float: none; margin: 3px auto;}}
 @media all and (max-width: 80em) {header > .input-group, #sub-header > .input-group, .head-categories > .input-group {display: none}}
 
-@media all and (min-width: 0em) {#sub-header ul {display: none} }
 @media all and (max-width: 70em) {#sub-header {display: none} }
 
 @media all and (max-width: 40em) {#head {display: none}; }

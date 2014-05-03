@@ -73,48 +73,20 @@
                         <a href="#" class="sub-header-btn">Opéra</a>
                     </li>
                 </ul>
-            <div class="col-md-4">
-                <section class="popupHeader" style="width:400px">
-                    <center><span class="header_title"><span style="font-size:12px">RECENTS BUSINESSES</span></span></center>
-                </section>
-            {% for restaurant in page.businesses|slice(0, 5) %}
-                <div style="width:50px; height:50px; display:inline-block;float:left;margin:10px;margin-right:12px;margin-left:11px;">
-                    <div  style="width:65px; height:65px; display:inline-block;background:url({{ media(restaurant.path) }}) no-repeat center;border:3px solid #eee">
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-            <div class="col-md-4">
-                <section class="popupHeader" style="width:400px">
-                    <center><span class="header_title"><span style="font-size:12px">SEARCH</span></span></center>
-                </section>
-                <div class="input-group" style="width:100%">
-                      <input type="text" class="form-control" placeholder="Restaurant Indien">
-                </div>
-                <br/>
-                {% for tag in page.tags|slice(0, 4) %}
-                <a href="{{ path('business_add') }}" class="btn btn-small tag">{{tag.name}}</a>
-                {% endfor %}
-                <a href="{{ path('business_add') }}" class="btn btn-small special tag">Popular tags</a>
-            </div>
-            <div class="col-md-4">
-                <section class="popupHeader" style="width:100%">
-                    <center><span class="header_title"><span style="font-size:12px">RECENTS USERS</span></span></center>
-                </section>
-            {% for restaurant in page.businesses|slice(0, 5) %}
-                <div style="width:50px; height:50px; display:inline-block;float:left;margin:10px;margin-right:12px;margin-left:11px;">
-                    <div  style="width:65px; height:65px; display:inline-block;background:url({{ media(restaurant.path) }}) no-repeat center;border:3px solid #eee">
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
         </div>
     </div>
 </div>
 
 <div class="container-fluid main-container">
-                    <div class="categories info-box" style="width:100%"> 
-                            Current cities : {%for city in page.cities %}{{city.name}}, {% endfor %}
+                    <div class="categories info-box" style="background:rgba(100,100,100,0.1); width:110%;height:165px;margin-left:-50px; border:1px solid white"> 
+                            {%for city in page.cities|slice(0, 3) %}
+
+                            <div class="col-md-4">                    <center><img src="{{ media('img/avatar.png') }}" style="display:block;margin:auto;margin:10px;border:1px solid #fff" class="img-circle">
+                    <span style="color:#222 !important; font-weight:600; font-family: Roboto;font-size:20px">{{city.name}}</span>
+                    </center>
+                            </div> 
+
+                            {% endfor %}
                     </div>
                 <section class="popupHeader">
                     <center><span class="header_title"><span style="font-size:12px">RECENTS VERSUS</span></span></center>
@@ -212,4 +184,43 @@
         </div>
     </div>
 </div>
+    <div class="container-fluid">
+        <div class="row center-row">
+            <div class="col-md-4">
+                <section class="popupHeader" style="width:400px">
+                    <center><span class="header_title"><span style="font-size:12px">RECENTS BUSINESSES</span></span></center>
+                </section>
+            {% for restaurant in page.businesses|slice(0, 5) %}
+                <div style="width:50px; height:50px; display:inline-block;float:left;margin:10px;margin-right:12px;margin-left:11px;">
+                    <div  style="width:65px; height:65px; display:inline-block;background:url({{ media(restaurant.path) }}) no-repeat center;border:3px solid #eee">
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="col-md-4">
+                <section class="popupHeader" style="width:400px">
+                    <center><span class="header_title"><span style="font-size:12px">SEARCH</span></span></center>
+                </section>
+                <div class="input-group" style="width:100%">
+                      <input type="text" class="form-control" placeholder="Restaurant Indien">
+                </div>
+                <br/>
+                {% for tag in page.tags|slice(0, 4) %}
+                <a href="{{ path('business_add') }}" class="btn btn-small tag">{{tag.name}}</a>
+                {% endfor %}
+                <a href="{{ path('business_add') }}" class="btn btn-small special tag">Popular tags</a>
+            </div>
+            <div class="col-md-4">
+                <section class="popupHeader" style="width:100%">
+                    <center><span class="header_title"><span style="font-size:12px">RECENTS USERS</span></span></center>
+                </section>
+            {% for restaurant in page.businesses|slice(0, 5) %}
+                <div style="width:50px; height:50px; display:inline-block;float:left;margin:10px;margin-right:12px;margin-left:11px;">
+                    <div  style="width:65px; height:65px; display:inline-block;background:url({{ media(restaurant.path) }}) no-repeat center;border:3px solid #eee">
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
