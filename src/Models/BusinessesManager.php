@@ -27,7 +27,7 @@ class BusinessesManager
         return($business_req->fetch());
     }
 
-    public function getDataFromBusiness($business_id) //Get tags and features] [...] from business
+    public function getDataFromBusiness($business_id) //Get tags,features,visits from business
     {
         $Additionnal_info = new Business();
 
@@ -37,6 +37,12 @@ class BusinessesManager
 
         FROM business
 
+        INNER JOIN link_business_features
+        ON link_business_features.business_id = businesses.id   /* NEED SEPARATED REQUEST !!, Getting alltags, separated by "," */
+        INNER JOIN business_features                           /* =========================== */
+        ON business_features.id = link_business_features.features_id
+
+
         INNER JOIN link_business_tags 
         ON link_business_tags.business_id = businesses.id   /* NEED SEPARATED REQUEST !!, Getting alltags, separated by "," */
         INNER JOIN business_tags                            /* =========================== */
@@ -44,6 +50,9 @@ class BusinessesManager
 
         INNER JOIN business_images
         ON businesses.id = business_images.business_id    /* Getting Images (Path) */
+
+        INNER JOIN business_visits
+        ON business_visits.business_id = businesses.id               /* Getting visit */
 
         ;'
         ;
@@ -58,7 +67,7 @@ class BusinessesManager
         $new_business = new Business();
 
         $sql = 'SELECT businesses.name, businesses.id,
-        DISTINCT(GROUP_CONCAT(business_categories.name) as category,
+GROUP_CONCAT(business_categories.name) as category,
         businesses.website,
         businesses.email,
         businesses.phone_number,
@@ -68,13 +77,18 @@ class BusinessesManager
         business_addresses.line2 as adresse_2,
         cities.name as city,
         provinces.name as province,
-        countries.nicename as country_name,
-        GROUP_CONCAT(business_features.name)
+        countries.nicename as country_name
 
 
-        FROM businesses
+FROM businesses
 
-        INNER JOIN users 
+
+LEFT OUTER JOIN link_businesses_categories
+ON link_businesses_categories.business_id = businesses.id   /* Getting all categories, separated by "," */
+LEFT OUTER JOIN business_categories
+ON business_categories.id = link_businesses_categories.category_id
+
+INNER JOIN users 
         ON businesses.manager_id = users.id  /*Getting Manager */
 
         INNER JOIN business_addresses 
@@ -89,25 +103,11 @@ class BusinessesManager
         INNER JOIN countries
         ON provinces.country_id = countries.id     /* Getting country */
 
-        
+    
 
-        
-
-        INNER JOIN link_businesses_categories
-        ON link_businesses_categories.business_id = businesses.id   /* Getting all categories, separated by "," */
-        INNER JOIN business_categories
-        ON business_categories.id = link_businesses_categories.category_id
-
-        INNER JOIN link_categories_features
-        ON link_categories_features.category_id = business_categories.id
-        INNER JOIN business_features                                /* Getting features */
-        ON business_features.id = link_categories_features.feature_id
-
-        INNER JOIN business_visits
-        ON business_visits.business_id = businesses.id               /* Getting visit */
-
-        WHERE businesses.id = 1;
-        '
+WHERE businesses.id = 1
+GROUP BY businesses.id
+;'
         ;
 
         $business_req = $this->pdo->prepare($sql); 
