@@ -103,21 +103,49 @@ INNER JOIN users
         INNER JOIN countries
         ON provinces.country_id = countries.id     /* Getting country */
 
-    
-
 WHERE businesses.id = 1
 GROUP BY businesses.id
 ;'
         ;
 
-        $business_req = $this->pdo->prepare($sql); 
+        $business_req = $this->pdo->prepare($sql);
         $business_req->execute(array($business_id));
         echo $business_id;
-        printf($business_req->fetch(\PDO::FETCH_ASSOC));
+        print_r($business_req->fetch(\PDO::FETCH_ASSOC));
         return $business_req->fetch(\PDO::FETCH_ASSOC);
+    }
 
+    public function getBusinessImages($business_id)
+    {
+        $sql = <<<'EOF'
+SELECT
+    business_images.path,
+    COALESCE(users.name, 'Anonymous') as uploaderName,
+    users.id as uploaderId,
+    business_images.priority,
+    businesses.id as businessId
+FROM
+    business_images
+        INNER JOIN
+    businesses ON business_images.business_id = businesses.id
+        LEFT JOIN
+    users ON business_images.user_id = users.id
+WHERE
+    businesses.id = :business_id
+ORDER BY priority;
+EOF;
 
-
+        $images_req = $this->pdo->prepare($sql);
+        $images_req->bindValue('business_id', $business_id, \PDO::PARAM_INT);
+        $images_req->execute();
+        $images = array();
+        while($image_data = $images_req->fetch())
+        {
+            $image = new QDE\Entities\BusinessImage();
+            $image->hydrate($image_data);
+            $images[] = $image;
+        }
+        return $images;
     }
 
     public function getTags()
