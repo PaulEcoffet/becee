@@ -58,19 +58,28 @@
                         <a href="#" class="sub-header-btn">Restaurants</a>
                     </li>
                     <li>
-                        <a href="#" class="sub-header-btn">Boutiques</a>
+                        <a href="#" class="sub-header-btn">Fashion</a>
                     </li>
                     <li>
-                        <a href="#" class="sub-header-btn">Coiffeurs</a>
+                        <a href="#" class="sub-header-btn">Food</a>
                     </li>
                     <li>
-                        <a href="#" class="sub-header-btn">Alimentaire</a>
+                        <a href="#" class="sub-header-btn">Hotels</a>
                     </li>
                     <li>
-                        <a href="#" class="sub-header-btn">Loisirs</a>
+                        <a href="#" class="sub-header-btn">Nightlife</a>
                     </li>
                     <li>
-                        <a href="#" class="sub-header-btn">Opéra</a>
+                        <a href="#" class="sub-header-btn">Beauty & Spas</a>
+                    </li>
+                    <li>
+                        <a href="#" class="sub-header-btn">Automotive</a>
+                    </li>
+                    <li>
+                        <a href="#" class="sub-header-btn">Health & Medical</a>
+                    </li>
+                    <li>
+                        <a href="#" class="sub-header-btn" style="background:rgb(248,248,248);font-weight:800">More</a>
                     </li>
                 </ul>
         </div>
@@ -78,19 +87,16 @@
 </div>
 
 <div class="container-fluid main-container">
-                    <div class="categories info-box" style="background:rgba(100,100,100,0.1); width:110%;height:165px;margin-left:-50px; border:1px solid white"> 
-                            {%for city in page.cities|slice(0, 3) %}
+                    <div class="categories info-box" style="background:#fff; width:110%;height:40px;margin-left:-50px; border:1px solid white"> 
+                            {%for info in ['Buisiness1', 'User', 'Business2'] %}
 
-                            <div class="col-md-4">                    <center><img src="{{ media('img/avatar.png') }}" style="display:block;margin:auto;margin:10px;border:1px solid #fff" class="img-circle">
-                    <span style="color:#222 !important; font-weight:600; font-family: Roboto;font-size:20px">{{city.name}}</span>
+                            <div class="col-md-4">                    <center>
+                    <span style="color:#444 !important; font-weight:600; font-family: Roboto;font-size:20px">{{info}}</span>
                     </center>
                             </div> 
 
                             {% endfor %}
                     </div>
-                <section class="popupHeader">
-                    <center><span class="header_title"><span style="font-size:12px">RECENTS VERSUS</span></span></center>
-                </section>
     <div class="row center-row">
         <div class="col-md-12">
             {% for restaurant in page.businesses %}
