@@ -22,29 +22,75 @@
         {% endblock %}
     </head>
 
-    <body onload="initialize()">
+    <body {% block onload %}onload="test()"{% endblock %}>
         <div class="wrapper">
             <header class="container-fluid">
+                <div class="nav-tools-dropdown">
+                    <div class="btn-group">
+                      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="fa fa-bars fa-2x"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                        <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+                        <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="i"></i> Make admin</a></li>
+                      </ul>
+                    </div>
+                </div>
                 <div class="input-group">
                       <span class="input-group-addon">
                           <span class="fa fa-search fa-lg"></span>
                     </span>
                       <input type="text" class="form-control" placeholder="Restaurant Indien">
                 </div>
-                {{ navtools() }}
+                <ul class="nav-tools">
+                    <li>
+                        <a class="btn-categories btn-default" href="#">
+                            <i class="fa fa-beer fa-lg"></i><span>Bars</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn-categories btn-default" href="#">
+                            <i class="fa fa-coffee fa-lg"></i><span>Cafés</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn-categories btn-default" href="#">
+                            <i class="fa fa-cutlery fa-lg"></i><span>Restaurants</span></a>
+                    </li>
+                    <li>
+                        <a class="btn-categories btn-default" href="#">
+                            <i class="fa fa-gear fa-lg" ></i><span>Custom</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="nav-tools-dropdown-right">
+                    <div class="btn-group">
+                      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="fa fa-bars fa-2x"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                        <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+                        <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="i"></i> Make admin</a></li>
+                      </ul>
+                    </div>
+                </div>
                 <a href="{{ path('home') }}">
                     <div id="logo">
                     </div>
                 </a>
-                {% if not user.is_logged %}
-                <ul id="nav-tools" style="float:right; margin-top:2px">
+                {% if not user.is_logged or user.name == 'visitor' %}
+                <ul class="nav-tools nav-tools-right">
                     <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_login') }}" style="border-color:rgb(200,200,200)">
+                        <a class="btn-categories btn-default" id="test1" rel="leanModal" name="login" href="#login">
                         <i class="fa fa-key fa-lg" ></i><span>LOG IN</span>
                         </a>
                     </li>
                     <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_signup') }}" style="border-color:rgb(200,200,200)">
+                        <a class="btn-categories btn-default"  id="test2" rel="leanModal" name="register" href="#register">
                         <i class="fa fa-sign-in fa-lg" ></i><span>SIGN IN</span>
                         </a>
                     </li>
@@ -53,29 +99,27 @@
                     </li>
                 </ul>
                 {% else %}
-                <ul id="nav-tools" style="float:right; margin-top:2px">
+                <ul class="nav-tools nav-tools-right">
                     <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}" style="border-color:rgb(200,200,200)">
+                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
                         <i class="fa fa-key fa-lg" ></i><span>Go to profil</span>
                         </a>
                     </li>
                     <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'businesses'}) }}" style="border-color:rgb(200,200,200)">
+                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'businesses'}) }}">
                         <i class="fa fa-rocket fa-lg" ></i><span>Hi, {{ user.name }}!</span>
                         </a>
                     </li>
                     <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_logout') }}" style="border-color:rgb(200,200,200)">
+                        <a class="btn-categories btn-default" href="{{ path('user_logout') }}">
                         <i class="fa fa-sign-out fa-lg" ></i><span>Log Out</span>
                         </a>
                     </li>
                 </ul>
                 {% endif %}
-
             </header>
-
             <div class="container-fluid main-content">
-            {% block content %}{% endblock %}
+                {% block content %}{% endblock %}
             </div>
             <div class="push"></div>
         </div>
@@ -86,28 +130,132 @@
                 <p>PAR LA MEP TEAM</p>
             {% endblock %}
         </footer>
+
+        {% block overlay %}
+        <div id="login" class="popupContainer">
+            <section class="popupHeader">
+                <span class="header_title">Login</span>
+                <span class="modal_close"><i class="fa fa-times"></i></span>
+            </section>
+            <section class="popupBody">
+                {% if page.flash.login_error is defined %}
+                <div class="row"> <!-- I'm UGLY -->
+                    <p class="col-md-12 alert alert-warning">
+                        {{ page.flash.login_error }}
+                    </p>
+                </div>
+                {% endif %}
+                <div class="user_login">
+                    <form role="form" method="post" enctype="multipart/form-data" action="{{path('user_login_processing')}}">
+                        <label>Email / Username</label> <input type="text" name="email"><br>
+                        <label>Password <span class="forgot_password">Forgot password</span></label><input type="password" name="password"><br>
+
+                        <div class="checkbox">
+                            <input id="remember" type="checkbox"> <label for=
+                            "remember">Remember me on this computer</label>
+                        </div>
+
+                        <div class="action_btns clearfix">
+                            <div class="one_half">
+                                <a class="btn back_btn" id="go" rel="leanModal" name="register" href="#register">Register</a>
+                            </div>
+
+                            <div class="one_half last">
+                                <button type="submit" class="btn btn_red">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr/>
+                    <a class="social_box0 fb" href="#">
+                    <span class="icon"><i class="fa fa-facebook fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Facebook</span></a>
+                    <a class="social_box0 google" href="#">
+                    <span class="icon"><i class="fa fa-google-plus fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Google</span></a>
+                </div>
+            </section>
+        </div>
+        <div id="info" class="popupContainer">
+            <section class="popupHeader">
+                <span class="header_title">Information</span>
+                <span class="modal_close"><i class="fa fa-times"></i></span>
+            </section>
+            <section class="popupBody">
+                {% if page.flash.info is defined %}
+                <div class="row"> <!-- I'm UGLY -->
+                    <p class="col-md-12 alert alert-success">
+                        <i class="fa fa-check"></i> {{ page.flash.info }}
+                    </p>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+
+        <div id="register" class="popupContainer">
+            <section class="popupHeader">
+                <span class="header_title">Register</span>
+                <span class="modal_close"><i class="fa fa-times"></i></span>
+            </section>
+            <section class="popupBody">
+                {% if page.flash.login_error is defined %}
+                <div class="row"> <!-- I'm UGLY -->
+                    <p class="col-md-12 alert alert-warning">
+                        {{ page.flash.login_error }}
+                    </p>
+                </div>
+                {% endif %}
+                <div class="user_register">
+                    <form>
+                        <label>Full Name</label> <input type="text"><br>
+                        <label>Email Address</label> <input type="email"><br>
+                        <label>Password</label> <input type="password"><br>
+                 
+                        <div class="checkbox">
+                            <input id="send_updates" type="checkbox"> <label for=
+                            "send_updates">Send me occasional email updates</label>
+                        </div>
+                 
+                        <div class="action_btns clearfix">
+                            <div class="one_half">
+                                <a class="btn back_btn" id="go" rel="leanModal" name="login" href="#login">Login</a>
+                            </div>
+                 
+                            <div class="one_half last">
+                                <a class="btn btn_red" href="#">Register</a>
+                            </div>
+                        </div>
+                    </form>
+                    <hr/>
+                    <a class="social_box0 fb" href="#">
+                    <span class="icon"><i class="fa fa-facebook fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Facebook</span></a>
+                    <a class="social_box0 google" href="#">
+                    <span class="icon"><i class="fa fa-google-plus fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Google</span></a>
+
+                </div>
+            </section>
+        </div>
+        {% endblock %}
+        <a class="btn-categories btn-default" id="_info" rel="leanModal" name="info" href="#info" style="display:none">
+
+        {% if page.flash.login_error is defined %}
+        {% set div_id = '#test1' %}
+        {% elseif page.flash.info is defined %}
+        {% set div_id = '#_info' %}
+        {% endif %}
+
         {% block scripts %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ media('vendor/jquery-plugins/leanModal/jquery.leanModal.min.js') }}"></script>
+        <script type="text/javascript" src="{{ media('vendor/jquery-plugins/leanModal/jquery.leanModal-onload.js') }}"></script>
         <script src="{{ media('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-        <!-- Facebook API -->
-        <div id="fb-root"></div>
-        <script>
-          window.fbAsyncInit = function() {
-            FB.init({
-              appId      : '{{ config.facebook_app_id }}',
-              status     : true,
-              xfbml      : true
+        <script type="text/javascript">
+            $(function() {
+                $('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });       
             });
-          };
-
-          (function(d, s, id){
-             var js, fjs = d.getElementsByTagName(s)[0];
-             if (d.getElementById(id)) {return;}
-             js = d.createElement(s); js.id = id;
-             js.src = "//connect.facebook.net/en_US/all.js";
-             fjs.parentNode.insertBefore(js, fjs);
-           }(document, 'script', 'facebook-jssdk'));
+            function test() 
+            {
+                $('{{ div_id }}').leanModal_onLoad({ top : 200, closeButton: ".modal_close" });       
+            }
         </script>
+        <!-- Facebook API -->
         {% endblock %}
         </body>
 </html>

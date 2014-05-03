@@ -12,7 +12,6 @@ class CurrentUserManager
         $this->pdo = $this->app->getPdo();
         if($this->app->hasSession('user_id') === false && $this->app->hasCookie('user_id') === true)
         {
-            echo $this->app->getCookie('user_id');
             $this->connectUser(array('id' => $this->app->getCookie('user_id'), 'name' => 'visitor'));
 
         }

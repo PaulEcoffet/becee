@@ -4,7 +4,7 @@ namespace Becee\Controllers;
 
 class Users
 {
-    public function registerAction($request, $city="Bordeaux")
+    public function registerAction($request)
     {
         try
         {
@@ -64,7 +64,7 @@ class Users
         if(!$error)
             return new \QDE\Responses\RedirectResponse('home');
         else
-            return new \QDE\Responses\RedirectResponse('user_signup', null, array('error' => $errorMessage));
+            return new \QDE\Responses\RedirectResponse('home', null, array('error' => $errorMessage));
     }
     public function logInAction($request)
     {
@@ -88,15 +88,15 @@ class Users
         if(isset($user))
         {
             $CurrentUserManager -> connectUser($user);
-            return new \QDE\Responses\RedirectResponse('home');
+            return new \QDE\Responses\RedirectResponse('user_manager', array('id' => $CurrentUserManager->getId()), array('info' => 'Successfull connection !'));
         }
-        return new \QDE\Responses\RedirectResponse('user_login', null, array('error' => 'Invalid email/password combination'));
+        return new \QDE\Responses\RedirectResponse('home', null, array('login_error' => 'Invalid email/password combination'));
     }
     public function logOutAction($request)
     {
         $CurrentUserManager = $request->getManager('CurrentUser');
         $CurrentUserManager -> disconnectUser();
-        return new \QDE\Responses\TwigResponse('flash.html.twig', array('path' => 'home', 'info' => 'Logout successful'));
+        return new \QDE\Responses\RedirectResponse('home', null, array('info' => 'You have been disconnected !'));
     }
     public function managerAction($request)
     {

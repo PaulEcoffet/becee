@@ -6,6 +6,15 @@ class Home
 {
     public function indexAction($request)
     {
+        try
+        {
+            $flash = $request->getCustomVariable('flash');
+        }
+        catch (\Exception $e)
+        {
+            $flash = array();
+        }
+
         $BusinessManager = $request->getManager('Businesses');
         $user = $request->getManager('CurrentUser');
         $POST = $request->getPost();
@@ -29,6 +38,9 @@ class Home
             }
         }
         $tags = $BusinessManager->getTags();
-        return new \QDE\Responses\TwigResponse('home.html.twig', array('businesses' => $businesses, 'cities' => $cities, 'current_city' => $current_city, 'tags' => $tags));
+        return new \QDE\Responses\TwigResponse('home.html.twig',
+            array('businesses' => $businesses, 'cities' => $cities, 
+                'current_city' => $current_city, 'tags' => $tags,
+                'flash' => $flash));
     }
 }
