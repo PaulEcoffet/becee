@@ -246,6 +246,7 @@
         <script type="text/javascript" src="{{ media('vendor/jquery-plugins/leanModal/jquery.leanModal.min.js') }}"></script>
         <script type="text/javascript" src="{{ media('vendor/jquery-plugins/leanModal/jquery.leanModal-onload.js') }}"></script>
         <script src="{{ media('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+
         <script type="text/javascript">
             $(function() {
                 $('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });       
@@ -256,6 +257,14 @@
             }
         </script>
         <!-- Facebook API -->
+        <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '{{ config.facebook_app_id }}',
+              status     : true,
+              xfbml      : true
+            })};
+        </script>
         {% endblock %}
         </body>
 </html>
