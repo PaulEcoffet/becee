@@ -115,28 +115,30 @@ GROUP BY businesses.id
         return $business_req->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function getBusinessImages($business_id)
+    public function getBusinessImages($business_id, $limit=5, $offset=0)
     {
-        $sql = <<<'EOF'
-SELECT
-    business_images.path,
-    COALESCE(users.name, 'Anonymous') as uploaderName,
-    users.id as uploaderId,
-    business_images.priority,
-    businesses.id as businessId
-FROM
-    business_images
-        INNER JOIN
-    businesses ON business_images.business_id = businesses.id
-        LEFT JOIN
-    users ON business_images.user_id = users.id
-WHERE
-    businesses.id = :business_id
-ORDER BY priority;
-EOF;
+        $sql = '
+            SELECT
+                business_images.path,
+                COALESCE(users.name, \'Anonymous\') as uploaderName,
+                users.id as uploaderId,
+                business_images.priority,
+                businesses.id as businessId
+            FROM
+                business_images
+                    INNER JOIN
+                businesses ON business_images.business_id = businesses.id
+                    LEFT JOIN
+                users ON business_images.user_id = users.id
+            WHERE
+                businesses.id = :business_id
+            ORDER BY priority
+            LIMIT :limit OFFSET :offset;';
 
         $images_req = $this->pdo->prepare($sql);
         $images_req->bindValue('business_id', $business_id, \PDO::PARAM_INT);
+        $images_req->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $images_req->bindValue('offset', $offset, \PDO::PARAM_INT);
         $images_req->execute();
         $images = array();
         while($image_data = $images_req->fetch())
@@ -148,7 +150,61 @@ EOF;
         return $images;
     }
 
-    public function getTags()
+    public function getBusinessMostReleventTags($business_id, $limit=5)
+    {
+        $sql = '
+            SELECT
+                business_tags.id as tag_id, business_tags.name as tag_name, businesses.name as business_name
+            FROM
+                business_tags
+                    INNER JOIN
+                link_businesses_tags ON link_businesses_tags.tag_id = business_tags.id
+                    INNER JOIN
+                businesses ON link_businesses_tags.business_id = businesses.id
+             WHERE
+                link_businesses_tags.nb_yes / (link_businesses_tags.nb_no + link_businesses_tags.nb_yes) > 0.5
+                    AND businesses.id = :business_id
+            ORDER BY link_businesses_tags.nb_yes / (link_businesses_tags.nb_no + link_businesses_tags.nb_yes) DESC
+            LIMIT :limit
+            ;';
+        $tags_req = $this->pdo->prepare($sql);
+        $tags_req->bindValue('business_id', $business_id, \PDO::PARAM_INT);
+        $tags_req->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $tags_req->execute();
+        $tags = $tags_req->fetchAll(\PDO::FETCH_ASSOC);
+        return $tags;
+    }
+
+    public function getBusinessComments($business_id, $limit=10, $offset=0)
+    {
+        $sql = '
+            SELECT
+                business_comments.comment,
+                pub_date,
+                business_comments.vote_neg,
+                business_comments.vote_pos,
+                users.id as user_id,
+                COALESCE(users.name, \'Anonymous\') as user_name,
+                users.avatar_path
+            FROM
+                business_comments
+                    LEFT JOIN
+                users ON business_comments.user_id = users.id
+            WHERE
+                business_comments.business_id = :business_id
+            ORDER BY pub_date DESC
+            LIMIT :limit OFFSET :offset;';
+        $comments_req = $this->pdo->prepare($sql);
+        $comments_req->bindValue('business_id', $business_id, \PDO::PARAM_INT);
+        $comments_req->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $comments_req->bindValue('offset', $offset, \PDO::PARAM_INT);
+        $comments_req->execute();
+        /* TODO MUST HYDRATE A COMMENT OBJECT */
+        $comments = $comments_req->fetchAll(\PDO::FETCH_ASSOC);
+        return $comments;
+    }
+
+    public function getAllTags()
     {
         $sql = "SELECT * FROM business_tags;
         ;
