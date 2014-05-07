@@ -2,6 +2,8 @@
 
 namespace Becee\Models;
 use \Becee\Entities\Business;
+use \Becee\Entities\BusinessImage;
+use \Becee\Entities\BusinessComment;
 
 class BusinessesManager
 {
@@ -61,13 +63,10 @@ class BusinessesManager
     }
 
 
-    public function getBusinessById($business_id)
-
+    public function getBusinessById($business_id, $option=null)
     {
-        $new_business = new Business();
-
         $sql = 'SELECT businesses.name, businesses.id,
-GROUP_CONCAT(business_categories.name) as category,
+        GROUP_CONCAT(business_categories.name) as categories,
         businesses.website,
         businesses.email,
         businesses.phone_number,
@@ -80,39 +79,51 @@ GROUP_CONCAT(business_categories.name) as category,
         countries.nicename as country_name
 
 
-FROM businesses
+        FROM businesses
 
 
-LEFT OUTER JOIN link_businesses_categories
-ON link_businesses_categories.business_id = businesses.id   /* Getting all categories, separated by "," */
-LEFT OUTER JOIN business_categories
-ON business_categories.id = link_businesses_categories.category_id
+        LEFT OUTER JOIN link_businesses_categories
+        ON link_businesses_categories.business_id = businesses.id   /* Getting all categories, separated by "," */
+        LEFT OUTER JOIN business_categories
+        ON business_categories.id = link_businesses_categories.category_id
 
-INNER JOIN users 
-        ON businesses.manager_id = users.id  /*Getting Manager */
+        INNER JOIN users 
+                ON businesses.manager_id = users.id  /*Getting Manager */
 
-        INNER JOIN business_addresses 
-        ON business_addresses.business_id = businesses.id  /* Getting addresse */
+                INNER JOIN business_addresses 
+                ON business_addresses.business_id = businesses.id  /* Getting addresse */
 
-        INNER JOIN cities 
-        ON business_addresses.city_id = cities.id  /* Getting cities */
+                INNER JOIN cities 
+                ON business_addresses.city_id = cities.id  /* Getting cities */
 
-        INNER JOIN provinces
-        ON cities.province_id = provinces.id    /* Getting province */
+                INNER JOIN provinces
+                ON cities.province_id = provinces.id    /* Getting province */
 
-        INNER JOIN countries
-        ON provinces.country_id = countries.id     /* Getting country */
+                INNER JOIN countries
+                ON provinces.country_id = countries.id     /* Getting country */
 
-WHERE businesses.id = 1
-GROUP BY businesses.id
-;'
+        WHERE businesses.id = 1
+        GROUP BY businesses.id
+        ;'
         ;
 
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute(array($business_id));
-        echo $business_id;
-        print_r($business_req->fetch(\PDO::FETCH_ASSOC));
-        return $business_req->fetch(\PDO::FETCH_ASSOC);
+        $business_result = $business_req->fetch(\PDO::FETCH_ASSOC);
+        $business_result['categories'] = explode(',', $business_result['categories']);
+        $business = new Business($business_result);
+        if(is_array($option))
+        {
+            if(in_array('with_images', $option))
+            {
+                $business->setImages($this->getBusinessImages($business_id));
+            }
+            if(in_array('with_comments', $option))
+            {
+                $business->setComments($this->getBusinessComments($business_id));
+            }
+        }
+        return $business;
     }
 
     public function getBusinessImages($business_id, $limit=5, $offset=0)
@@ -143,7 +154,7 @@ GROUP BY businesses.id
         $images = array();
         while($image_data = $images_req->fetch())
         {
-            $image = new QDE\Entities\BusinessImage();
+            $image = new BusinessImage();
             $image->hydrate($image_data);
             $images[] = $image;
         }
@@ -179,13 +190,14 @@ GROUP BY businesses.id
     {
         $sql = '
             SELECT
+                business_comments.id,
                 business_comments.comment,
-                pub_date,
-                business_comments.vote_neg,
-                business_comments.vote_pos,
-                users.id as user_id,
-                COALESCE(users.name, \'Anonymous\') as user_name,
-                users.avatar_path
+                pub_date as pubDate,
+                business_comments.vote_neg as voteNeg,
+                business_comments.vote_pos as votePos,
+                users.id as userId,
+                COALESCE(users.name, \'Anonymous\') as userName,
+                users.avatar_path as userAvatar
             FROM
                 business_comments
                     LEFT JOIN
@@ -199,8 +211,13 @@ GROUP BY businesses.id
         $comments_req->bindValue('limit', $limit, \PDO::PARAM_INT);
         $comments_req->bindValue('offset', $offset, \PDO::PARAM_INT);
         $comments_req->execute();
-        /* TODO MUST HYDRATE A COMMENT OBJECT */
-        $comments = $comments_req->fetchAll(\PDO::FETCH_ASSOC);
+        $comments = array();
+        while($comment_arr = $comments_req->fetch(\PDO::FETCH_ASSOC))
+        {
+            $comment = new BusinessComment();
+            $comment->hydrate($comment_arr);
+            $comments[] = $comment;
+        }
         return $comments;
     }
 
