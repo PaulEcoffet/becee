@@ -8,8 +8,11 @@ class Businesses
     {
 
         $manager = $request->getManager('businesses');
-        $response = $manager->getBusinessById($request->getParamsUri('id'));
+        $id = $request->getParamsUri('id');
+        $response = $manager->getBusinessById($id, array('with_images', 'with_comments'));
+        echo '<pre>';
         print_r($response);
+        echo '</pre>';
         return new \QDE\Responses\TwigResponse('view_business.html.twig', array('business' => $response));
     }
 
