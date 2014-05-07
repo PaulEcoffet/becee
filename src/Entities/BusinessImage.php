@@ -1,5 +1,7 @@
 <?php
 
+namespace Becee\Entities;
+
 class BusinessImage
 {
     protected $path;
@@ -19,7 +21,7 @@ class BusinessImage
 
     public function hydrate(array $data)
     {
-        foreach ($donnees as $key => $value)
+        foreach ($data as $key => $value)
         {
             $method = 'set'.ucfirst($key);
             if (method_exists($this, $method))
@@ -34,7 +36,7 @@ class BusinessImage
      *
      * @return path.
      */
-    function getPath()
+    public function getPath()
     {
         return $this->path;
     }
@@ -45,7 +47,7 @@ class BusinessImage
      *
      * @param path the value to set.
      */
-    function setPath($path)
+    public function setPath($path)
     {
         $this->path = $path;
     }
@@ -55,7 +57,7 @@ class BusinessImage
      *
      * @return uploaderName.
      */
-    function getUploaderName()
+    public function getUploaderName()
     {
         return $this->uploaderName;
     }
@@ -65,7 +67,7 @@ class BusinessImage
      *
      * @param uploaderName the value to set.
      */
-    function setUploaderName($uploaderName)
+    public function setUploaderName($uploaderName)
     {
         $this->uploaderName = $uploaderName;
     }
@@ -75,7 +77,7 @@ class BusinessImage
      *
      * @return uploaderId.
      */
-    function getUploaderId()
+    public function getUploaderId()
     {
         return $this->uploaderId;
     }
@@ -85,7 +87,7 @@ class BusinessImage
      *
      * @param uploaderId the value to set.
      */
-    function setUploaderId($uploaderId)
+    public function setUploaderId($uploaderId)
     {
         $this->uploaderId = $uploaderId;
     }
@@ -95,7 +97,7 @@ class BusinessImage
      *
      * @return priority.
      */
-    function getPriority()
+    public function getPriority()
     {
         return $this->priority;
     }
@@ -105,7 +107,7 @@ class BusinessImage
      *
      * @param priority the value to set.
      */
-    function setPriority($priority)
+    public function setPriority($priority)
     {
         $this->priority = $priority;
     }
@@ -115,7 +117,7 @@ class BusinessImage
      *
      * @return businessId.
      */
-    function getBusinessId()
+    public function getBusinessId()
     {
         return $this->businessId;
     }
@@ -125,7 +127,7 @@ class BusinessImage
      *
      * @param businessId the value to set.
      */
-    function setBusinessId($businessId)
+    public function setBusinessId($businessId)
     {
         $this->businessId = $businessId;
     }
