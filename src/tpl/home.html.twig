@@ -1,6 +1,5 @@
 {% extends "main_layout.html.twig" %}
 {% from 'general.html.twig' import navtools%}
-{% block title %}Home{% endblock %}
 
 {% block content %}
 
@@ -50,52 +49,35 @@
     </div><!-- end col-md-12-->
 </div><!-- end row -->
 
-<div id="sub-header">
+<div id="sub-header" style="background:#A65353; padding:20px">
     <div class="container container-fluid">
         <div class="row">
-                <ul>
-                    <li class="selected">
-                        <a href="#" class="sub-header-btn">Restaurants</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn">Fashion</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn">Food</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn">Hotels</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn">Nightlife</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn">Beauty & Spas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn">Automotive</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn">Health & Medical</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sub-header-btn" style="background:rgb(248,248,248);font-weight:800">More</a>
-                    </li>
-                </ul>
+                <div class="input-group" style="width:100%">
+                      <span class="input-group-addon">
+                    </span>
+                      <input type="text" id="iconified" class="form-control empty" style="border-radius:50px; background-color:rgba(0,0,0,0.4); color:white; border:none; width:100%" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}">
+                </div>
         </div>
     </div>
 </div>
-<br/>
 <div class="container container-fluid">
     <div class="row top15">
-            <div class="col-md-2">
-                <div style="width:100%; border: 0px solid #ddd;padding:20px;border-right:none;">
-                    <div style="text-align:center; color:#222;padding:10px"><i class="fa fa-cutlery fa-5x"></i><span style="font-size:25px"></br>Restaurant</span></div>
-                    <div style="text-align:center; color:#222;padding:10px;background-color:#eee">Recent Reviews</div>
-                </div>
+            <div class="col-md-2 col-xs-2" style="padding:20px;">
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
+                    <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-crosshairs  fa-5x"></i><span style="font-size:25px"></br>Suggested</span></div>
+                </div></a>
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
+                    <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-location-arrow  fa-5x"></i><span style="font-size:25px"></br>Nearest</span></div>
+                </div></a>
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #eee;padding:5px; background-color:#365B68">
+                    <div style="text-align:center; color:#ECF0F1;padding:10px"><i class="fa  fa-comments-o  fa-5x"></i><span style="font-size:25px"></br>Reviews</span></div>
+                </div></a>
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
+                    <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-random  fa-5x"></i><span style="font-size:25px"></br>Random</span></div>
+                </div></a>
             </div>
-            <div class="col-md-10" style="border: 1px solid #ddd;padding:20px;">
-                {% for restaurant in page.businesses|slice(0,4) %}
+            <div class="col-md-10 col-xs-10" style="border: 0px solid #ddd;padding:20px;">
+                {% for restaurant in page.businesses|slice(0,6) %}
                 <div class="col-md-6 home-business">
                     <div class="home-business-box">
                         <div class="row">
@@ -113,63 +95,49 @@
                                     </p>
                                 </div>
                     <div class="description-info-business-box">
-                        <p style="display:inline-block; width:auto;float:left"><i class="fa fa-comment" style="padding:10px;margin:5px;background-color:#eee"></i></p><p>{{ restaurant.description[0:150] }}...</p>
+                    <div>
+                        <p style="display:inline-block; width:auto;float:left"><i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i></p><p>{{ restaurant.description[0:150] }}...</p>
+                    </div>
+                    <div><hr style="margin: 5px 0" />
+                        <p style="color:#aaa; float:right;"><i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 - <i class="fa fa-thumbs-o-up"></i> 5</p>
+                    </div>
                     </div>
                             </div></a>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+                    <div class="row"><div class="col-md-12"><div style="text-align:center; color:#aaa;text-style:italic;padding:10px;background-color:#fff;margin: 10px 0"><i class="fa fa-spinner"></i> Loading</div></div></div>
             </div>
     </div>
-
+</div>
+<div class="container container-fluid">
     <div class="row top15">
-            <div class="col-md-10" style="border: 1px solid #ddd;padding:20px;">
-                {% for restaurant in page.businesses|slice(0,4) %}
-                <div class="col-md-6 home-business">
-                    <div class="home-business-box">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a alt="page_restaurant" href="{% spaceless %}{{ path('view_business', {'id':restaurant.id, 'name':restaurant.name}) }}{% endspaceless %}" style="display:block"><div class="business-box-container" style="background:url({{ media(restaurant.path) }}) no-repeat center; border-right:5px solid white">
-                                    {% for tag in page.tags|slice(0, 4) %}
-                                    <a href="{{ path('business_add') }}" class="btn btn-small tag">{{tag.name}}</a>
-                                    {% endfor %}
-
-                                    <p class="business-info">
-                                        {{restaurant.name}}<br/>
-                                        <span style="font-size:12px">{{restaurant.line1}}</span>
-                                        <span class="secondary-info-business-box">€ € € - 3.2 km</span>
-                                    </p>
-                                </div></a>
-                    <div class="description-info-business-box">
-                        <p style="display:inline-block; width:auto;float:left"><i class="fa fa-comment" style="padding:10px;margin:5px;background-color:#eee"></i></p><p>{{ restaurant.description[0:150] }}...</p>
-                    </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="col-md-2">
-                <div style="width:100%; border: 0px solid #ddd;padding:20px;border-right:none;">
-                    <div style="text-align:center; color:#222;padding:10px"><i class="fa fa-cutlery fa-5x"></i><span style="font-size:25px"></br>Restaurant</span></div>
-                    <div style="text-align:center; color:#222;padding:10px;background-color:#eee">Recent Reviews</div>
-                </div>
-            </div>
-    </div>
-
-    <div class="row top15">
-        <div class="col-md-10" style="padding:10px;border: 0px solid #ddd;">
-                            Schmoll a fait un clash entre The Black Pearl et Getsumen<hr style="margin:5px 0" />
-                            Henry a rejoint la communauté<hr style="margin:5px 0" />
-                            Reuters a fait sa première review sur Getsumen<hr style="margin:5px 0" />
-        </div>
         <div class="col-md-2">
             <div style="width:100%; padding:20px;">
                 <div style="text-align:center; color:#222;padding:10px;background-color:#eee">Recent activites</div>
             </div>
         </div>
+        <div class="col-md-10" style="padding:10px;border: 0px solid #ddd;">
+                            Schmoll a fait un clash entre The Black Pearl et Getsumen<hr style="margin:5px 0" />
+                            Henry a rejoint la communauté<hr style="margin:5px 0" />
+                            Reuters a fait sa première review sur Getsumen<hr style="margin:5px 0" />
+        </div>
     </div>
 
 </div>
+{% block scripts %}
+{{ parent() }}
+<script type="text/javascript">
+    $('#iconified').on('keyup', function() {
+    var input = $(this);
+    if(input.val().length === 0) {
+        input.addClass('empty');
+    } else {
+        input.removeClass('empty');
+    }
+});
+</script>
 {% endblock %}
+{% endblock %}
+
