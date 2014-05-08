@@ -25,6 +25,7 @@ class Users
         $error = false;
         $errorMessage = '';
         $data = array();
+        echo "string";
         try
         {
             $data['name'] = htmlspecialchars($request->getPost('name'));
@@ -64,7 +65,7 @@ class Users
         if(!$error)
             return new \QDE\Responses\RedirectResponse('home');
         else
-            return new \QDE\Responses\RedirectResponse('home', null, array('error' => $errorMessage));
+            return new \QDE\Responses\RedirectResponse('home', null, array('register_error' => $errorMessage));
     }
     public function logInAction($request)
     {

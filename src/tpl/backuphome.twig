@@ -5,47 +5,42 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div id="head">
-        <div style="position:absolute;bottom:0; height:100px; width:100%">
-        <div class="container container-fluid">
-        <div class="row">
-        <div class="col-md-5 hidden-ms hidden-xs">
-            <div style="border-left: 2px solid #f15959; height:100px; padding:35px 15px 0; width:100%">
-                <p style="font-style:normal; font-size:28px; font-family:Roboto">
-                becee<span style="color:#f15959">. suggesting you the best</span> 
-                </p></div>
-        </div>
-        <div class="col-md-7">
-                <div class="input-group" style="float:right; display:inline-block; width:100%; margin-top:15px">
-                      <span class="input-group-addon">
-                    </span>
-                      <input type="text" id="iconified" class="form-control empty" style="background-color:rgba(0,0,0,0.5); color:white; border:1px solid rgba(250,250,250,0.35); width:100%; height:50px" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}">
-                </div>
+        <div id="head" class="container">
+            <div id="head-content" style="position:absolute;bottom:0; border-left: 2px solid #f15959; height:100px; padding:25px">
+                <p style="font-style:normal; font-size:2em">
+                here at becee<span style="color:#f15959">. we suggest you the best</span>
+                </p>
             </div>
-        </div>
-        </div>
-        </div>
-        </div>
         </div>
     </div><!-- end col-md-12-->
 </div><!-- end row -->
+
+<div id="sub-header" style="background:#3e606f; padding:20px">
+    <div class="container container-fluid">
+        <div class="row">
+                <div class="input-group" style="width:100%">
+                      <span class="input-group-addon">
+                    </span>
+                      <input type="text" id="iconified" class="form-control empty" style="border-radius:50px; background-color:rgba(0,0,0,0.4); color:white; border:none; width:100%" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}">
+                </div>
+        </div>
+    </div>
+</div>
 <div class="container container-fluid">
     <div class="row top15">
-            <div class="col-md-2 col-xs-2" style="padding:20px">
-                <div style="background-color:rgb(248,248,248)">
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
+            <div class="col-md-2 col-xs-2" style="padding:20px;">
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
                     <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-crosshairs  fa-5x"></i><span style="font-size:25px"></br>Suggested</span></div>
                 </div></a>
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
                     <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-location-arrow  fa-5x"></i><span style="font-size:25px"></br>Nearest</span></div>
                 </div></a>
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #eee;padding:5px; background-color:#2C3E50">
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #eee;padding:5px; background-color:#3e606f">
                     <div style="text-align:center; color:#ECF0F1;padding:10px"><i class="fa  fa-comments-o  fa-5x"></i><span style="font-size:25px"></br>Reviews</span></div>
                 </div></a>
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
+                <a alt="page_restaurant" href="#" style="display:block"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
                     <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-random  fa-5x"></i><span style="font-size:25px"></br>Random</span></div>
                 </div></a>
-                </div>
             </div>
             <div class="col-md-10 col-xs-10" style="border: 0px solid #ddd;padding:20px;">
                 {% for restaurant in page.businesses|slice(0,6) %}
@@ -81,6 +76,21 @@
                     <div class="row"><div class="col-md-12"><div style="text-align:center; color:#aaa;text-style:italic;padding:10px;background-color:#fff;margin: 10px 0"><i class="fa fa-spinner"></i> Loading</div></div></div>
             </div>
     </div>
+</div>
+<div class="container container-fluid">
+    <div class="row top15">
+        <div class="col-md-2">
+            <div style="width:100%; padding:20px;">
+                <div style="text-align:center; color:#222;padding:10px;background-color:#eee">Recent activites</div>
+            </div>
+        </div>
+        <div class="col-md-10" style="padding:10px;border: 0px solid #ddd;">
+                            Schmoll a fait un clash entre The Black Pearl et Getsumen<hr style="margin:5px 0" />
+                            Henry a rejoint la communauté<hr style="margin:5px 0" />
+                            Reuters a fait sa première review sur Getsumen<hr style="margin:5px 0" />
+        </div>
+    </div>
+
 </div>
 {% block scripts %}
 {{ parent() }}

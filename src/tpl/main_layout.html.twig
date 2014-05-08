@@ -24,7 +24,7 @@
 
     <body {% block onload %}onload="test()"{% endblock %}>
         <div class="wrapper">
-            <header class="container-fluid">
+            <header class="container-fluid" style="position:absolute; top:0; right:0; z-index:999999999999; left:0;">
                 <div class="nav-tools-dropdown">
                     <div class="btn-group">
                       <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
@@ -38,27 +38,6 @@
                       </ul>
                     </div>
                 </div>
-                <ul class="nav-tools">
-                    <li>
-                        <a class="btn-categories btn-default" href="#">
-                            <i class="fa fa-beer fa-lg"></i><span>Bars</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-categories btn-default" href="#">
-                            <i class="fa fa-coffee fa-lg"></i><span>Cafés</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-categories btn-default" href="#">
-                            <i class="fa fa-cutlery fa-lg"></i><span>Restaurants</span></a>
-                    </li>
-                    <li>
-                        <a class="btn-categories btn-default" href="#">
-                            <i class="fa fa-gear fa-lg" ></i><span>Custom</span>
-                        </a>
-                    </li>
-                </ul>
                 <div class="nav-tools-dropdown-right">
                     <div class="btn-group">
                       <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
@@ -72,10 +51,6 @@
                       </ul>
                     </div>
                 </div>
-                <a href="{{ path('home') }}">
-                    <div id="logo">
-                    </div>
-                </a>
                 {% if not user.is_logged or user.name == 'visitor' %}
                 <ul class="nav-tools nav-tools-right">
                     <li>
@@ -96,12 +71,7 @@
                 <ul class="nav-tools nav-tools-right">
                     <li>
                         <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
-                        <i class="fa fa-key fa-lg" ></i><span>Go to profil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'businesses'}) }}">
-                        <i class="fa fa-rocket fa-lg" ></i><span>Hi, {{ user.name }}!</span>
+                        <img src="{{ media(user.image) }}"><span>{{ user.name }}</span>
                         </a>
                     </li>
                     <li>
@@ -189,21 +159,21 @@
                 <span class="modal_close"><i class="fa fa-times"></i></span>
             </section>
             <section class="popupBody">
-                {% if page.flash.login_error is defined %}
+                {% if page.flash.register_error is defined %}
                 <div class="row"> <!-- I'm UGLY -->
                     <p class="col-md-12 alert alert-warning">
-                        {{ page.flash.login_error }}
+                        {{ page.flash.register_error }}
                     </p>
                 </div>
                 {% endif %}
                 <div class="user_register">
-                    <form>
-                        <label>Full Name</label> <input name="nickname" type="text"><br>
+                    <form role="form" method="post" enctype="multipart/form-data" action="{{path('user_signup_process')}}">
+                        <label>Full Name</label> <input name="name" type="text"><br>
                         <label>Email Address</label> <input name="email" type="email"><br>
                         <label>Password</label> <input name="password" type="password"><br>
-                 
+                        <label>Verify Password</label> <input name="verifypassword" type="password"><br>
                         <div class="checkbox">
-                            <input id="send_updates" type="checkbox"> <label for=
+                            <input id="send_updates" name="send_updates" type="checkbox"> <label for=
                             "send_updates">Send me occasional email updates</label>
                         </div>
                  
@@ -213,7 +183,7 @@
                             </div>
                  
                             <div class="one_half last">
-                                <a class="btn btn_red" href="#">Register</a>
+                                <input type="submit" value="Register" class="btn btn_red"></input>
                             </div>
                         </div>
                     </form>
@@ -233,6 +203,8 @@
         {% set div_id = '#test1' %}
         {% elseif page.flash.info is defined %}
         {% set div_id = '#_info' %}
+        {% elseif page.flash.register_error is defined %}
+        {% set div_id = '#test2' %}
         {% endif %}
 
         {% block scripts %}
