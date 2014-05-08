@@ -266,8 +266,8 @@ class BusinessesManager
                 ;
 
         $visit_req = $this->pdo->prepare($sql);
-        $visit_req->bindValue(':user' => $user_id;
-        $visit_req->bindValues(':business' => $business_id);
+        $visit_req->bindValue(':user', $user_id);
+        $visit_req->bindValues(':business', $business_id);
 
         $visit_req->execute();
     }
