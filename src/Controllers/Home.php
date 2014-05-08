@@ -37,7 +37,7 @@ class Home
                 $current_city = $city;
             }
         }
-        $tags = $BusinessManager->getTags();
+        $tags = $BusinessManager->getBusinessMostReleventTags(1, 5);
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities, 
                 'current_city' => $current_city, 'tags' => $tags,

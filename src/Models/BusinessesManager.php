@@ -102,7 +102,7 @@ class BusinessesManager
                 INNER JOIN countries
                 ON provinces.country_id = countries.id     /* Getting country */
 
-        WHERE businesses.id = 1
+        WHERE businesses.id = ?
         GROUP BY businesses.id
         ;'
         ;
@@ -233,7 +233,7 @@ class BusinessesManager
 
     public function getBusinessesByCity($city_id)
     {
-        $sql = "SELECT b.name, b.description, ba.line1, bi.path
+        $sql = "SELECT b.name, b.description, ba.line1, bi.path, bi.id
                 FROM ((businesses b INNER JOIN business_addresses ba ON b.id = ba.business_id)
                     INNER JOIN cities c ON c.id = ba.city_id)
                     INNER JOIN business_images bi ON bi.business_id = b.id

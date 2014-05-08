@@ -49,12 +49,12 @@
     },
     {
         "name": "view_business",
-        "route": "business/{id}-{name}",
+        "route": "business/{id}/{name}",
         "controller": "Businesses",
         "action": "viewBusiness",
         "variables": {
             "id": "\\d+",
-            "name": "[-A-Z0-9a-z]+"
+            "name": ".*"
         }
     },
     {
