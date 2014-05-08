@@ -114,6 +114,7 @@ DROP TABLE IF EXISTS `business_features`;
 CREATE TABLE `business_features` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
+  `score` smallint(6) DEFAULT '1400',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -124,7 +125,7 @@ CREATE TABLE `business_features` (
 
 LOCK TABLES `business_features` WRITE;
 /*!40000 ALTER TABLE `business_features` DISABLE KEYS */;
-INSERT INTO `business_features` VALUES (1,'bien placé'),(2,'diversité du choix'),(3,'ambiance'),(4,'rapport qualité prix'),(5,'qualité globale'),(6,'rapidité du service'),(7,'on est bien conseillé');
+INSERT INTO `business_features` VALUES (1,'bien placé',1400),(2,'diversité du choix',1400),(3,'ambiance',1400),(4,'rapport qualité prix',1400),(5,'qualité globale',1400),(6,'rapidité du service',1400),(7,'on est bien conseillé',1400);
 /*!40000 ALTER TABLE `business_features` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,7 +201,7 @@ CREATE TABLE `business_visits` (
   KEY `business_id` (`business_id`),
   CONSTRAINT `business_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `business_visits_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,7 +210,7 @@ CREATE TABLE `business_visits` (
 
 LOCK TABLES `business_visits` WRITE;
 /*!40000 ALTER TABLE `business_visits` DISABLE KEYS */;
-INSERT INTO `business_visits` VALUES (1,1,1,'2014-05-02 07:55:46'),(2,2,2,'2014-05-02 07:55:46'),(3,1,1,'2014-05-02 07:55:46'),(4,2,3,'2014-05-02 07:55:46'),(5,3,3,'2014-05-02 07:55:46');
+INSERT INTO `business_visits` VALUES (1,1,1,'2014-05-02 07:55:46'),(2,2,2,'2014-05-02 07:55:46'),(3,1,1,'2014-05-02 07:55:46'),(4,2,3,'2014-05-02 07:55:46'),(5,3,3,'2014-05-02 07:55:46'),(6,1,2,'2014-05-08 19:33:00');
 /*!40000 ALTER TABLE `business_visits` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,6 +261,7 @@ CREATE TABLE `businesses_comparaisons` (
   `winner` tinyint(4) DEFAULT NULL,
   `feature_id` int(10) unsigned DEFAULT NULL,
   `trustability` double DEFAULT NULL,
+  `date_comp` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `business_visit1_id` (`business_visit1_id`),
   KEY `business_visit2_id` (`business_visit2_id`),
@@ -540,8 +542,8 @@ CREATE TABLE `users` (
   `language` varchar(80) DEFAULT 'FR',
   `avatar_path` varchar(80) DEFAULT '../media/img/default-user-avatar.png',
   `salt` varchar(255) DEFAULT NULL,
-  `inscription_time` datetime not null,
-  `last_visit_time` datetime not null,
+  `inscription_time` datetime NOT NULL,
+  `last_visit_time` datetime NOT NULL,
   `trustability` double DEFAULT NULL,
   `facebook_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -596,4 +598,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-02 11:34:21
+-- Dump completed on 2014-05-08 22:37:01

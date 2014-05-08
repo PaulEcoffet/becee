@@ -17,14 +17,14 @@ class BusinessesManager
 
     public function getBusinessByIdWithoutManager($business_id) //Get the busines name, longitude, latitude, website by using his id
     {
-        $business_req = $this->pdo->prepare('SELECT id, name, longitude, latitude, website FROM businesses WHERE id = ?');
+        $business_req = $this->pdo->prepare('SELECT id, name, longitude, latitude, website FROM businesses WHERE id = ?');                                                  //SEEMS TO BE USELESS
         $business_req->execute($business_id);
         return($business_req->fetch());
     }
 
     public function getBusinessByIdWithManager($business_id) //Get the busines name, longitude, latitude, website AND his manager by using his id
     {
-        $business_req = $this->pdo->prepare('SELECT * FROM businesses INNER JOIN Users ON id_manager = user.id WHERE businesses.id = ?');
+        $business_req = $this->pdo->prepare('SELECT * FROM businesses INNER JOIN Users ON id_manager = user.id WHERE businesses.id = ?');               //SEEMS TO BE USELESS
         $business_req->execute($business_id);
         return($business_req->fetch());
     }
@@ -40,14 +40,14 @@ class BusinessesManager
         FROM business
 
         INNER JOIN link_business_features
-        ON link_business_features.business_id = businesses.id   /* NEED SEPARATED REQUEST !!, Getting alltags, separated by "," */
-        INNER JOIN business_features                           /* =========================== */
+        ON link_business_features.business_id = businesses.id   /* Getting alltags, separated by "," */
+        INNER JOIN business_features
         ON business_features.id = link_business_features.features_id
 
 
         INNER JOIN link_business_tags 
-        ON link_business_tags.business_id = businesses.id   /* NEED SEPARATED REQUEST !!, Getting alltags, separated by "," */
-        INNER JOIN business_tags                            /* =========================== */
+        ON link_business_tags.business_id = businesses.id   /* Getting alltags, separated by "," */
+        INNER JOIN business_tags                            
         ON business_tags.id = link_business_tags.tag_id
 
         INNER JOIN business_images
@@ -128,8 +128,7 @@ class BusinessesManager
 
     public function getBusinessImages($business_id, $limit=5, $offset=0)
     {
-        $sql = '
-            SELECT
+        $sql = 'SELECT
                 business_images.path,
                 COALESCE(users.name, \'Anonymous\') as uploaderName,
                 users.id as uploaderId,
@@ -163,8 +162,7 @@ class BusinessesManager
 
     public function getBusinessMostReleventTags($business_id, $limit=5)
     {
-        $sql = '
-            SELECT
+        $sql = 'SELECT
                 business_tags.id as tag_id, business_tags.name as tag_name, businesses.name as business_name
             FROM
                 business_tags
@@ -177,7 +175,10 @@ class BusinessesManager
                     AND businesses.id = :business_id
             ORDER BY link_businesses_tags.nb_yes / (link_businesses_tags.nb_no + link_businesses_tags.nb_yes) DESC
             LIMIT :limit
-            ;';
+            ;'
+            ;
+
+
         $tags_req = $this->pdo->prepare($sql);
         $tags_req->bindValue('business_id', $business_id, \PDO::PARAM_INT);
         $tags_req->bindValue('limit', $limit, \PDO::PARAM_INT);
@@ -188,8 +189,7 @@ class BusinessesManager
 
     public function getBusinessComments($business_id, $limit=10, $offset=0)
     {
-        $sql = '
-            SELECT
+        $sql = 'SELECT
                 business_comments.id,
                 business_comments.comment,
                 pub_date as pubDate,
@@ -205,7 +205,9 @@ class BusinessesManager
             WHERE
                 business_comments.business_id = :business_id
             ORDER BY pub_date DESC
-            LIMIT :limit OFFSET :offset;';
+            LIMIT :limit OFFSET :offset;'
+            ;
+
         $comments_req = $this->pdo->prepare($sql);
         $comments_req->bindValue('business_id', $business_id, \PDO::PARAM_INT);
         $comments_req->bindValue('limit', $limit, \PDO::PARAM_INT);
@@ -253,6 +255,23 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    public function insertVisit($business_id)
+    {
+        $userManager = $app->getManager('currentuser');
+        $user_id = $userManager->getId();
+
+        $sql = 'INSERT INTO business_visits( user_id, business_id, visit_date)
+                VALUES ( :user, :business , NOW())
+                ;'
+                ;
+
+        $visit_req = $this->pdo->prepare($sql);
+        $visit_req->bindValue(':user' => $user_id;
+        $visit_req->bindValues(':business' => $business_id);
+
+        $visit_req->execute();
+    }
+
     public function insertBusinessImage($business_id, $image_path)
     {
         $sql = "INSERT INTO `business_images` (business_id, path)
@@ -266,6 +285,7 @@ class BusinessesManager
         $business_req->execute();
 
     }
+
     public function insertBusiness($business, $image_path=NULL)
     {
         $sql = "INSERT INTO `businesses` (name, description)
