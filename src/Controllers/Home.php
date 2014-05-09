@@ -28,6 +28,8 @@ class Home
         }
         $prefCity = $user->getPrefferedCity();
         $businesses = $BusinessManager->getBusinessesByCity($prefCity);
+        $categories = $BusinessManager->getBusinessCategories();
+        print_r($categories);
         $cities = $BusinessManager->getCities(); //TODO: Why in BusinessManager?
         $current_city = array(0, 'undefined');
         foreach($cities as $city)
@@ -41,6 +43,6 @@ class Home
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities, 
                 'current_city' => $current_city, 'tags' => $tags,
-                'flash' => $flash));
+                'categories' => $categories, 'flash' => $flash));
     }
 }

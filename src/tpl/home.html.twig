@@ -4,84 +4,177 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-md-12">
-        <div id="head">
-        <div style="position:absolute;bottom:0; height:100px; width:100%">
-        <div class="container container-fluid">
-        <div class="row">
-        <div class="col-md-5 hidden-ms hidden-xs">
-            <div style="border-left: 2px solid #f15959; height:100px; padding:35px 15px 0; width:100%">
-                <p style="font-style:normal; font-size:28px; font-family:Roboto">
-                becee<span style="color:#f15959">. suggesting you the best</span> 
-                </p></div>
-        </div>
-        <div class="col-md-7">
-                <div class="input-group" style="float:right; display:inline-block; width:100%; margin-top:15px">
-                      <span class="input-group-addon">
-                    </span>
-                      <input type="text" id="iconified" class="form-control empty" style="background-color:rgba(0,0,0,0.5); color:white; border:1px solid rgba(250,250,250,0.35); width:100%; height:50px" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}">
+    <div class="col-md-12" id="head">
+        <div id="bottom-head">
+            <div class="container container-fluid">
+                <div class="row">
+                    <div class="col-md-5 hidden-ms hidden-xs title">
+                        <p>
+                        becee<span class="saumon">. suggesting you the best</span> 
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        <form class="input-group" action="ok" method="GET">
+                            <input type="text" id="autocomplete-city" class="form-control empty" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}" autocomplete=off>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-        </div>
-        </div>
-        </div>
-    </div><!-- end col-md-12-->
+    </div><!-- end col-md-12 head-->
 </div><!-- end row -->
+
 <div class="container container-fluid">
     <div class="row top15">
-            <div class="col-md-2 col-xs-2" style="padding:20px">
-                <div style="background-color:rgb(248,248,248)">
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
-                    <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-crosshairs  fa-5x"></i><span style="font-size:25px"></br>Suggested</span></div>
-                </div></a>
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
-                    <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-location-arrow  fa-5x"></i><span style="font-size:25px"></br>Nearest</span></div>
-                </div></a>
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #eee;padding:5px; background-color:#2C3E50">
-                    <div style="text-align:center; color:#ECF0F1;padding:10px"><i class="fa  fa-comments-o  fa-5x"></i><span style="font-size:25px"></br>Reviews</span></div>
-                </div></a>
-                <a alt="page_restaurant" href="#" style="display:block; text-decoration:none"><div class="top5" style="width:100%; border-right: 1px solid #ddd;padding:5px;">
-                    <div style="text-align:center; color:#222;padding:10px"><i class="fa  fa-random  fa-5x"></i><span style="font-size:25px"></br>Random</span></div>
-                </div></a>
-                </div>
-            </div>
-            <div class="col-md-10 col-xs-10" style="border: 0px solid #ddd;padding:20px;">
+        <ul class="nav nav-pills nav-stacked col-md-2">
+            <li><a data-toggle="pill" href=
+            "#suggested">
+            <i class="fa fa-crosshairs  fa-5x"></i>
+            <span style="font-size:25px">
+            Suggested</span></a></li>
+
+            <li><a data-toggle="pill" href="#nearest">
+            <i class="fa  fa-location-arrow  fa-5x"></i>
+            <span style="font-size:25px">
+            Nearest</span></a></li>
+
+            <li class="active"><a data-toggle="pill" href="#reviews">
+            <i class="fa  fa-comments-o  fa-5x"></i>
+            <span style="font-size:25px">
+            Reviews</span></a></li>
+
+            <li><a data-toggle="pill" href="#random">
+            <i class="fa  fa-random  fa-5x"></i>
+            <span style="font-size:25px">
+            Random</span></a></li>
+        </ul>
+
+        <div class="tab-content col-md-10">
+            <div class="tab-pane active" id="reviews">
                 {% for restaurant in page.businesses|slice(0,6) %}
                 <div class="col-md-6 home-business">
                     <div class="home-business-box">
                         <div class="row">
-                            <a alt="page_restaurant" href="{% spaceless %}{{ path('view_business', {'id':restaurant.id, 'name':restaurant.name}) }}{% endspaceless %}" style="display:block">
-                            <div class="col-md-12">
-                                <div class="business-box-container" style="background:url({{ media(restaurant.path) }}) no-repeat center; border-right:5px solid white">
-                                    {% for tag in page.tags|slice(0, 4) %}
-                                    <a href="{{ path('business_add') }}" class="btn btn-small tag">{{tag.name}}</a>
-                                    {% endfor %}
+                            <a href=
+                            "{{ path('view_business', {'id':restaurant.id, 'name':restaurant.name}) }}"
+                            style="display:block"></a>
 
-                                    <p class="business-info">
-                                        {{restaurant.name}}<br/>
-                                        <span style="font-size:12px">{{restaurant.line1}}</span>
-                                        <span class="secondary-info-business-box">€ € € - 3.2 km</span>
-                                    </p>
+                            <div class="col-md-12">
+                                <div class="business-box-container" style=
+                                "background:url({{ media(restaurant.path) }}) no-repeat center;">
+                                {% for tag in page.tags|slice(0, 4) %} <a class=
+                                "btn btn-small tag" href="{{ path('business_add') }}">
+                                    {{ tag.name }}</a> {% endfor %}
+
+                                    <p class="business-info">{{ restaurant.name }}<br>
+                                    <span style=
+                                    "font-size:12px">{{ restaurant.line1 }}</span>
+                                    <span class="secondary-info-business-box">€ € € - 3.2
+                                    km</span></p>
                                 </div>
-                    <div class="description-info-business-box">
-                    <div>
-                        <p style="display:inline-block; width:auto;float:left"><i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i></p><p>{{ restaurant.description[0:150] }}...</p>
-                    </div>
-                    <div><hr style="margin: 5px 0" />
-                        <p style="color:#aaa; float:right;"><i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 - <i class="fa fa-thumbs-o-up"></i> 5</p>
-                    </div>
-                    </div>
-                            </div></a>
+
+                                <div class="description-info-business-box">
+                                    <div>
+                                        <p style="display:inline-block; width:auto;float:left">
+                                        <i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i>
+                                        </p>
+
+                                        <p>{{ restaurant.description[0:150] }}...</p>
+                                    </div>
+
+                                    <div>
+                                        <hr style="margin: 5px 0">
+
+                                        <p style="color:#aaa; float:right;">
+                                        <i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 - 
+                                        <i class="fa fa-thumbs-o-up"></i> 5</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-                    <div class="row"><div class="col-md-12"><div style="text-align:center; color:#aaa;text-style:italic;padding:10px;background-color:#fff;margin: 10px 0"><i class="fa fa-spinner"></i> Loading</div></div></div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div style=
+                        "text-align:center; color:#aaa;text-style:italic;padding:10px;margin: 10px 0">
+                        <p><i class="fa fa-spinner"></i> Loading</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="tab-pane" id="nearest">
+                {% for restaurant in page.businesses|slice(0,4) %}
+                <div class="col-md-6 home-business">
+                    <div class="home-business-box">
+                        <div class="row">
+                            <a href=
+                            "{{ path('view_business', {'id':restaurant.id, 'name':restaurant.name}) }}"
+                            style="display:block"></a>
+
+                            <div class="col-md-12">
+                                <div class="business-box-container" style=
+                                "background:url({{ media(restaurant.path) }}) no-repeat center;">
+                                {% for tag in page.tags|slice(0, 4) %} <a class=
+                                "btn btn-small tag" href="{{ path('business_add') }}">
+                                    {{tag.name}}</a> {% endfor %}
+
+                                    <p class="business-info">{{restaurant.name}}<br>
+                                    <span style=
+                                    "font-size:12px">{{restaurant.line1}}</span>
+                                    <span class="secondary-info-business-box">€ € € - 3.2
+                                    km</span></p>
+                                </div>
+
+                                <div class="description-info-business-box">
+                                    <div>
+                                        <p style="display:inline-block; width:auto;float:left">
+                                        <i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i>
+                                        </p>
+
+                                        <p>{{ restaurant.description[0:150] }}...</p>
+                                    </div>
+
+                                    <div>
+                                        <hr style="margin: 5px 0">
+
+                                        <p style="color:#aaa; float:right;">
+                                        <i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 - 
+                                        <i class="fa fa-thumbs-o-up"></i> 5</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div style=
+                        "text-align:center; color:#aaa;text-style:italic;padding:10px;margin: 10px 0">
+                        <p><i class="fa fa-spinner"></i> Loading</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="suggested">
+                <h1>#Suggestions#</h1>
+            </div>
+
+            <div class="tab-pane" id="random">
+                <h1>#Random#</h1>
+
+            </div>
+        </div><!-- tab content -->
     </div>
 </div>
+
+
 {% block scripts %}
 {{ parent() }}
 <script type="text/javascript">
@@ -92,6 +185,23 @@
     } else {
         input.removeClass('empty');
     }
+});
+ $(function() {
+    var cities = [
+        {% for categorie in page.categories %}
+            {% for city in page.cities %}
+            '{{ categorie.categorie_name|title }} near {{ city.name }}',
+            {% endfor %}
+        {% endfor %}
+    ];
+    $( "#autocomplete-city" ).autocomplete({
+    source: cities,
+    messages: {
+        noResults: '',
+        results: function() {}
+    }
+    });
+console.debug(cities);
 });
 </script>
 {% endblock %}

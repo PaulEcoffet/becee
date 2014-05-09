@@ -65,7 +65,8 @@ class Users
         if(!$error)
             return new \QDE\Responses\RedirectResponse('home');
         else
-            return new \QDE\Responses\RedirectResponse('home', null, array('register_error' => $errorMessage));
+        	$errorArray = array('id' => '#register', 'message' => $errorMessage);
+            return new \QDE\Responses\RedirectResponse('home', null, array('information' => $errorArray));
     }
     public function logInAction($request)
     {
@@ -89,15 +90,19 @@ class Users
         if(isset($user))
         {
             $CurrentUserManager -> connectUser($user);
-            return new \QDE\Responses\RedirectResponse('user_manager', array('id' => $CurrentUserManager->getId()), array('info' => 'Successfull connection !'));
+        	$infoArray = array('id' => '#information', 'message' => 'Successful connection');
+            return new \QDE\Responses\RedirectResponse('user_manager', array('id' => $CurrentUserManager->getId()), array('information' => $infoArray));
         }
-        return new \QDE\Responses\RedirectResponse('home', null, array('login_error' => 'Invalid email/password combination'));
+        $errorArray = array('id' => '#login', 'message' => 'Invalid email/password combination');
+        return new \QDE\Responses\RedirectResponse('home', null, array('information' => $errorArray));
     }
     public function logOutAction($request)
     {
         $CurrentUserManager = $request->getManager('CurrentUser');
         $CurrentUserManager -> disconnectUser();
-        return new \QDE\Responses\RedirectResponse('home', null, array('info' => 'You have been disconnected !'));
+        $infoArray = array('id' => '#information', 'message' => 'You have been disconnected !');
+        return new \QDE\Responses\RedirectResponse('home', null, array('information' => $infoArray));
+
     }
     public function managerAction($request)
     {

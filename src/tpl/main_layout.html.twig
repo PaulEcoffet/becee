@@ -2,169 +2,181 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-    <head>
-        {% block head %}
-        <meta charset="utf-8">
-        <title>
-            {% block title %}Compare, Review, Explore{% endblock %} - becee
-        </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        {% block stylesheet %}
-        <link rel="stylesheet" type="text/css" href="{{ media('vendor/bootstrap/bootstrap.css') }}" media="all" />
-        <link rel="stylesheet" type="text/css" href="{{ media('styles/style.css') }}" media="all" />
-        <link rel="stylesheet" type="text/css" href="{{ media('styles/custom-scrollbar.css') }}" media="all" />
-        <link rel="stylesheet" type="text/css" href="{{ media('styles/bootstrap-custom.css') }}" media="all" />
-        <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300,700italic,700,800,800italic' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,900italic,100,300,300italic' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="{{ media('vendor/bootstrap/font-awesome/css/font-awesome.min.css') }}">
-        {% endblock %}
-        {% endblock %}
-    </head>
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <title>
+        {% block title %}Compare, Review, Explore{% endblock %} - becee
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    {% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ media('vendor/bootstrap/bootstrap.css') }}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{ media('vendor/jquery-plugins/jquery-ui/jquery-ui-1.10.4.min.css') }}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{ media('styles/style.css') }}" media="all" />
+    <link rel="stylesheet" type="text/css" href="{{ media('styles/bootstrap-custom.css') }}" media="all" />
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300,700italic,700,800,800italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,900italic,100,300,300italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ media('vendor/bootstrap/font-awesome/css/font-awesome.min.css') }}">
+    {% endblock %}
+    {% endblock %}
+</head>
 
-    <body {% block onload %}onload="test()"{% endblock %}>
-        <div class="wrapper">
-            <header class="container-fluid" style="position:absolute; top:0; right:0; z-index:999999999999; left:0;">
-                <div class="nav-tools-dropdown">
-                    <div class="btn-group">
-                      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="fa fa-bars fa-2x"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-                        <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-                        <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="i"></i> Make admin</a></li>
-                      </ul>
-                    </div>
+<body>
+    <div class="wrapper">
+        <header class="container-fluid" style="position:absolute; top:0; right:0; z-index:1; left:0;">
+            <div class="nav-tools-dropdown">
+                <div class="btn-group">
+                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="fa fa-bars fa-2x"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                    <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+                    <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><i class="i"></i> Make admin</a></li>
+                  </ul>
                 </div>
-                <div class="nav-tools-dropdown-right">
-                    <div class="btn-group">
-                      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="fa fa-bars fa-2x"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-                        <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-                        <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="i"></i> Make admin</a></li>
-                      </ul>
-                    </div>
-                </div>
-                {% if not user.is_logged or user.name == 'visitor' %}
-                <ul class="nav-tools nav-tools-right">
-                    <li>
-                        <a class="btn-categories btn-default" id="test1" rel="leanModal" name="login" href="#login">
-                        <i class="fa fa-key fa-lg" ></i><span>LOG IN</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-categories btn-default"  id="test2" rel="leanModal" name="register" href="#register">
-                        <i class="fa fa-sign-in fa-lg" ></i><span>SIGN IN</span>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="true" data-auto-logout-link="false"></div>
-                    </li>
-                </ul>
-                {% else %}
-                <ul class="nav-tools nav-tools-right">
-                    <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
-                        <img src="{{ media(user.image) }}"><span>{{ user.name }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn-categories btn-default" href="{{ path('user_logout') }}">
-                        <i class="fa fa-sign-out fa-lg" ></i><span>Log Out</span>
-                        </a>
-                    </li>
-                </ul>
-                {% endif %}
-            </header>
-            <div class="container-fluid main-content">
-                {% block content %}{% endblock %}
             </div>
-            <div class="push"></div>
-        </div>
-
-        <footer>
-            {% block footer %}
-                <a href="{{ path('home') }}"><img class="white-logo" src="{{ media('img/logo1.png') }}"/></a><br/>
-                <p>PAR LA MEP TEAM</p>
-            {% endblock %}
-        </footer>
-
-        {% block overlay %}
-        <div id="login" class="popupContainer">
-            <section class="popupHeader">
-                <span class="header_title">Login</span>
-                <span class="modal_close"><i class="fa fa-times"></i></span>
-            </section>
-            <section class="popupBody">
-                {% if page.flash.login_error is defined %}
-                <div class="row"> <!-- I'm UGLY -->
-                    <p class="col-md-12 alert alert-warning">
-                        {{ page.flash.login_error }}
-                    </p>
+            <div class="nav-tools-dropdown-right">
+                <div class="btn-group">
+                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="fa fa-bars fa-2x"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                    <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+                    <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><i class="i"></i> Make admin</a></li>
+                  </ul>
                 </div>
-                {% endif %}
-                <div class="user_login">
-                    <form role="form" method="post" enctype="multipart/form-data" action="{{path('user_login_processing')}}">
-                        <label>Email / Username</label> <input type="text" name="email"><br>
-                        <label>Password <span class="forgot_password">Forgot password</span></label><input type="password" name="password"><br>
+            </div>
+            {% if not user.is_logged or user.name == 'visitor' %}
+            <ul class="nav-tools nav-tools-right">
+                <li>
+                    <a class="btn-categories btn-default" data-toggle="modal" data-target="#login">
+                    <i class="fa fa-key fa-lg" ></i><span>LOG IN</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn-categories btn-default" data-toggle="modal" data-target="#register">
+                    <i class="fa fa-sign-in fa-lg" ></i><span>SIGN IN</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="true" data-auto-logout-link="false"></div>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="nav-tools nav-tools-right">
+                <li>
+                    <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
+                    <img src="{{ media(user.image) }}"><span>{{ user.name }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn-categories btn-default" href="{{ path('user_logout') }}">
+                    <i class="fa fa-sign-out fa-lg" ></i><span>Log Out</span>
+                    </a>
+                </li>
+            </ul>
+            {% endif %}
+        </header>
+        <div class="container-fluid main-content">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="push"></div>
+    </div>
 
-                        <div class="checkbox">
-                            <input id="remember" type="checkbox"> <label for=
-                            "remember">Remember me on this computer</label>
+    <footer>
+        {% block footer %}
+            <a href="{{ path('home') }}"><img class="white-logo" src="{{ media('img/logo1.png') }}"/></a><br/>
+            <p>PAR LA MEP TEAM</p>
+        {% endblock %}
+    </footer>
+
+{% block overlay %}
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="false" data-dismiss="modal" class="close" type="button"><i class="fa fa-times"></i></button>
+          <h4 id="myLargeModalLabel" class="modal-title">Login</h4>
+        </div>
+        <div class="modal-body">
+            {% if page.flash.information is defined and page.flash.information.id == '#login' %}
+            <div class="row"> <!-- I'm UGLY -->
+                <p class="col-md-12 alert alert-warning">
+                    {{ page.flash.information.message }}
+                </p>
+            </div>
+            {% endif %}
+            <div class="user_login">
+                <form role="form" method="post" enctype="multipart/form-data" action="{{path('user_login_processing')}}">
+                    <label>Email / Username</label> <input type="text" name="email"><br>
+                    <label>Password <span class="forgot_password">Forgot password</span></label><input type="password" name="password"><br>
+
+                    <div class="checkbox">
+                        <input id="remember" type="checkbox"> <label for=
+                        "remember">Remember me on this computer</label>
+                    </div>
+
+                    <div class="action_btns clearfix">
+                        <div class="one_half">
+                            <a class="btn back_btn" aria-hidden="false" data-dismiss="modal" data-toggle="modal" data-target="#register">Register</a>
                         </div>
 
-                        <div class="action_btns clearfix">
-                            <div class="one_half">
-                                <a class="btn back_btn" id="go" rel="leanModal" name="register" href="#register">Register</a>
-                            </div>
-
-                            <div class="one_half last">
-                                <button type="submit" class="btn btn_red">Login</button>
-                            </div>
+                        <div class="one_half last">
+                            <button type="submit" class="btn btn_red">Login</button>
                         </div>
-                    </form>
-                    <hr/>
-                    <a class="social_box0 fb" href="#">
-                    <span class="icon"><i class="fa fa-facebook fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Facebook</span></a>
-                    <a class="social_box0 google" href="#">
-                    <span class="icon"><i class="fa fa-google-plus fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Google</span></a>
-                </div>
-            </section>
-        </div>
-        <div id="info" class="popupContainer">
-            <section class="popupHeader">
-                <span class="header_title">Information</span>
-                <span class="modal_close"><i class="fa fa-times"></i></span>
-            </section>
-            <section class="popupBody">
-                {% if page.flash.info is defined %}
-                <div class="row"> <!-- I'm UGLY -->
-                    <p class="col-md-12 alert alert-success">
-                        <i class="fa fa-check"></i> {{ page.flash.info }}
-                    </p>
-                </div>
-                {% endif %}
-            </section>
-        </div>
+                    </div>
+                </form>
+                <hr/>
+                <a class="social_box0 fb" href="#">
+                <span class="icon"><i class="fa fa-facebook fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Log in with Facebook</span></a>
+                <a class="social_box0 google" href="#">
+                <span class="icon"><i class="fa fa-google-plus fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Log in with Google</span></a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+</div>
 
-        <div id="register" class="popupContainer">
-            <section class="popupHeader">
-                <span class="header_title">Register</span>
-                <span class="modal_close"><i class="fa fa-times"></i></span>
-            </section>
-            <section class="popupBody">
-                {% if page.flash.register_error is defined %}
+<div class="modal fade" id="information" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="false" data-dismiss="modal" class="close" type="button"><i class="fa fa-times"></i></button>
+          <h4 id="myLargeModalLabel" class="modal-title">Information</h4>
+        </div>
+        <div class="modal-body">
+        {% if page.flash.information is defined and page.flash.information.id == '#information' %}
+        <div class="row"> <!-- I'm UGLY -->
+            <p class="col-md-12 alert alert-success">
+                <i class="fa fa-check"></i> {{ page.flash.information.message }}
+            </p>
+        </div>
+        {% endif %}
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+</div>
+
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="false" data-dismiss="modal" class="close" type="button"><i class="fa fa-times"></i></button>
+                <h4 id="myLargeModalLabel" class="modal-title">Register</h4>
+            </div>
+            <div class="modal-body">
+                {% if page.flash.information is defined and page.flash.information.id == '#register' %}
                 <div class="row"> <!-- I'm UGLY -->
                     <p class="col-md-12 alert alert-warning">
-                        {{ page.flash.register_error }}
+                        {{ page.flash.information.message }}
                     </p>
                 </div>
+                <hr style="margin: 7px 0" />
                 {% endif %}
                 <div class="user_register">
                     <form role="form" method="post" enctype="multipart/form-data" action="{{path('user_signup_process')}}">
@@ -179,11 +191,11 @@
                  
                         <div class="action_btns clearfix">
                             <div class="one_half">
-                                <a class="btn back_btn" id="go" rel="leanModal" name="login" href="#login">Login</a>
+                                <a class="btn back_btn" aria-hidden="false" data-dismiss="modal" data-toggle="modal" data-target="#login">Login</a>
                             </div>
                  
                             <div class="one_half last">
-                                <input type="submit" value="Register" class="btn btn_red"></input>
+                                <input type="submit" value="Register" class="btn btn_red">
                             </div>
                         </div>
                     </form>
@@ -192,45 +204,31 @@
                     <span class="icon"><i class="fa fa-facebook fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Facebook</span></a>
                     <a class="social_box0 google" href="#">
                     <span class="icon"><i class="fa fa-google-plus fa-lg"></i></span><span class="icon_bar">|</span><span class="icon_title">Connect with Google</span></a>
-
                 </div>
-            </section>
-        </div>
-        {% endblock %}
-        <a class="btn-categories btn-default" id="_info" rel="leanModal" name="info" href="#info" style="display:none">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+{% endblock %}
 
-        {% if page.flash.login_error is defined %}
-        {% set div_id = '#test1' %}
-        {% elseif page.flash.info is defined %}
-        {% set div_id = '#_info' %}
-        {% elseif page.flash.register_error is defined %}
-        {% set div_id = '#test2' %}
-        {% endif %}
-
-        {% block scripts %}
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script type="text/javascript" src="{{ media('vendor/jquery-plugins/leanModal/jquery.leanModal.min.js') }}"></script>
-        <script type="text/javascript" src="{{ media('vendor/jquery-plugins/leanModal/jquery.leanModal-onload.js') }}"></script>
-        <script src="{{ media('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-
-        <script type="text/javascript">
-            $(function() {
-                $('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });       
-            });
-            function test() 
-            {
-                $('{{ div_id }}').leanModal_onLoad({ top : 200, closeButton: ".modal_close" });       
-            }
-        </script>
-        <!-- Facebook API -->
-        <script>
-          window.fbAsyncInit = function() {
-            FB.init({
-              appId      : '{{ config.facebook_app_id }}',
-              status     : true,
-              xfbml      : true
-            })};
-        </script>
-        {% endblock %}
-        </body>
+{% block scripts %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="{{ media('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+{% if page.flash.information is defined and page.flash.information.id is defined %}
+<script type="text/javascript">
+    $('{{ page.flash.information.id }}').modal('show')
+</script>
+{% endif %}
+<!-- Facebook API -->
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+        appId      : '{{ config.facebook_app_id }}',
+        status     : true,
+        xfbml      : true
+    })};
+</script>
+{% endblock %}
+</body>
 </html>

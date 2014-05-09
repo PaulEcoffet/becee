@@ -187,6 +187,23 @@ class BusinessesManager
         return $tags;
     }
 
+    public function getBusinessCategories()
+    {
+        $sql = 'SELECT
+                business_categories.id as categorie_id, business_categories.name as categorie_name
+            FROM
+                business_categories
+            ORDER BY categorie_name ASC
+            ;'
+            ;
+
+
+        $categories_req = $this->pdo->prepare($sql);
+        $categories_req->execute();
+        $categories = $categories_req->fetchAll(\PDO::FETCH_ASSOC);
+        return $categories;
+    }
+
     public function getBusinessComments($business_id, $limit=10, $offset=0)
     {
         $sql = 'SELECT
