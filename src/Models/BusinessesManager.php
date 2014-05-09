@@ -265,6 +265,25 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    public function getBusinesses($category_id='%', $city_id='%')
+    {
+        $sql = "SELECT b.name, b.description, ba.line1, bi.path, bi.id, bc.name AS category_name
+                FROM businesses b INNER JOIN link_businesses_categories lbc ON b.id = lbc.business_id
+                    INNER JOIN business_categories bc ON bc.id = lbc.category_id
+                    INNER JOIN business_images bi ON bi.business_id = b.id
+                    INNER JOIN business_addresses ba ON b.id = ba.business_id
+                    INNER JOIN cities c ON c.id = ba.city_id
+                WHERE bc.id LIKE :category_id 
+                AND c.id LIKE :city_id
+        ;
+        ";
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->bindValue(':category_id', $category_id,\PDO::PARAM_INT);
+        $business_req->bindValue(':city_id', $city_id,\PDO::PARAM_INT);
+        $business_req->execute();
+        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
     public function getCities()
     {
         $business_req = $this->pdo->prepare('SELECT c.id, c.name FROM cities c;');

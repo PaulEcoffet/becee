@@ -28,6 +28,19 @@ class Home
         }
         $prefCity = $user->getPrefferedCity();
         $cities = $BusinessManager->getCities(); //TODO: Why in BusinessManager?
+        if($user->hasPrefferedCity() === false)
+        {
+            $user->setPrefferedCityFromGeoLoc();
+        }
+
+        $current_city = array(0, 'undefined');
+        foreach($cities as $city)
+        {
+            if($city['id'] == $prefCity)
+            {
+                $current_city = $city;
+            }
+        }
         $categories = $BusinessManager->getBusinessCategories();
         if(isset($POST['search']))
         {
@@ -37,6 +50,7 @@ class Home
             foreach ($categories as $categorie) {
                 if (in_array($categorie['categorie_name'], $keywords)) {
                     $categorie_name = $categorie['categorie_name'];
+                    $categorie_id = $categorie['categorie_id'];
                 }
             }
             foreach ($cities as $city) {
@@ -55,21 +69,13 @@ class Home
                 '<hr/><strong>Categorie</strong> : '.$categorie_name.
                 '<hr/><strong>City</strong> : '.$city_name.
                 '<hr/><strong>Quality</strong> : '.$quality_name); //DEBUG
+            $businesses = $BusinessManager->getBusinesses($prefCity, $categorie_id);
         }
-        if($user->hasPrefferedCity() === false)
+        else
         {
-            $user->setPrefferedCityFromGeoLoc();
+            $businesses = $BusinessManager->getBusinesses($prefCity);
         }
-
-        $current_city = array(0, 'undefined');
-        foreach($cities as $city)
-        {
-            if($city['id'] == $prefCity)
-            {
-                $current_city = $city;
-            }
-        }
-        $businesses = $BusinessManager->getBusinessesByCity($prefCity);
+        $businesses = $BusinessManager->getBusinesses($prefCity, $categorie_id);
         $tags = $BusinessManager->getBusinessMostReleventTags(1, 5);
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities, 
