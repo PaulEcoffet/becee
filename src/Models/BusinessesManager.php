@@ -87,13 +87,13 @@ class BusinessesManager
         LEFT OUTER JOIN business_categories
         ON business_categories.id = link_businesses_categories.category_id
 
-        INNER JOIN users 
+        INNER JOIN users
                 ON businesses.manager_id = users.id  /*Getting Manager */
 
-                INNER JOIN business_addresses 
+                INNER JOIN business_addresses
                 ON business_addresses.business_id = businesses.id  /* Getting addresse */
 
-                INNER JOIN cities 
+                INNER JOIN cities
                 ON business_addresses.city_id = cities.id  /* Getting cities */
 
                 INNER JOIN provinces
@@ -265,22 +265,78 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
-    public function getBusinesses($city_id='%', $category_id='%')
+    public function searchBusinesses($category='%', $tags=null, $location='%')
     {
-        echo $city_id. $category_id;
-        $sql = "SELECT b.name, b.description, ba.line1, bi.path, bi.id, bc.name AS category_name
-                FROM businesses b INNER JOIN link_businesses_categories lbc ON b.id = lbc.business_id
-                    INNER JOIN business_categories bc ON bc.id = lbc.category_id
-                    INNER JOIN business_images bi ON bi.business_id = b.id
-                    INNER JOIN business_addresses ba ON b.id = ba.business_id
-                    INNER JOIN cities c ON c.id = ba.city_id
-                WHERE bc.id LIKE :category_id 
-                AND c.id LIKE :city_id
-        ;
-        ";
+        if($tags === null)
+            $in_content = 'LIKE %';
+        else
+        {
+            $in_content = 'IN(';
+            for($i = 0; $i < count($tags) - 1; $i++) // Ugly but I haven't found anything better
+            {
+                $in_content .= ':tag'.$i.', ';
+            }
+            $in_content .= ':tag' .( count($tags)-1) . ')';
+        }
+        $sql = '
+SELECT DISTINCT
+    b.name,
+    b.description,
+    ba.line1,
+    c.name,
+    bi.path,
+    bi.id,
+    GROUP_CONCAT(bc.name) as categories,
+    COALESCE(
+                (SELECT -- We compute a score depending of the tags
+                        SUM((cast(lbt.nb_yes as signed) - cast(lbt.nb_no as signed)) / (lbt.nb_yes + lbt.nb_no))
+                    FROM
+                        link_businesses_tags lbt
+                            INNER JOIN
+                        business_tags bt ON bt.id = lbt.tag_id
+                    WHERE
+                        bt.name ' . $in_content . '
+                            AND lbt.business_id = b.id),
+            0) as tags_score,
+        IF(EXISTS(SELECT -- If the category of the business is good, we apply a strong bonus to it (1 point)
+                *
+            FROM
+                link_businesses_categories lbt
+                    INNER JOIN
+                business_categories bc ON lbt.category_id = bc.id
+            WHERE
+                bc.name LIKE :category
+                    AND lbt.business_id = b.id),
+        1,
+        0) as category_score
+FROM
+    businesses b
+        INNER JOIN
+    link_businesses_categories lbc ON b.id = lbc.business_id
+        INNER JOIN
+    business_categories bc ON bc.id = lbc.category_id
+        INNER JOIN
+    business_images bi ON bi.business_id = b.id
+        INNER JOIN
+    business_addresses ba ON b.id = ba.business_id
+        INNER JOIN
+    cities c ON c.id = ba.city_id
+WHERE c.name LIKE :cityname
+GROUP BY b.id
+/* HAVING tags_score > 0 */
+ORDER BY tags_score + category_score DESC
+;
+            ';
         $business_req = $this->pdo->prepare($sql);
-        $business_req->bindValue(':category_id', $category_id,\PDO::PARAM_INT);
-        $business_req->bindValue(':city_id', $city_id,\PDO::PARAM_INT);
+        $business_req->bindValue(':category', $category, \PDO::PARAM_STR);
+        $business_req->bindValue(':cityname', $location, \PDO::PARAM_STR);
+        if($tags !== null)
+        {
+            for($i = 0; $i <count($tags); $i++)
+            {
+                $business_req->bindValue(':tag'.$i, $tags[$i], \PDO::PARAM_STR);
+            }
+        }
         $business_req->execute();
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
