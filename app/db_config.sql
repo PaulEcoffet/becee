@@ -42,7 +42,7 @@ CREATE TABLE `business_addresses` (
 
 LOCK TABLES `business_addresses` WRITE;
 /*!40000 ALTER TABLE `business_addresses` DISABLE KEYS */;
-INSERT INTO `business_addresses` VALUES (1,'15 Rue Du Placeholder','',0,0,1,1),(2,'43, Place Holderswag','',0,0,1,2),(3,'25, Place Holderswag','',0,0,1,3),(4,'105, Place Holderswag','',0,0,1,4),(5,'525, Place Holderswag','',0,0,1,5),(6,'43, Place Holderswag','',0,0,2,6),(7,'16 Rue Du Placeholder','',0,0,1,7),(8,'17 Rue Du Placeholder','',0,0,3,8),(9,'55, Place Holderswag','',0,0,4,9),(10,'285, Place Holderswag','',0,0,4,10);
+INSERT INTO `business_addresses` VALUES (1,'15 Rue Du Placeholder','',0,0,1,1),(2,'43, Place Holderswag','',0,0,1,2),(3,'25, Place Holderswag','',0,0,4,3),(4,'105, Place Holderswag','',0,0,1,4),(5,'525, Place Holderswag','',0,0,3,5),(6,'43, Place Holderswag','',0,0,2,6),(7,'16 Rue Du Placeholder','',0,0,3,7),(8,'17 Rue Du Placeholder','',0,0,3,8),(9,'55, Place Holderswag','',0,0,4,9),(10,'285, Place Holderswag','',0,0,4,10);
 /*!40000 ALTER TABLE `business_addresses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -363,7 +363,7 @@ CREATE TABLE `link_businesses_categories` (
 
 LOCK TABLES `link_businesses_categories` WRITE;
 /*!40000 ALTER TABLE `link_businesses_categories` DISABLE KEYS */;
-INSERT INTO `link_businesses_categories` VALUES (1,1),(1,5),(1,2),(2,2),(3,1),(4,2);
+INSERT INTO `link_businesses_categories` VALUES (1,1),(1,5),(1,2),(2,1),(3,1),(4,1),(2,2);
 /*!40000 ALTER TABLE `link_businesses_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 

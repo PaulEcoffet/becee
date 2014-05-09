@@ -33,14 +33,6 @@ class Home
             $user->setPrefferedCityFromGeoLoc();
         }
 
-        $current_city = array(0, 'undefined');
-        foreach($cities as $city)
-        {
-            if($city['id'] == $prefCity)
-            {
-                $current_city = $city;
-            }
-        }
         $categories = $BusinessManager->getBusinessCategories();
         if(isset($POST['search']))
         {
@@ -70,12 +62,20 @@ class Home
                 '<hr/><strong>City</strong> : '.$city_name.
                 '<hr/><strong>Quality</strong> : '.$quality_name); //DEBUG
             $businesses = $BusinessManager->getBusinesses($prefCity, $categorie_id);
+
         }
         else
         {
             $businesses = $BusinessManager->getBusinesses($prefCity);
         }
-        $businesses = $BusinessManager->getBusinesses($prefCity, $categorie_id);
+        $current_city = array(0, 'undefined');
+        foreach($cities as $city)
+        {
+            if($city['id'] == $prefCity)
+            {
+                $current_city = $city;
+            }
+        }
         $tags = $BusinessManager->getBusinessMostReleventTags(1, 5);
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities, 

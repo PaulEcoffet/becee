@@ -265,8 +265,9 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
-    public function getBusinesses($category_id='%', $city_id='%')
+    public function getBusinesses($city_id='%', $category_id='%')
     {
+        echo $city_id. $category_id;
         $sql = "SELECT b.name, b.description, ba.line1, bi.path, bi.id, bc.name AS category_name
                 FROM businesses b INNER JOIN link_businesses_categories lbc ON b.id = lbc.business_id
                     INNER JOIN business_categories bc ON bc.id = lbc.category_id
