@@ -33,7 +33,7 @@ class Home
         {
             $search = $POST['search'];
             $keywords = array_map('strtolower', explode(" ", $search));
-            $categorie_name = '';
+            $categorie_name = $quality_name = $city_name = '';
             foreach ($categories as $categorie) {
                 if (in_array($categorie['categorie_name'], $keywords)) {
                     $categorie_name = $categorie['categorie_name'];
