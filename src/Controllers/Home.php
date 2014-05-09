@@ -27,10 +27,40 @@ class Home
             $user->setPrefferedCityFromGeoLoc();
         }
         $prefCity = $user->getPrefferedCity();
-        $businesses = $BusinessManager->getBusinessesByCity($prefCity);
-        $categories = $BusinessManager->getBusinessCategories();
-        print_r($categories);
         $cities = $BusinessManager->getCities(); //TODO: Why in BusinessManager?
+        $categories = $BusinessManager->getBusinessCategories();
+        if(isset($POST['search']))
+        {
+            $search = $POST['search'];
+            $keywords = array_map('strtolower', explode(" ", $search));
+            $categorie_name = '';
+            foreach ($categories as $categorie) {
+                if (in_array($categorie['categorie_name'], $keywords)) {
+                    $categorie_name = $categorie['categorie_name'];
+                }
+            }
+            foreach ($cities as $city) {
+                if (in_array(strtolower($city['name']), $keywords)) {
+                    $city_name = $city['name'];
+                    $prefCity = $city['id'];
+                }
+            }
+            foreach (array('near', 'best', 'cheaper') as $quality) {
+                if (in_array($quality, $keywords)) {
+                    $quality_name = $quality;
+                }
+            }           
+            $flash['information'] = array('id' => '#information', 
+                'message' => 'Debug<hr/><strong>Request</strong> : '.$search.
+                '<hr/><strong>Categorie</strong> : '.$categorie_name.
+                '<hr/><strong>City</strong> : '.$city_name.
+                '<hr/><strong>Quality</strong> : '.$quality_name); //DEBUG
+        }
+        if($user->hasPrefferedCity() === false)
+        {
+            $user->setPrefferedCityFromGeoLoc();
+        }
+
         $current_city = array(0, 'undefined');
         foreach($cities as $city)
         {
@@ -39,6 +69,7 @@ class Home
                 $current_city = $city;
             }
         }
+        $businesses = $BusinessManager->getBusinessesByCity($prefCity);
         $tags = $BusinessManager->getBusinessMostReleventTags(1, 5);
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities, 

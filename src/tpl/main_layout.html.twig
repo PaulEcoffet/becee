@@ -143,7 +143,7 @@
 </div>
 
 <div class="modal fade" id="information" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <button aria-hidden="false" data-dismiss="modal" class="close" type="button"><i class="fa fa-times"></i></button>
@@ -152,9 +152,9 @@
         <div class="modal-body">
         {% if page.flash.information is defined and page.flash.information.id == '#information' %}
         <div class="row"> <!-- I'm UGLY -->
-            <p class="col-md-12 alert alert-success">
-                <i class="fa fa-check"></i> {{ page.flash.information.message }}
-            </p>
+            <div class="col-md-12 alert alert-success">
+                <i class="fa fa-check"></i> {{ page.flash.information.message|raw }}
+            </div>
         </div>
         {% endif %}
       </div><!-- /.modal-content -->
