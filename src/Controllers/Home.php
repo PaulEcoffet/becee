@@ -59,7 +59,7 @@ class Home
         }
         else
         {
-            $businesses = $BusinessManager->getBusinesses($prefCity);
+            $businesses = $BusinessManager->searchBusinesses($prefCity);
         }
         $current_city = array(0, 'undefined');
         foreach($cities as $city)

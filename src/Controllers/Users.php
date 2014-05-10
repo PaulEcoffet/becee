@@ -25,7 +25,6 @@ class Users
         $error = false;
         $errorMessage = '';
         $data = array();
-        echo "string";
         try
         {
             $data['name'] = htmlspecialchars($request->getPost('name'));

@@ -1,0 +1,32 @@
+{% extends "main_layout.html.twig" %}
+{% from 'general.html.twig' import navtools%}
+{% block title %}{{page.business.name}} - {{page.business.city.name}}{% endblock %}
+
+{% block content %}
+
+<div class="row" style="position: relative;">
+    <div class="col-md-12">
+        <div id="head" style="background: url({{media(page.business.images.0.path)}}) center center; background-size: cover;">
+        	<div class="container container-fluid">
+	            <div class="row">
+				    <p style="color:white;font-size:6em;background-color:rgba(0,0,0,0.8);float:left;position:absolute; bottom:2px;">
+				{{page.business.name}}
+				    </p>
+	            </div>
+	        </div>
+        </div>
+    </div><!-- end col-md-12-->
+</div><!-- end row -->
+
+<div class="container container-fluid">
+    <div class="row top15">
+            <div class="col-md-2">
+            	<div style="border:1px solid #ddd">
+
+            	</div>
+            </div>
+            <div class="col-md-10">
+            </div>
+    </div>
+</div>
+{% endblock %}
