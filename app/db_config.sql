@@ -257,11 +257,11 @@ CREATE TABLE `businesses_comparaisons` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `business_visit1_id` int(10) unsigned DEFAULT NULL,
   `business_visit2_id` int(10) unsigned DEFAULT NULL,
-  `winner` tinyint(4) unsigned NOT NULL,
   `feature_id` int(10) unsigned DEFAULT NULL,
   `trustability` double DEFAULT NULL,
   `date_comp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `result` smallint(6) DEFAULT NULL,
+  `score` smallint(6) DEFAULT NULL,
+  `winner` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `business_visit1_id` (`business_visit1_id`),
   KEY `business_visit2_id` (`business_visit2_id`),
@@ -558,7 +558,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 08:03:41',NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL);
+INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-10 17:49:40',NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -598,4 +598,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-10 14:40:27
+-- Dump completed on 2014-05-10 19:35:42
