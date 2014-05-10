@@ -15,19 +15,7 @@ class BusinessesManager
         $this->pdo = $this->app->getPdo();
     }
 
-    public function getBusinessByIdWithoutManager($business_id) //Get the busines name, longitude, latitude, website by using his id
-    {
-        $business_req = $this->pdo->prepare('SELECT id, name, longitude, latitude, website FROM businesses WHERE id = ?');                                                  //SEEMS TO BE USELESS
-        $business_req->execute($business_id);
-        return($business_req->fetch());
-    }
-
-    public function getBusinessByIdWithManager($business_id) //Get the busines name, longitude, latitude, website AND his manager by using his id
-    {
-        $business_req = $this->pdo->prepare('SELECT * FROM businesses INNER JOIN Users ON id_manager = user.id WHERE businesses.id = ?');               //SEEMS TO BE USELESS
-        $business_req->execute($business_id);
-        return($business_req->fetch());
-    }
+/* ==========================================  GET THE BUSINESS MAIN FUNCTIONS  ====================================================================================================================== */
 
     public function getDataFromBusiness($business_id) //Get tags,features,visits from business
     {
@@ -58,8 +46,6 @@ class BusinessesManager
 
         ;'
         ;
-
-
     }
 
 
@@ -126,7 +112,7 @@ class BusinessesManager
         return $business;
     }
 
-    public function getBusinessImages($business_id, $limit=5, $offset=0)
+     public function getBusinessImages($business_id, $limit=5, $offset=0)
     {
         $sql = 'SELECT
                 business_images.path,
@@ -159,6 +145,8 @@ class BusinessesManager
         }
         return $images;
     }
+
+    /* ==========================================  GET THE BUSINESS DETAILS FUNCTIONS  ====================================================================================================================== */
 
     public function getBusinessMostReleventTags($business_id, $limit=5)
     {
@@ -265,6 +253,107 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    public function getCities()
+    {
+        $business_req = $this->pdo->prepare('SELECT c.id, c.name FROM cities c;');
+        $business_req->execute();
+        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
+    /* ========================================== BUSINESS CLASH  ====================================================================================================================== */
+
+    public function getAllBattleForUser()
+    {
+        //TODO
+    }
+
+    public function computeScoreForFeature($business_id, $feature_id_clash)
+    {
+        $sql_pos = 'SELECT SUM(score) as score
+                FROM businesses_comparaisons
+                WHERE feature_id = :feature_id_clash
+                    AND business_visit1_id = :business_id OR business_visit2_id = :business_id
+                    AND winner = :business_id
+                ;';                                                      /* Compute POSITIVE Score */
+
+        $req_pos = $this->pdo->prepare($sql_pos);
+        $req_pos->bindValue('feature_id_clash', $feature_id_clash);
+        $req_pos->bindValue('business_id', $business_id);
+        $score = $req_pos->execute();
+
+        $data = $score->fetch();
+        $score_pos = $data['score'];
+
+
+        $sql_neg = 'SELECT SUM(score) as score
+                FROM businesses_comparaisons
+                WHERE feature_id = :feature_id_clash
+                    AND business_visit1_id = :business_id OR business_visit2_id = :business_id
+                    AND winner <> :business_id
+                ;';                                                      /* Compute NEGATIVE Score */
+
+        $req_neg = $this->pdo->prepare($sql_pos);
+        $req_neg->bindValue('feature_id_clash', $feature_id_clash);
+        $req_neg->bindValue('business_id', $business_id);
+        $score2 = $req_neg->execute();
+
+        $data2 = $score->fetch();
+        $score_neg = $data2['score2'];
+
+        return $score_pos - $score_neg;        
+    }
+
+
+    public function businessesComparaisonByFeature($business_id1, $business_id2, $winner_id, $feature_id)
+    {
+
+        $score1 = computeScoreForFeature($business_id1, $feature_id);
+        $score2 = computeScoreForFeature($business_id2, $feature_id);
+
+        if ($score1 = $winner_id)
+        {
+            $score_final = computeEloScore($score1, $score2);
+        }
+
+        else
+        {
+            $score_final = computeEloScore($score2, $score1);
+        }
+
+        $add_data = 'INSERT INTO businesses_comparaisons (business_visit1_id,business_visit1_id,
+                    winner, feature_id, score)
+                    VALUES ( :bus1, :bus2, :win, :feat, :score)
+                    ;'
+                    ;
+
+        $app_data = $this->pdo->prepare($sql)
+        $add_data->bindValue('bus1', $business_id1);
+        $add_data->bindValue('bus2', $business_id2);
+        $add_data->bindValue('win', $winner_id);
+        $add_data->bindValue('feat', $feature_id);
+        $add_data->bindValue('score', $score_final);
+
+        $add_data->execute();
+
+    }
+
+
+    public function computeEloScore($score1, $score2) //Maybe try to change the K factor ......
+    {
+
+        $score = $score1 + 30*(1 - 1/(1 + (pow(10, -($score1 - $score2)))/400)))
+        return abs($score);
+    }
+
+
+
+     /* ========================================== BUSINESS SEARCH  ====================================================================================================================== */
+
+
+   
+
+    
+
     public function searchBusinesses($category='%', $tags=null, $location='%')
     {
         if($tags === null)
@@ -278,55 +367,55 @@ class BusinessesManager
             }
             $in_content .= ':tag' .( count($tags)-1) . ')';
         }
-        $sql = '
-SELECT DISTINCT
-    b.name,
-    b.description,
-    ba.line1,
-    c.name,
-    bi.path,
-    bi.id,
-    GROUP_CONCAT(bc.name) as categories,
-    COALESCE(
-                (SELECT -- We compute a score depending of the tags
-                        SUM((cast(lbt.nb_yes as signed) - cast(lbt.nb_no as signed)) / (lbt.nb_yes + lbt.nb_no))
-                    FROM
-                        link_businesses_tags lbt
-                            INNER JOIN
-                        business_tags bt ON bt.id = lbt.tag_id
-                    WHERE
-                        bt.name ' . $in_content . '
-                            AND lbt.business_id = b.id),
-            0) as tags_score,
-        IF(EXISTS(SELECT -- If the category of the business is good, we apply a strong bonus to it (1 point)
-                *
-            FROM
-                link_businesses_categories lbt
+        $sql = 'SELECT DISTINCT
+                b.name,
+                b.description,
+                ba.line1,
+                c.name,
+                bi.path,
+                bi.id,
+                GROUP_CONCAT(bc.name) as categories,
+                COALESCE(
+                            (SELECT -- We compute a score depending of the tags
+                                    SUM((cast(lbt.nb_yes as signed) - cast(lbt.nb_no as signed)) / (lbt.nb_yes + lbt.nb_no))
+                                FROM
+                                    link_businesses_tags lbt
+                                        INNER JOIN
+                                    business_tags bt ON bt.id = lbt.tag_id
+                                WHERE
+                                    bt.name ' . $in_content . '
+                                        AND lbt.business_id = b.id),
+                        0) as tags_score,
+                    IF(EXISTS(SELECT -- If the category of the business is good, we apply a strong bonus to it (1 point)
+                            *
+                        FROM
+                            link_businesses_categories lbt
+                                INNER JOIN
+                            business_categories bc ON lbt.category_id = bc.id
+                        WHERE
+                            bc.name LIKE :category
+                                AND lbt.business_id = b.id),
+                    1,
+                    0) as category_score
+                FROM
+                businesses b
                     INNER JOIN
-                business_categories bc ON lbt.category_id = bc.id
-            WHERE
-                bc.name LIKE :category
-                    AND lbt.business_id = b.id),
-        1,
-        0) as category_score
-FROM
-    businesses b
-        INNER JOIN
-    link_businesses_categories lbc ON b.id = lbc.business_id
-        INNER JOIN
-    business_categories bc ON bc.id = lbc.category_id
-        INNER JOIN
-    business_images bi ON bi.business_id = b.id
-        INNER JOIN
-    business_addresses ba ON b.id = ba.business_id
-        INNER JOIN
-    cities c ON c.id = ba.city_id
-WHERE c.name LIKE :cityname
-GROUP BY b.id
-/* HAVING tags_score > 0 */
-ORDER BY tags_score + category_score DESC
-;
-            ';
+                link_businesses_categories lbc ON b.id = lbc.business_id
+                    INNER JOIN
+                business_categories bc ON bc.id = lbc.category_id
+                    INNER JOIN
+                business_images bi ON bi.business_id = b.id
+                    INNER JOIN
+                business_addresses ba ON b.id = ba.business_id
+                    INNER JOIN
+                cities c ON c.id = ba.city_id
+            WHERE c.name LIKE :cityname
+            GROUP BY b.id
+            /* HAVING tags_score > 0 */
+            ORDER BY tags_score + category_score DESC
+            ;'
+
+            ;
         $business_req = $this->pdo->prepare($sql);
         $business_req->bindValue(':category', $category, \PDO::PARAM_STR);
         $business_req->bindValue(':cityname', $location, \PDO::PARAM_STR);
@@ -341,43 +430,9 @@ ORDER BY tags_score + category_score DESC
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
-    public function getCities()
-    {
-        $business_req = $this->pdo->prepare('SELECT c.id, c.name FROM cities c;');
-        $business_req->execute();
-        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
-    }
+    /* ========================================== HYDRATE BUSINESS  ====================================================================================================================== */
 
-    public function insertVisit($business_id)
-    {
-        $userManager = $app->getManager('currentuser');
-        $user_id = $userManager->getId();
 
-        $sql = 'INSERT INTO business_visits( user_id, business_id, visit_date)
-                VALUES ( :user, :business , NOW())
-                ;'
-                ;
-
-        $visit_req = $this->pdo->prepare($sql);
-        $visit_req->bindValue(':user', $user_id);
-        $visit_req->bindValues(':business', $business_id);
-
-        $visit_req->execute();
-    }
-
-    public function insertBusinessImage($business_id, $image_path)
-    {
-        $sql = "INSERT INTO `business_images` (business_id, path)
-                VALUES(:business_id, :image_path)
-                ;
-                ";
-
-        $business_req = $this->pdo->prepare($sql);
-        $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
-        $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
-        $business_req->execute();
-
-    }
 
     public function insertBusiness($business, $image_path=NULL)
     {
@@ -441,4 +496,38 @@ ORDER BY tags_score + category_score DESC
 
         return $business_req->fetch(\PDO::FETCH_ASSOC);
     }
-}
+
+    public function insertVisit($business_id)
+    {
+        $userManager = $app->getManager('currentuser');
+        $user_id = $userManager->getId();
+
+        $sql = 'INSERT INTO business_visits( user_id, business_id, visit_date)
+                VALUES ( :user, :business , NOW())
+                ;'
+                ;
+
+        $visit_req = $this->pdo->prepare($sql);
+        $visit_req->bindValue(':user', $user_id);
+        $visit_req->bindValues(':business', $business_id);
+
+        $visit_req->execute();
+    }
+
+    public function insertBusinessImage($business_id, $image_path)
+    {
+        $sql = "INSERT INTO `business_images` (business_id, path)
+                VALUES(:business_id, :image_path)
+                ;
+                ";
+
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
+        $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
+        $business_req->execute();
+    }
+
+
+
+
+}    //END

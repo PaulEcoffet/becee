@@ -38,4 +38,11 @@ class Businesses
         $cities = $LocationManager->getCities();
         return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $countries, 'cities' => $cities));
     }
+
+    public function business_clash($request)
+    {
+        $manager = $request->getManager('businesses');
+        //TODO
+        
+    }
 }
