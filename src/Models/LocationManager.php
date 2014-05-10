@@ -16,17 +16,24 @@ class LocationManager
         $this->pdo = $this->app->getPdo();
     }
 
-    public function getCities()
+    public function getCities($city_id = '%')
     {
         $sql = 'SELECT c.id as city_id, c.name as city_name, c.lat as city_lat, c.lng as city_lng,
                 p.id as province_id, p.name as province_name, countries.id as country_id,
-                countries.name as country_name
+                countries.name as country_name, pc.code as postal_code
             FROM cities c
+            INNER JOIN postal_codes pc ON pc.id = c.id
             INNER JOIN provinces p ON c.province_id = p.id
-            INNER JOIN countries ON p.country_id = countries.id;';
+            INNER JOIN countries ON p.country_id = countries.id
+            WHERE c.id LIKE ?
+            ;';
         $cities_req = $this->pdo->prepare($sql);
-        $cities_req->execute();
+        $cities_req->execute(array($city_id));
         $results = $cities_req->fetchAll(\PDO::FETCH_ASSOC);
+        if(!($city_id == '%'))
+        {
+            return new City($results[0]);
+        }
         $cities = array();
         foreach($results as $result)
         {

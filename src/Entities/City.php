@@ -35,6 +35,9 @@ class City
             {
                 $this->country->$info_key[1] = $value;
             }
+            elseif ($key === 'postal_code') {
+                $this->postal_code = $value;
+            }
         }
     }
 }

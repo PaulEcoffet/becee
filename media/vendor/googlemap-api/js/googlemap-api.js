@@ -1,6 +1,9 @@
-function initialize() {
+function initialize(lat, lng, labelContent) {
+   if(typeof(lat)==='undefined') lat = 44.831268;
+   if(typeof(lng)==='undefined') lng = -0.570826;
+   var myLatlng = new google.maps.LatLng(lat, lng);
 	var mapOptions = {
-	   center: new google.maps.LatLng(44.831268, -0.570826),
+	   center: myLatlng,
 	   zoom: 15,
 	   scrollwheel: false,
 	   draggableCursor:'default',
@@ -49,7 +52,21 @@ function initialize() {
 	}
 ]
 	};
-	var map = new google.maps.Map(document.getElementById("map-canvas"),
-		mapOptions);
+  var map = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+  var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Hello World!'
+  });
+     var marker1 = new MarkerWithLabel({
+       position: myLatlng,
+       draggable: false,
+       raiseOnDrag: false,
+       map: map,
+       labelContent: labelContent,
+       labelAnchor: new google.maps.Point(42, 11),
+       labelStyle: {opacity: 0.75},
+       icon: {}
+     });
 }
-google.maps.event.addDomListener(window, 'load', initialize);
