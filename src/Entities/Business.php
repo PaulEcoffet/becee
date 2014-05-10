@@ -16,6 +16,12 @@ class Business
     public $comments = null;
     public $features = null;
     public $description = null;
+    public $city = null;
+    public $email = null;
+    public $phone_number = null;
+    public $price = null;
+    public $address_1 = null;    
+    public $address_2 = null;    
 
     public function __construct($data=null)
     {
@@ -303,5 +309,122 @@ class Business
     function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * Get city.
+     *
+     * @return city.
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set city.
+     *
+     * @param city the value to set.
+     */
+    function setCity($city)
+    {
+        $this->city = $city;
+    }
+    /**
+     * Get address_1.
+     *
+     * @return address_1.
+     */
+    public function getAddress_1()
+    {
+        return $this->address_1;
+    }
+
+    /**
+     * Set address_1.
+     *
+     * @param address_1 the value to set.
+     */
+    function setAddress_1($address_1)
+    {
+        $this->address_1 = $address_1;
+    }
+    /**
+     * Get address_2.
+     *
+     * @return address_2.
+     */
+    public function getAddress_2()
+    {
+        return $this->address_2;
+    }
+
+    /**
+     * Set address_2.
+     *
+     * @param address_2 the value to set.
+     */
+    function setAddress_2($address_2)
+    {
+        $this->address_2 = $address_2;
+    }
+    /**
+     * Get email.
+     *
+     * @return email.
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email.
+     *
+     * @param email the value to set.
+     */
+    function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * Get phone_number.
+     *
+     * @return phone_number.
+     */
+    public function getPhone_number()
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * Set phone_number.
+     *
+     * @param phone_number the value to set.
+     */
+    function setPhone_number($phone_number)
+    {
+        $this->phone_number = $phone_number;
+    }
+
+    /**
+     * Get price.
+     *
+     * @return price.
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+    
+    /**
+     * Set price.
+     *
+     * @param price the value to set.
+     */
+    function setPrice($price)
+    {
+        $this->price = $price;
     }
 }

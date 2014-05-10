@@ -75,9 +75,7 @@ class BusinessesManager
         users.name as manager,
         business_addresses.line1 as address_1,
         business_addresses.line2 as adresse_2,
-        cities.name as city,
-        provinces.name as province,
-        countries.nicename as country_name
+        cities.id as city
 
 
         FROM businesses
@@ -112,6 +110,7 @@ class BusinessesManager
         $business_req->execute(array($business_id));
         $business_result = $business_req->fetch(\PDO::FETCH_ASSOC);
         $business_result['categories'] = $this->getBusinessCategories($business_id);
+        $business_result['city'] = $this->app->getManager('Location')->getCities($business_result['city']);
         $business_result['tags'] = explode(',', $business_result['tags']);
         $business = new Business($business_result);
         if(is_array($option))

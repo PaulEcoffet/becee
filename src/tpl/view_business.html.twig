@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-7">
                         <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.current_city.name }}" autocomplete=off>
+                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.business.city.name }}" autocomplete=off>
                         </form>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         <form class="input-group" action="{{ path('home') }}" method="POST">
                             <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="{{ page.business.name }}" autocomplete=off style="text-align:right; font-size:4.5em; height:100px; background:none">
                         </form>
-                        <p style="font-size:1.5em; color: white; float: right; font-family: 'Roboto'; margin-top:7px;">115 Rue du Place Holder, 33080 Bordeaux</p>
+                        <p style="font-size:1.5em; color: white; float: right; font-family: 'Roboto'; margin-top:7px;">{{ page.business.address_1 }},  {{ page.business.city.postal_code }} {{ page.business.city.name }}</p>
                     </div>
                 </div>
             </div>
@@ -63,16 +63,10 @@
                                     {% endfor %}
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                    <ul class="nav navbar-nav">
-                                        {% for tag in page.business.tags %}
-                                        <li><a href="#"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{tag}}</span></a>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
                                     <ul class="nav navbar-nav navbar-right">
-                                        <li><a href="#"><i class="fa fa-eur fa-lg"></i> <i class="fa fa-eur fa-lg"></i> <i class="fa fa-eur fa-lg"></i> <i class="fa fa-eur fa-lg"></i></a>
-                                        </li>
-                                        <li><a href="#"><i class="fa fa-phone fa-lg" style="margin:0 5px;"></i> 06 84 11 25 17</a>
+                                        {% if page.business.price in range(1,6)  %}<li><a href="#">{% for i in range(1,page.business.price) %} <i class="fa fa-eur fa-lg"></i> {% endfor %}<span style="color:#ccc">{% if page.business.price != 5  %}{% for i in range(0,4-page.business.price) %} — {% endfor %}{% endif %}</span></a>
+                                        </li>{% endif %}
+                                        <li><a href="#"><i class="fa fa-phone fa-lg" style="margin:0 5px;"></i> {{ page.business.phone_number }}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -112,7 +106,7 @@ Oui
                                     <div class="form-group" style="display: block;
                             overflow: hidden;
                             padding: 0 4px 0 6px;">
-                                        <input type="text" placeholder="&#xF040; Laissez un commentaire" style="width:100%">
+                                        <input type="text" placeholder="&#xF040; Laissez un commentaire" style="width:100%; height:33px">
                                     </div>
                                     <label style="    display: inline-block;
                         margin-bottom: 0;
@@ -161,12 +155,13 @@ Oui
                                         
 <hr style="margin: 7px 0"/>
 <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #a1f9a5; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Menus</span>
-Brunch, Déjeuner, Dîner
+Brunch, Déjeuner, Dîner <input type="text" placeholder="Ajoute un menu !" style="height:23px; margin: 5px 0; padding-left:5px">
 <hr style="margin: 7px 0"/>
 <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fdf3c6; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Tags</span>
                                         {% for tag in page.business.tags %}
-                                        <a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }}</span></a>
+                                        {% if not tag is empty %}<a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }}</span></a>{%endif%}
                                         {% endfor %}
+                                        <input type="text" placeholder="Ajoute un tag !"style="height:23px; margin: 5px 0; padding-left:5px">
                             </div>
                 </div>
             </div>
@@ -178,6 +173,7 @@ Brunch, Déjeuner, Dîner
 {% block scripts %}
 {{parent()}}
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0bzuk1i_1CC2CldMPylb88Wj4AizQo-s&sensor=true"></script>
+<script type="text/javascript" src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js"></script>
 <script type="text/javascript">
  $(function() {
     var cities = [
@@ -197,7 +193,9 @@ Brunch, Déjeuner, Dîner
 console.debug(cities);
 });
 </script>
-
 <script type="text/javascript" src="{{ media('vendor/googlemap-api/js/googlemap-api.js')}}"></script>
+<script type="text/javascript">
+   initialize({{ page.business.city.lat }},{{ page.business.city.lng }}, '<p style="font-size:19px;text-shadow: 1px 1px 3px #ccc;margin-top:8px">{{ page.business.name }}</p>');
+</script>
 {% endblock %}
 
