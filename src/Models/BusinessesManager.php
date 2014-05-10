@@ -66,11 +66,12 @@ class BusinessesManager
     public function getBusinessById($business_id, $option=null)
     {
         $sql = 'SELECT businesses.name, businesses.id,
-        GROUP_CONCAT(business_categories.name) as categories,
         businesses.website,
+        GROUP_CONCAT(business_tags.name) as tags,
         businesses.email,
         businesses.phone_number,
         businesses.price,
+        businesses.description,
         users.name as manager,
         business_addresses.line1 as address_1,
         business_addresses.line2 as adresse_2,
@@ -82,10 +83,10 @@ class BusinessesManager
         FROM businesses
 
 
-        LEFT OUTER JOIN link_businesses_categories
-        ON link_businesses_categories.business_id = businesses.id   /* Getting all categories, separated by "," */
-        LEFT OUTER JOIN business_categories
-        ON business_categories.id = link_businesses_categories.category_id
+        LEFT OUTER JOIN link_businesses_tags
+        ON link_businesses_tags.business_id = businesses.id   /* Getting all categories */
+        LEFT OUTER JOIN business_tags
+        ON business_tags.id = link_businesses_tags.tag_id
 
         INNER JOIN users
                 ON businesses.manager_id = users.id  /*Getting Manager */
@@ -110,7 +111,8 @@ class BusinessesManager
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute(array($business_id));
         $business_result = $business_req->fetch(\PDO::FETCH_ASSOC);
-        $business_result['categories'] = explode(',', $business_result['categories']);
+        $business_result['categories'] = $this->getBusinessCategories($business_id);
+        $business_result['tags'] = explode(',', $business_result['tags']);
         $business = new Business($business_result);
         if(is_array($option))
         {
@@ -187,19 +189,28 @@ class BusinessesManager
         return $tags;
     }
 
-    public function getBusinessCategories()
+    public function getBusinessCategories($business_id = '%')
     {
         $sql = 'SELECT
-                business_categories.id as categorie_id, business_categories.name as categorie_name
+                business_categories.id as categorie_id, 
+                business_categories.name as categorie_name, 
+                business_categories.fontAwesomeIconName as categorie_icon
             FROM
-                business_categories
+                businesses
+
+            LEFT OUTER JOIN link_businesses_categories
+            ON link_businesses_categories.business_id = businesses.id   /* Getting all categories */
+            LEFT OUTER JOIN business_categories
+            ON business_categories.id = link_businesses_categories.category_id
+
+            WHERE businesses.id LIKE ?
             ORDER BY categorie_name ASC
             ;'
             ;
 
 
         $categories_req = $this->pdo->prepare($sql);
-        $categories_req->execute();
+        $categories_req->execute(array($business_id));
         $categories = $categories_req->fetchAll(\PDO::FETCH_ASSOC);
         return $categories;
     }

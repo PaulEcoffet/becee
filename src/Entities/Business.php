@@ -15,6 +15,7 @@ class Business
     public $visits = null;
     public $comments = null;
     public $features = null;
+    public $description = null;
 
     public function __construct($data=null)
     {
@@ -282,5 +283,25 @@ class Business
     function setCategories($categories)
     {
         $this->categories = $categories;
+    }
+
+    /**
+     * Get description.
+     *
+     * @return description.
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set description.
+     *
+     * @param description the value to set.
+     */
+    function setDescription($description)
+    {
+        $this->description = $description;
     }
 }

@@ -1,6 +1,8 @@
 {% extends "main_layout.html.twig" %}
 {% from 'general.html.twig' import navtools%}
 {% block title %}{{page.business.name}} - {{page.business.city.name}}{% endblock %}
+{% set month_en_fr = {'January': 'Janvier', 'February': 'Février','March': 'Mars','April': 'Avril','May': 'Mai','June': 'Juin', 'July' : 'Juillet', 'August': 'Aout', 'September': 'Septembre', 'November': 'Novembre', 'December': 'Décembre'} %}
+{% set day_en_fr = {'Monday': 'Lundi', 'Tuesday': 'Mardi', 'Wednesday': 'Mercredi', 'Thursday': 'Jeudi', 'Friday': 'Vendredi', 'Saturday': 'Samedi', 'Sunday': 'Dimanche'} %}
 {% block content %}
 <div class="row">
     <div class="col-md-12" id="head">
@@ -14,7 +16,7 @@
                     </div>
                     <div class="col-md-7">
                         <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}" autocomplete=off>
+                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.current_city.name }}" autocomplete=off>
                         </form>
                     </div>
                 </div>
@@ -25,7 +27,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#x20;&#xf0f5;&#x20;Restaurant Universitaire des Chartrons" autocomplete=off style="font-size:4.5em; height:100px; background:none">
+                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="{{ page.business.name }}" autocomplete=off style="text-align:right; font-size:4.5em; height:100px; background:none">
                         </form>
                         <p style="font-size:1.5em; color: white; float: right; font-family: 'Roboto'; margin-top:7px;">115 Rue du Place Holder, 33080 Bordeaux</p>
                     </div>
@@ -42,6 +44,11 @@
         <div class="col-md-12">
             <div class="row" style="padding:40px 0">
                 <div class="col-md-9" style="padding:10px 15px; border:3px solid #fefefe; background:#fbfbfb">
+                    <ol class="breadcrumb">
+                      <li><a href="#">Home</a></li>
+                      <li><a href="#">Library</a></li>
+                      <li class="active">Data</li>
+                    </ol>
                     <div class="row">
                         <div class="row" style="height:150px; overflow:hidden; margin-bottom:10px">
                             {% for x in range(3,8) %}
@@ -51,18 +58,14 @@
                         <nav class="navbar navbar-default" role="navigation" style="background:#ffef; border-radius: 0; margin:0">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <a class="navbar-brand" href="#" style="background:#2C3E50; color:#ECF0F1"><i class="fa fa-cutlery" style="margin-right:5px;"></i> Restaurant</a>
+
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav">
-                                        <li><a href="#"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc"></i> Universitaire</span></a>
+                                        {% for tag in page.business.tags %}
+                                        <li><a href="#"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{tag}}</span></a>
                                         </li>
-                                        <li><a href="#"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc"></i> Italien</span></a>
-                                        </li>
-                                        <li><a href="#"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc"></i> Bon marché</span></a>
-                                        </li>
-                                        <li><a href="#"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc"></i> Régional</span></a>
-                                        </li>
+                                        {% endfor %}
                                     </ul>
                                     <ul class="nav navbar-nav navbar-right">
                                         <li><a href="#"><i class="fa fa-eur fa-lg"></i> <i class="fa fa-eur fa-lg"></i> <i class="fa fa-eur fa-lg"></i> <i class="fa fa-eur fa-lg"></i></a>
@@ -93,7 +96,7 @@ Oui (y compris American Express)
 Oui
 <hr style="margin: 7px 0"/>
 
-                            <p style="padding:5px 15px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                            <p style="padding:5px 15px">{{ page.business.description }}</p>
                             </div>
                             <div style="width:100%; background:#efefe">
                                 <form class="form-inline" role="form" style="background:#f8f8f8; padding:10px; border:1px solid #eaeaea">
@@ -118,19 +121,19 @@ Oui
                                 </form>
 
                                 <div class="col-md-12" style="background:#f8f8f8; padding:10px">
-                                    {% for x in range(0,9) %}
+                                    {% for userComment in page.business.comments %}
                                     <blockquote style="display:block; padding:10px; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                         font-weight: 400
                         font-style:  normal
                         font-size-adjust:    none
                         color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin-top:10px; position:relative;overflow:hidden;">
                                         <a style="display:inline-block; float: left; padding-right: 15px; border-right:1px solid #ddd; margin: 5px 15px">
-                                            <img width="40" height="40" title="Elias R." class="avatar " alt="Elias R." src="https://irs2.4sqi.net/img/user/64x64/85462955-UXUT2SSJFPV5OVKQ.jpg">
+                                            <img width="40" height="40" title="Elias R." class="avatar " alt="Elias R." src="{{ media(userComment.userAvatar) }}">
                                         </a>
                                         <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block">Henry SCHMOLL - 10 Mai 2014</span>
-                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block;  float:right"><i class="fa fa-thumbs-down fa-lg" style="margin: 0 5px"></i> 0 <i class="fa fa-thumbs-up fa-lg" style="margin: 0 5px"></i> 12</span>
+                                            {{ userComment.comment }}</p>
+                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block">{{ userComment.userName }} - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
+                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block;  float:right"><i class="fa fa-thumbs-down fa-lg" style="margin: 0 5px"></i> {{ userComment.voteNeg }} <i class="fa fa-thumbs-up fa-lg" style="margin: 0 5px"></i> {{ userComment.votePos }}</span>
                                     </blockquote>
                                     {% endfor %}
                                 </div>
@@ -152,18 +155,17 @@ Oui
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
 
 <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Description</span>
-                           <p style="padding:5px 15px">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                           <p style="padding:5px 15px">{{ page.business.description[:300] }}</p>
                                         
 <hr style="margin: 7px 0"/>
 <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #a1f9a5; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Menus</span>
 Brunch, Déjeuner, Dîner
 <hr style="margin: 7px 0"/>
 <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fdf3c6; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Tags</span>
-                                        <a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc"></i> Universitaire</span></a>
+                                        {% for tag in page.business.tags %}
+                                        <a href="#"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{tag}}</span></a>
                                         
-                                        <a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc"></i> Italien</span></a>
-                                        
-                                        <a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #555"><i class="fa fa-tag" style="color:#ccc"></i> Bon marché</span></a>
+                                        {% endfor %}
                             </div>
                 </div>
             </div>
