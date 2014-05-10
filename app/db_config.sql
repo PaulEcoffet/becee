@@ -114,7 +114,6 @@ DROP TABLE IF EXISTS `business_features`;
 CREATE TABLE `business_features` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
-  `score` smallint(6) DEFAULT '1400',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -125,7 +124,7 @@ CREATE TABLE `business_features` (
 
 LOCK TABLES `business_features` WRITE;
 /*!40000 ALTER TABLE `business_features` DISABLE KEYS */;
-INSERT INTO `business_features` VALUES (1,'bien placé',1400),(2,'diversité du choix',1400),(3,'ambiance',1400),(4,'rapport qualité prix',1400),(5,'qualité globale',1400),(6,'rapidité du service',1400),(7,'on est bien conseillé',1400);
+INSERT INTO `business_features` VALUES (1,'bien placé'),(2,'diversité du choix'),(3,'ambiance'),(4,'rapport qualité prix'),(5,'qualité globale'),(6,'rapidité du service'),(7,'on est bien conseillé');
 /*!40000 ALTER TABLE `business_features` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,10 +257,11 @@ CREATE TABLE `businesses_comparaisons` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `business_visit1_id` int(10) unsigned DEFAULT NULL,
   `business_visit2_id` int(10) unsigned DEFAULT NULL,
-  `winner` tinyint(4) DEFAULT NULL,
+  `winner` tinyint(4) unsigned NOT NULL,
   `feature_id` int(10) unsigned DEFAULT NULL,
   `trustability` double DEFAULT NULL,
-  `date_comp` datetime DEFAULT CURRENT_TIMESTAMP,
+  `date_comp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `result` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `business_visit1_id` (`business_visit1_id`),
   KEY `business_visit2_id` (`business_visit2_id`),
@@ -598,4 +598,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-08 22:37:01
+-- Dump completed on 2014-05-10 14:40:27
