@@ -585,11 +585,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-<<<<<<< HEAD
 INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-10 17:49:40',NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL);
-=======
-INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 08:03:41',NULL,NULL),(2,'tagadapwet@hotmail.com','Jb','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL);
->>>>>>> ea0131825b405b81b0c834b0824adde14dd3875a
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
