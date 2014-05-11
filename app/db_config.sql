@@ -562,10 +562,10 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `firstname` varchar(40) NOT NULL,
-  `lastname` varchar(40) NOT NULL,
-  `hashed_password` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `firstname` varchar(40) DEFAULT NULL,
+  `lastname` varchar(40) DEFAULT NULL,
+  `hashed_password` varchar(255) DEFAULT NULL,
   `category` int(10) unsigned DEFAULT '1',
   `language` varchar(80) DEFAULT 'FR',
   `avatar_path` varchar(80) DEFAULT 'img/default-user-avatar-small.png',

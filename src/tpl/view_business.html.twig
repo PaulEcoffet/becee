@@ -6,16 +6,12 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12" id="head">
-        <div style="float:left; position:absolute; top:0; left:0; z-index:999">
-            <div class="container container-fluid">
-                <div class="row">
+        <div style="float:left; position:absolute; top:0; left:15px; z-index:999">
                     <div class="col-md-4 hidden-ms hidden-xs title">
                         <p>
                         <a href="{{ path('home') }}" style="text-decoration:none; color:white">becee<span class="saumon">.</span></a>
                         </p>
                     </div>
-                </div>
-            </div>
         </div>
             <div class="container container-fluid" style="background:rgba(0,0,0,0.4); height:100%">
             <div class="row">
@@ -32,7 +28,7 @@
                         </form>
                         <p style="font-size:1.5em; color: white; float: left; font-family: 'Roboto'; margin:7px 15px;">{{ page.business.address_1 }},  {{ page.business.city.postal_code }} {{ page.business.city.name }}</p>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5 hidden-sm hidden-xs ">
                         <ul style="list-style-type: none; margin-top:40px; float: right">
                         {% for categorie in page.business.categories|slice(0,3) %}
                             <li  style="display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center; float:right; margin-left: 20px">
@@ -77,8 +73,8 @@
                             <div style="padding:5px; border:1px solid #eee; margin:0 15px;">
 <span style="background:#fff; color:#555; padding:0px 20px; border-left:5px solid #fdf3c6; margin-right:0px; width:70px; text-align:left; display: inline-block; font-weight:bold;">Tags</span>
                                         {% for tag in page.business.tags %}
-                                        {% if not tag is empty %}<a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }}</span></a>{%endif%}
-                                        {% endfor %}
+                                        {% if not tag is empty %}<a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }} <i class="fa fa-times" style="color:#ddd;"></i></span></a>{%endif%}
+                                        {% endfor %}<i class="fa fa-plus" style="color:#bbb; margin-left:5px"></i>
                         </div>
                         </div>
                         </div>
@@ -118,7 +114,7 @@ Oui
                         <div class="row">
                                 <div class="col-md-12" style="background:#f8f8f8; padding:10px">
                             <div style="width:100%; background:#efefe;">
-                                <form class="form-inline" role="form" style="background:#f8f8f8; padding:10px; border:1px solid #eaeaea">
+                                <form class="form-inline" action="{{path('add_comment', {'id' : page.business.id })}}" role="form" method="POST" style="background:#f8f8f8; padding:10px; border:1px solid #eaeaea">
                                     <label style="    display: inline-block;
                                 margin-bottom: 0;
                                 margin-top: 0;
@@ -129,10 +125,10 @@ Oui
                                     <div class="form-group" style="display: block;
                             overflow: hidden;
                             padding: 0 4px 0 6px;">
-                                        <input type="text" placeholder="  Laissez un commentaire" style="width:calc(100% - 30px); height:33px; display:inline-block">
-                                    <a style="float:right; margin-top: 10px; color:#ccc" href="#"><i class="fa fa-camera fa-lg"></i>
-                                    </a>
-                                    </div>
+                                        <input type="text" placeholder="  Laissez un commentaire" style="width:calc(100% - 100px); height:33px; display:inline-block" name="comment">
+                                    <button type="submit" class="btn btn-default" style="width:70px; height:33px; float:right; padding-top:6px">Envoyer</button>
+                                    <a style="float:right; margin-top: 10px; color:#ccc" href="#"><i class="fa fa-camera fa-lg" style="margin-right:5px"></i>
+                                    </a>                                    </div>
                                 </form>
                         </div>
                                     {% for userComment in page.business.comments %}
@@ -169,6 +165,8 @@ Oui
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
 
 <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Suggestions</span>
+                            <p style="padding:5px 15px; font-style:italic; color:#999">Fonctionnalité non disponible</p>
+
                                         
                             </div>
                 </div>

@@ -39,10 +39,10 @@ class UsersManager
         }
     }
 
-    public function insertUser($user)
+    public function insertUser($user, $category=1)
     {
-        $sql = "INSERT INTO `users` (firstname, lastname, email, hashed_password, salt, inscription_time)
-                VALUES(:firstname, :lastname, :email, SHA1(CONCAT(:hashed_password, :salt)), :salt, NOW())
+        $sql = "INSERT INTO `users` (firstname, lastname, email, hashed_password, salt, inscription_time, category)
+                VALUES(:firstname, :lastname, :email, SHA1(CONCAT(:hashed_password, :salt)), :salt, NOW(), :category)
                 ;
                 ";
 
@@ -52,6 +52,7 @@ class UsersManager
         $business_req->bindValue(':email', $user['email'],\PDO::PARAM_STR);
         $business_req->bindValue(':hashed_password', $user['password'],\PDO::PARAM_STR);
         $business_req->bindValue(':salt', uniqid(),\PDO::PARAM_STR);
+        $business_req->bindValue(':category', $category,\PDO::PARAM_INT);
         $business_req->execute();
 
         //TODO Very ugly, must find a better solution!
@@ -66,6 +67,7 @@ class UsersManager
     public function createDummyUser()
     {
         //TODO: Create a user without any information and with category 'Dummy'
-        return (object) array('id' => 1); //return a User entity with the dummyuser information.
+        echo "dummy_user_creation = TRUE";
+        return $this->insertUser(array('firstname' => NULL, 'lastname' => NULL, 'email' => NULL, 'password' => NULL), 0);
     }
 }

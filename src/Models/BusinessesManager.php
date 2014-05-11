@@ -522,9 +522,24 @@ class BusinessesManager
 
         $visit_req = $this->pdo->prepare($sql);
         $visit_req->bindValue(':user', $user_id);
-        $visit_req->bindValues(':business', $business_id);
+        $visit_req->bindValue(':business', $business_id);
 
         $visit_req->execute();
+    }
+
+    public function insertComment($business_id, $user_id, $comment)
+    {
+
+        $sql = 'INSERT INTO business_comments( user_id, business_id, comment, pub_date, status)
+                VALUES (:user, :business , :comment, NOW(), 0)
+                ;'
+                ;
+
+        $comment_req = $this->pdo->prepare($sql);
+        $comment_req->bindValue(':user', $user_id);
+        $comment_req->bindValue(':business', $business_id);
+        $comment_req->bindValue(':comment', $comment);
+        $comment_req->execute();
     }
 
     public function insertBusinessImage($business_id, $image_path)
