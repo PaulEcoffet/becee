@@ -20,8 +20,8 @@ class Business
     public $email = null;
     public $phone_number = null;
     public $price = null;
-    public $address_1 = null;    
-    public $address_2 = null;    
+    public $address_1 = null;
+    public $address_2 = null;
 
     public function __construct($data=null)
     {
@@ -188,7 +188,14 @@ class Business
      */
     public function setTags($tags)
     {
-        $this->tags = $tags;
+        if(is_string($tags))
+        {
+            $this->tags = explode(',', $tags);
+        }
+        else
+        {
+            $this->tags = $tags;
+        }
     }
 
     /**

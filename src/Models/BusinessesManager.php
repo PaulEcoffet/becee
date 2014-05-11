@@ -405,13 +405,18 @@ class BusinessesManager
             $in_content .= ':tag' .( count($tags)-1) . ')';
         }
         $sql = 'SELECT DISTINCT
+                b.id,
                 b.name,
                 b.description,
-                ba.line1,
+                b.email,
+                b.phone_number,
+                b.price,
+                ba.line1 as address_1,
+                GROUP_CONCAT(DISTINCT bt.name) as tags,
+
                 c.name as city_name,
-                bi.path,
-                bi.id,
-                GROUP_CONCAT(bc.name) as categories,
+                c.id as city,
+                GROUP_CONCAT(DISTINCT bc.name) as categories,
                 COALESCE(
                             (SELECT -- We compute a score depending of the tags
                                     SUM((cast(lbt.nb_yes as signed) - cast(lbt.nb_no as signed)) / (lbt.nb_yes + lbt.nb_no))
@@ -436,6 +441,10 @@ class BusinessesManager
                     0) as category_score
                 FROM
                 businesses b
+                     LEFT OUTER JOIN
+                link_businesses_tags lbt ON b.id = lbt.business_id
+                    LEFT OUTER JOIN
+                business_tags bt ON bt.id = lbt.tag_id
                     INNER JOIN
                 link_businesses_categories lbc ON b.id = lbc.business_id
                     INNER JOIN
@@ -446,6 +455,7 @@ class BusinessesManager
                 business_addresses ba ON b.id = ba.business_id
                     INNER JOIN
                 cities c ON c.id = ba.city_id
+
             WHERE '. $location_search. '
             GROUP BY b.id '.
             $having_content.
@@ -467,7 +477,14 @@ class BusinessesManager
             }
         }
         $business_req->execute();
-        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+        $businesses = array();
+        while($record = $business_req->fetch())
+        {
+            $business = new Business($record);
+            $business->setImages($this->getBusinessImages($business->getId()));
+            $businesses[] = $business;
+        }
+        return($businesses);
     }
 
     /* ========================================== INSERT BUSINESS  ====================================================================================================================== */
