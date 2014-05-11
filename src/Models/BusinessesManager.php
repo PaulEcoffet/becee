@@ -9,48 +9,43 @@ use \Becee\CurrentUserManager;
 class BusinessesManager
 {
     private $pdo = NULL;
+    private $app = null;
+    private $cache_folder = null;
 
     public function __construct(\QDE\App $app)
     {
         $this->app = $app;
         $this->pdo = $this->app->getPdo();
+        $this->cache_folder = realpath($app->getCachePath().'/businesses/');
     }
 
 /* ==========================================  GET THE BUSINESS MAIN FUNCTIONS  ====================================================================================================================== */
-
-    public function getDataFromBusiness($business_id) //Get tags,features,visits from business
+    public function getBusinessById($business_id)
     {
-        $Additionnal_info = new Business();
+        $filename = strtolower(base_convert(strval($business_id), 10, 36)).'.business.php_serialized';
+        $file_path = $this->cache_folder. '/'. $filename;
+        if(file_exists($file_path))
+        {
+            $business = unserialize(file_get_contents($file_path));
+        }
+        else
+        {
+            $business = $this->createBusinessCache($business_id);
+        }
 
-        $sql = 'SELECT GROUP_CONCAT(business_images.path),
-        GROUP_CONCAT(business_tags.name) as tags,
-        GROUP_CONCAT(business_features.name) as features,
-
-        FROM business
-
-        INNER JOIN link_business_features
-        ON link_business_features.business_id = businesses.id   /* Getting alltags, separated by "," */
-        INNER JOIN business_features
-        ON business_features.id = link_business_features.features_id
-
-
-        INNER JOIN link_business_tags
-        ON link_business_tags.business_id = businesses.id   /* Getting alltags, separated by "," */
-        INNER JOIN business_tags
-        ON business_tags.id = link_business_tags.tag_id
-
-        INNER JOIN business_images
-        ON businesses.id = business_images.business_id    /* Getting Images (Path) */
-
-        INNER JOIN business_visits
-        ON business_visits.business_id = businesses.id               /* Getting visit */
-
-        ;'
-        ;
+        return $business;
     }
 
+    public function createBusinessCache($business_id)
+    {
+            $filename = strtolower(base_convert(strval($business_id), 10, 36)).'.business.php_serialized';
+            $file_path = $this->cache_folder. '/'. $filename;
+            $business = $this->getBusinessByIdFromDB($business_id, array('with_images', 'with_comments'));
+            file_put_contents($file_path, serialize($business));
+            return $business;
+    }
 
-    public function getBusinessById($business_id, $option=null)
+    public function getBusinessByIdFromDB($business_id, $option=null)
     {
         $sql = 'SELECT businesses.name, businesses.id,
         businesses.website,
@@ -330,7 +325,7 @@ class BusinessesManager
         $score1 = computeScoreForFeature($business_id1, $feature_id);
         $score2 = computeScoreForFeature($business_id2, $feature_id);
 
-        if ($business_id1 = $winner_i)
+        if ($business_id1 == $winner_id)
         {
             $score_final = computeEloScore($score1, $score2);
         }
@@ -408,13 +403,7 @@ class BusinessesManager
             $in_content .= ':tag' .( count($tags)-1) . ')';
         }
         $sql = 'SELECT DISTINCT
-                b.name,
-                b.description,
-                ba.line1,
-                c.name as city_name,
-                bi.path,
-                bi.id,
-                GROUP_CONCAT(bc.name) as categories,
+                b.id,
                 COALESCE(
                             (SELECT -- We compute a score depending of the tags
                                     SUM((cast(lbt.nb_yes as signed) - cast(lbt.nb_no as signed)) / (lbt.nb_yes + lbt.nb_no))
@@ -440,15 +429,10 @@ class BusinessesManager
                 FROM
                 businesses b
                     INNER JOIN
-                link_businesses_categories lbc ON b.id = lbc.business_id
-                    INNER JOIN
-                business_categories bc ON bc.id = lbc.category_id
-                    INNER JOIN
-                business_images bi ON bi.business_id = b.id
-                    INNER JOIN
                 business_addresses ba ON b.id = ba.business_id
                     INNER JOIN
                 cities c ON c.id = ba.city_id
+
             WHERE '. $location_search. '
             GROUP BY b.id '.
             $having_content.
@@ -470,7 +454,13 @@ class BusinessesManager
             }
         }
         $business_req->execute();
-        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+        $businesses = array();
+        while($record = $business_req->fetch())
+        {
+            $business = $this->getBusinessById($record['id']);
+            $businesses[] = $business;
+        }
+        return($businesses);
     }
 
     /* ========================================== INSERT BUSINESS  ====================================================================================================================== */
@@ -532,12 +522,14 @@ class BusinessesManager
         $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
         $business_req->execute();
 
-        $sql = "SELECT * FROM `businesses` WHERE id = (SELECT MAX(id) FROM `businesses`);";
+        $sql = "SELECT id FROM `businesses` WHERE id = (SELECT MAX(id) FROM `businesses`);";
 
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute();
 
-        return $business_req->fetch(\PDO::FETCH_ASSOC);
+        $business = $this->createBusinessCache($business_req->fetch()['id']);
+
+        return $business;
     }
 
     public function insertVisit($business_id)
@@ -555,6 +547,7 @@ class BusinessesManager
         $visit_req->bindValue(':business', $business_id);
 
         $visit_req->execute();
+        $business = $this->createBusinessCache($business_id);
     }
 
     public function insertComment($business_id, $user_id, $comment, $image=NULL)
@@ -570,6 +563,7 @@ class BusinessesManager
         $comment_req->bindValue(':business', $business_id);
         $comment_req->bindValue(':comment', $comment);
         $comment_req->execute();
+        $business = $this->createBusinessCache($business_id);
     }
 
     public function insertBusinessImage($business_id, $image_path)
@@ -583,5 +577,6 @@ class BusinessesManager
         $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
         $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
         $business_req->execute();
+        $business = $this->createBusinessCache($business_id);
     }
 }
