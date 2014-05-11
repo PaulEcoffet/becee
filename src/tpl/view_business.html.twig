@@ -6,30 +6,43 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12" id="head">
-        <div id="bottom-head">
+        <div style="float:left; position:absolute; top:0; left:0">
             <div class="container container-fluid">
                 <div class="row">
-                    <div class="col-md-5 hidden-ms hidden-xs title">
+                    <div class="col-md-4 hidden-ms hidden-xs title">
                         <p>
-                        becee<span class="saumon">. suggesting you the best</span> 
+                        becee<span class="saumon">.</span> 
                         </p>
-                    </div>
-                    <div class="col-md-7">
-                        <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.business.city.name }}" autocomplete=off>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div style="padding-top:80px">
-            <div class="container container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
+            <div class="container container-fluid" style="background:rgba(0,0,0,0.4); height:100%">
+            <div class="row">
+                            <div class="col-md-12">
                         <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="{{ page.business.name }}" autocomplete=off style="text-align:right; font-size:4.5em; height:100px; background:none">
+                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.business.city.name }}" style="background:none;" autocomplete=off>
                         </form>
-                        <p style="font-size:1.5em; color: white; float: right; font-family: 'Roboto'; margin-top:7px;">{{ page.business.address_1 }},  {{ page.business.city.postal_code }} {{ page.business.city.name }}</p>
+                    </div>
+            </div>
+                <div class="row" style="margin-top:50px">
+                    <div class="col-md-9">
+                        <form class="input-group" action="{{ path('home') }}" method="POST">
+                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="{{ page.business.name }}" autocomplete=off style="text-align:left; font-size:4.5em; height:100px; background:none; border-color: rgba(100,100,100,0.1)">
+                        </form>
+                        <p style="font-size:1.5em; color: white; float: left; font-family: 'Roboto'; margin:7px 15px;">{{ page.business.address_1 }},  {{ page.business.city.postal_code }} {{ page.business.city.name }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <ul style="list-style-type: none; margin-top:40px; float: right">
+                            <li  style="display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center; float:right; margin-left: 20px">
+                                <a href="#"><i class="fa fa-cutlery fa-5x" style="color:rgba(250,250,250,0.98); margin-top:25px"></i></a>
+                            </li>
+                            <li  style="display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center;">
+                                <a href="#"><i class="fa fa-h-square fa-5x" style="color:rgba(250,250,250,0.98);margin-top:25px"></i>
+                                    <p style="margin-top:20px; display:block; color:#fff; text-decoration:none"></p>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -42,24 +55,14 @@
 <div class="container container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="row" style="padding:40px 0">
-                <div class="col-md-9" style="padding:10px 15px; border:3px solid #fefefe; background:#fbfbfb">
-                    <ol class="breadcrumb">
-                      <li><a href="#">Home</a></li>
-                      <li><a href="#">Library</a></li>
-                      <li class="active">Data</li>
-                    </ol>
+            <div class="row" style="padding:0px 0">
+                <div class="col-md-9" style="padding:0px 0px; border:3px solid #fefefe; background:#fbfbfb">
                     <div class="row">
-                        <div class="row" style="height:150px; overflow:hidden; margin-bottom:10px">
-                            {% for x in range(3,8) %}
-                            <img src="{{ media('img/imagetest%s.jpg'|format(x)) }}" class="img-responsive" alt="Responsive image" style="padding-right:5px; border-right:1px solid #eee; margin-left: 2px; display:inline-block">
-                            {% endfor %}
-                        </div>
-                        <nav class="navbar navbar-default" role="navigation" style="background:#ffef; border-radius: 0; margin:0">
+                        <nav class="navbar navbar-default" role="navigation" style="background:#ffef; border-radius: 0; margin:0;margin:5px 15px;">
                             <div class="container-fluid">
                                 <div class="navbar-header">
                                     {% for categorie in page.business.categories %}
-                                    <a class="navbar-brand" href="#" style="background:#2C3E50; color:#ECF0F1"><i class="fa fa-{{ categorie.categorie_icon }}" style="margin-right:5px;"></i> {{ categorie.categorie_name|title }}</a>
+                                    <a class="navbar-brand" href="#" style=""><i class="fa fa-{{ categorie.categorie_icon }}" style="margin-right:5px;"></i> {{ categorie.categorie_name|title }}</a>
                                     {% endfor %}
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -72,29 +75,35 @@
                                 </div>
                             </div>
                         </nav>
+
                         <div class="row">
-                            <div style="padding:10px; width:100%; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
+                        <div class="col-md-12" style="height:95px; overflow:hidden; margin-bottom:0px; padding:5px 15px;">
+                            {% for x in [1,2,3,4,5,6,3,4,5] %}
+                            <img src="{{ media('img/imagetest%s.jpg'|format(x)) }}" class="img-responsive" alt="Responsive image" style="padding-right:1px; border-right:1px solid #eee; margin-left: 0px; display:inline-block; border-radius:3px;width:93px">
+                            {% endfor %}
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div style="padding:10px; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                 font-weight: 400
                 font-style:  normal
                 font-size-adjust:    none
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
 
-<span style="background:#fff; color:#555; padding:5px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Heures d'ouverture</span>
-Probablement ouvert (Voir à quel moment les utilisateurs publient un check-in)
-<hr style="margin: 7px 0"/>
-<span style="background:#fff; color:#555; padding:5px; border-left:5px solid #a1f9a5; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Menus</span>
-Brunch, Déjeuner, Dîner
-<hr style="margin: 7px 0"/>
-<span style="background:#fff; color:#555; padding:5px; border-left:5px solid #c5e9fd; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Cartes de crédit</span>
+<span style="background:#fbfbfb; color:#222; padding:5px; border-right:2px solid #fcfcfc; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Heures d'ouverture</span>
+Probablement <span style="color:#43c64f">ouvert</span>
+<hr style="margin: 0px 0;border-color:#f3f3f3;"/>
+<span style="background:#fbfbfb; color:#222; padding:5px; border-right:2px solid #fcfcfc; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Cartes de crédit</span>
 Oui (y compris American Express)
-<hr style="margin: 7px 0"/>
-<span style="background:#fff; color:#555; padding:5px; border-left:5px solid #fdf3c6; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Terrasse</span>
-Oui
-<hr style="margin: 7px 0"/>
-
-                            <p style="padding:5px 15px">{{ page.business.description }}</p>
+<hr style="margin: 0px 0;border-color:#f3f3f3;"/>
+</div>
                             </div>
-                            <div style="width:100%; background:#efefe">
+                            <div class="col-md-6">
+                            </div>
+                        <div class="row">
+                                <div class="col-md-12" style="background:#f8f8f8; padding:10px">
+                            <div style="width:100%; background:#efefe;">
                                 <form class="form-inline" role="form" style="background:#f8f8f8; padding:10px; border:1px solid #eaeaea">
                                     <label style="    display: inline-block;
                                 margin-bottom: 0;
@@ -106,29 +115,24 @@ Oui
                                     <div class="form-group" style="display: block;
                             overflow: hidden;
                             padding: 0 4px 0 6px;">
-                                        <input type="text" placeholder="&#xF040; Laissez un commentaire" style="width:100%; height:33px">
+                                        <input type="text" placeholder="  Laissez un commentaire" style="width:calc(100% - 30px); height:33px; display:inline-block">
+                                    <a style="float:right; margin-top: 10px; color:#ccc" href="#"><i class="fa fa-camera fa-lg"></i>
+                                    </a>
                                     </div>
-                                    <label style="    display: inline-block;
-                        margin-bottom: 0;
-                        margin-top: 0;
-                        padding-left: 10px;
-                        vertical-align: middle; color: #aaa; float:right; margin-top:-10px"><i class="fa fa-camera fa-lg"></i>
-                                    </label>
                                 </form>
-
-                                <div class="col-md-12" style="background:#f8f8f8; padding:10px">
+                        </div>
                                     {% for userComment in page.business.comments %}
                                     <blockquote style="display:block; padding:10px; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                         font-weight: 400
                         font-style:  normal
                         font-size-adjust:    none
-                        color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin-top:10px; position:relative;overflow:hidden;">
+                        color:   #4D4D4D; border:0px solid #eee; border-left:1px solid #93c2db; background-color:#fff; margin-top:0px; position:relative;overflow:hidden;">
                                         <a style="display:inline-block; float: left; padding-right: 15px; border-right:1px solid #ddd; margin: 5px 15px">
                                             <img width="40" height="40" title="Elias R." class="avatar " alt="Elias R." src="{{ media(userComment.userAvatar) }}">
                                         </a>
                                         <p>
                                             {{ userComment.comment }}</p>
-                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block">{{ userComment.userName }} - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
+                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block"><a style="color:#2C3E50" href="#">{{ userComment.userName }}</a> - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
                                         <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block;  float:right"><i class="fa fa-thumbs-down fa-lg" style="margin: 0 5px"></i> {{ userComment.voteNeg }} <i class="fa fa-thumbs-up fa-lg" style="margin: 0 5px"></i> {{ userComment.votePos }}</span>
                                     </blockquote>
                                     {% endfor %}
@@ -138,7 +142,7 @@ Oui
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div id="map-canvas" style="box-shadow: 0px 0px 2px 0px #cfcfcf; margin: 0px 10px"></div>
+                    <div id="map-canvas" style="box-shadow: 0px 0px 2px 0px #cfcfcf; margin: 15px 10px"></div>
                             <div style="padding:10px; width:100%; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                 font-weight: 400
                 font-style:  normal
@@ -153,11 +157,7 @@ Oui
 <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Description</span>
                            <p style="padding:5px 15px">{{ page.business.description[:250] }}</p>
                                         
-<hr style="margin: 7px 0"/>
-<span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #a1f9a5; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Menus</span>
-Brunch, Déjeuner, Dîner <input type="text" placeholder="Ajoute un menu !" style="height:23px; margin: 5px 0; padding-left:5px">
-<hr style="margin: 7px 0"/>
-<span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fdf3c6; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Tags</span>
+<span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fdf3c6; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin:10px 15px 10px 0">Tags</span>
                                         {% for tag in page.business.tags %}
                                         {% if not tag is empty %}<a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }}</span></a>{%endif%}
                                         {% endfor %}
@@ -195,7 +195,7 @@ console.debug(cities);
 </script>
 <script type="text/javascript" src="{{ media('vendor/googlemap-api/js/googlemap-api.js')}}"></script>
 <script type="text/javascript">
-   initialize({{ page.business.city.lat }},{{ page.business.city.lng }}, '<p style="font-size:19px;text-shadow: 1px 1px 3px #ccc;margin-top:8px">{{ page.business.name }}</p>');
+   initialize({{ page.business.city.lat }},{{ page.business.city.lng }}, '');
 </script>
 {% endblock %}
 

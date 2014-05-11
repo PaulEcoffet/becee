@@ -32,7 +32,7 @@ class CurrentUserManager
     public function connectUser($user)
     {
         $this->app->setSession('user_id', $user['id']);
-        $this->app->setSession('user_name', $user['name']);
+        $this->app->setSession('user_name', array($user['firstname'], $user['lastname']));
         $this->app->setSession('user_session_type', 'normal');
         $this->app->setCookie('user_id', $user['id'], time()+3600*24*31);
         
@@ -62,6 +62,13 @@ class CurrentUserManager
     public function getId()
     {
         return $this->app->getSession('user_id');
+    }
+
+    public function getAvatar()
+    {
+        $avatar_req = $this->pdo->prepare('SELECT avatar_path as path FROM users WHERE users.id = ?');
+        $avatar_req->execute(array($this->getId()));
+        return $avatar_req->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function setPrefferedCityFromGeoLoc() //Warning: Do not work in local
@@ -103,10 +110,10 @@ class CurrentUserManager
         }
         $sql = "UPDATE `users` SET avatar_path=:avatar_path WHERE id = :user_id;";
         
-        $business_req = $this->pdo->prepare($sql); 
-        $business_req->bindValue(':avatar_path', $path,\PDO::PARAM_STR);
-        $business_req->bindValue(':user_id', $user->id,\PDO::PARAM_INT);
-        $business_req->execute();
+        $avatar_req = $this->pdo->prepare($sql); 
+        $avatar_req->bindValue(':avatar_path', $path,\PDO::PARAM_STR);
+        $avatar_req->bindValue(':user_id', $user->id,\PDO::PARAM_INT);
+        $avatar_req->execute();
 
     }
 }

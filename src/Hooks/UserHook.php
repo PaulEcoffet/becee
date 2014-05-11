@@ -28,6 +28,7 @@ class UserHook extends \QDE\Hook
             {
                 $data['name'] = $curuser->getName();
                 $data['id'] = $curuser->getId();
+                $data['avatar'] = $curuser->getAvatar();
             }
             $response->addData($data);
             $response->setNamespace($oldnamespace);

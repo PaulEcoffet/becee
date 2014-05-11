@@ -27,7 +27,8 @@ class Users
         $data = array();
         try
         {
-            $data['name'] = htmlspecialchars($request->getPost('name'));
+            $data['firstname'] = htmlspecialchars($request->getPost('firstname'));
+            $data['lastname'] = htmlspecialchars($request->getPost('lastname'));
             $data['password'] = $request->getPost('password');
             $verifypassword = $request->getPost('verifypassword');
             $data['email'] = htmlentities($request->getPost('email'));

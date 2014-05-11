@@ -70,13 +70,8 @@
             {% else %}
             <ul class="nav-tools nav-tools-right">
                 <li>
-                    <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
-                    <img src="{{ media(user.image) }}"><span>{{ user.name }}</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="btn-categories btn-default" href="{{ path('user_logout') }}">
-                    <i class="fa fa-sign-out fa-lg" ></i><span>Log Out</span>
+                    <a class="btn-categories btn-default" style="border:none;display:inline-block;margin-top:5px" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
+                    <img src="{{ media(user.avatar.path) }}" width="34" style="display:inline-block; float:left;"><span style="margin-top:7px">{{ user.name }}</span>
                     </a>
                 </li>
             </ul>
