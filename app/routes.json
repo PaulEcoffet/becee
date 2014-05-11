@@ -48,6 +48,15 @@
         "action": "registerProcessing"
     },
     {
+        "name": "add_comment",
+        "route": "business/add_comment/{id}",
+        "controller": "Businesses",
+        "action": "addComment",
+        "variables": {
+            "id": "\\d+"
+        }
+    },
+    {
         "name": "view_business",
         "route": "business/{id}/{name}",
         "controller": "Businesses",

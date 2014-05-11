@@ -117,7 +117,8 @@ class BusinessesManager
     {
         $sql = 'SELECT
                 business_images.path,
-                COALESCE(users.name, \'Anonymous\') as uploaderName,
+                COALESCE(users.firstname, \'Anonymous\') as uploaderFirstName,
+                COALESCE(users.lastname, \'Anonymous\') as uploaderLastName,
                 users.id as uploaderId,
                 business_images.priority,
                 businesses.id as businessId
@@ -211,7 +212,8 @@ class BusinessesManager
                 business_comments.vote_neg as voteNeg,
                 business_comments.vote_pos as votePos,
                 users.id as userId,
-                COALESCE(users.name, \'Anonymous\') as userName,
+                COALESCE(users.firstname, \'Anonymous\') as userFirstName,
+                COALESCE(users.lastname, \'\') as userLastName,
                 users.avatar_path as userAvatar
             FROM
                 business_comments
@@ -231,6 +233,7 @@ class BusinessesManager
         $comments = array();
         while($comment_arr = $comments_req->fetch(\PDO::FETCH_ASSOC))
         {
+            $comment_arr['userName'] = array('firstname' => $comment_arr['userFirstName'], 'lastname' => $comment_arr['userLastName']);
             $comment = new BusinessComment();
             $comment->hydrate($comment_arr);
             $comments[] = $comment;
@@ -519,9 +522,24 @@ class BusinessesManager
 
         $visit_req = $this->pdo->prepare($sql);
         $visit_req->bindValue(':user', $user_id);
-        $visit_req->bindValues(':business', $business_id);
+        $visit_req->bindValue(':business', $business_id);
 
         $visit_req->execute();
+    }
+
+    public function insertComment($business_id, $user_id, $comment)
+    {
+
+        $sql = 'INSERT INTO business_comments( user_id, business_id, comment, pub_date, status)
+                VALUES (:user, :business , :comment, NOW(), 0)
+                ;'
+                ;
+
+        $comment_req = $this->pdo->prepare($sql);
+        $comment_req->bindValue(':user', $user_id);
+        $comment_req->bindValue(':business', $business_id);
+        $comment_req->bindValue(':comment', $comment);
+        $comment_req->execute();
     }
 
     public function insertBusinessImage($business_id, $image_path)

@@ -562,10 +562,10 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `firstname` varchar(40) NOT NULL,
-  `lastname` varchar(40) NOT NULL,
-  `hashed_password` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `firstname` varchar(40) DEFAULT NULL,
+  `lastname` varchar(40) DEFAULT NULL,
+  `hashed_password` varchar(255) DEFAULT NULL,
   `category` int(10) unsigned DEFAULT '1',
   `language` varchar(80) DEFAULT 'FR',
   `avatar_path` varchar(80) DEFAULT 'img/default-user-avatar-small.png',
@@ -586,7 +586,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','Ecoffet','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-10 17:49:40',NULL,NULL),(2,'tagadapwet@hotmail.com','Jean-Baptiste','Klifengerd','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','Judor','qshfsouih',1,'FR','../media/img/default-user-avatar.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL);
+INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','Ecoffet','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-10 17:49:40',NULL,NULL),(2,'tagadapwet@hotmail.com','Jean-Baptiste','Klifengerd','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','Judor','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

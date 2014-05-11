@@ -12,15 +12,17 @@ class CurrentUserManager
         $this->pdo = $this->app->getPdo();
         if($this->app->hasSession('user_id') === false && $this->app->hasCookie('user_id') === true)
         {
+            echo "1";
             $this->connectUser(array('id' => $this->app->getCookie('user_id'), 'firstname' => 'visitor', 'lastname' => 'visitor'));
 
         }
         elseif($this->app->hasSession('user_id') === false) //We create a fake account waiting for the user to sign in or sign up
         {
+            echo "2";
             $user = $app->getManager('Users')->createDummyUser();
-            $this->app->setSession('user_id', $user->id);
+            $this->app->setSession('user_id', $user['id']);
             $this->app->setSession('user_session_type', 'dummy');
-            $this->app->setCookie('user_id', $user->id, time()+3600*24*31);
+            $this->app->setCookie('user_id', $user['id'], time()+3600*24*31);
         }
     }
 
