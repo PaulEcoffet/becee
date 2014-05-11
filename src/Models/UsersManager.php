@@ -41,8 +41,8 @@ class UsersManager
 
     public function insertUser($user, $category=1)
     {
-        $sql = "INSERT INTO `users` (firstname, lastname, email, hashed_password, salt, inscription_time, category)
-                VALUES(:firstname, :lastname, :email, SHA1(CONCAT(:hashed_password, :salt)), :salt, NOW(), :category)
+        $sql = "INSERT INTO `users` (firstname, lastname, email, hashed_password, salt, inscription_time, last_visit_time, category)
+                VALUES(:firstname, :lastname, :email, SHA1(CONCAT(:hashed_password, :salt)), :salt, NOW(), NOW(), :category)
                 ;
                 ";
 

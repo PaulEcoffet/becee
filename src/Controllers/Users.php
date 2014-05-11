@@ -63,10 +63,12 @@ class Users
 
         }
         if(!$error)
-            return new \QDE\Responses\RedirectResponse('home');
+            return new \QDE\Responses\RedirectResponse('home', null, array('information' => array('id' => '#information', 'message' => 'Vous êtes désormais inscrit')));
         else
-        	$errorArray = array('id' => '#register', 'message' => $errorMessage);
+        {
+            $errorArray = array('id' => '#register', 'message' => $errorMessage);
             return new \QDE\Responses\RedirectResponse('home', null, array('information' => $errorArray));
+        }
     }
     public function logInAction($request)
     {

@@ -59,7 +59,7 @@ class Businesses
     {
         $manager = $request->getManager('businesses');
         $business_id = $request->getParamsUri('id');
-        $userManager = $request->getManager('currentuser');
+        $userManager = $request->getManager('currentUser');
         $user_id = $userManager->getId();
         $comment = $request->getPost('comment');
         $manager->insertComment($business_id, $user_id, $comment);
