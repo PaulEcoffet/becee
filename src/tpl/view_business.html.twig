@@ -125,34 +125,42 @@
                             padding: 0 4px 0 6px;">
                                                 <input type="text" placeholder="  Laissez un commentaire" style="width:calc(100% - 105px); height:33px; display:inline-block" name="comment">
                                                 <button type="submit" class="btn btn-default" style="width:70px; height:33px; float:right; padding-top:6px">Envoyer</button>
-<div class="image-upload" style="float:right; margin: 5px; color:#ccc">
-    <label for="imgInp">
-        <i class="fa fa-camera fa-lg" style="cursor:pointer;margin-right: 3px;"></i>
-    </label>
-    <input id="imgInp" style="display:none" type="file"/>
-</div></div>
-                                            <div class='smallpic' style="float:left; width:100px; max-height:100px; overflow:hidden;"><img style="max-width: 100%;
-   max-height: 100%;"id="blah" src="#" alt="" /></div>
-                                        </form></div>
+                                                <div class="image-upload" style="float:right; margin: 5px; color:#ccc">
+                                                    <label for="imgInp">
+                                                        <i class="fa fa-camera fa-lg" style="cursor:pointer;margin-right: 3px;"></i>
+                                                    </label>
+                                                    <input type="hidden" name="MAX_FILE_SIZE" value="600000">
+                                                    <input id="imgInp" style="display:none" type="file" name="business_user_image">
+                                                </div>
+                                            </div>
+                                            <div id='smallpic'>
+                                                <img id="blah" src="#" alt="" style="display:none" />
+                                            </div>
+                                        </form>
+                                    </div>
                                     <div class="col-md-12">
-                                    <table style="padding:10px; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
+                                        <table style="padding:10px; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                         font-weight: 400
                         font-style:  normal
                         font-size-adjust:    none
                         color:   #4D4D4D; background-color:#fff; margin-top:0px; position:relative;overflow:hidden;border-left:1px solid #93c2db; background-color:#fff;">
-                                    {% for userComment in page.business.comments %}
-                                    <tr>
-                                        <td style="padding:5px; vertical-align:top; ">
-                                        <div style="border-right:1px solid #f0f0f0;display:inline-block; padding:10px;"><a href="#" style="margin:0 10px"><img width="40" height="40" title="Elias R." class="avatar " src="{{ media(userComment.userAvatar) }}" style="margin-top:2px"></a></div>
-                                        </td>
-                                        <td style="width:100%; padding:15px">
-                                            <p style="word-break:break-all;">{{ userComment.comment }}</p>
-                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block"><a style="color:#2C3E50" href="#">{{ userComment.userName.firstname }} {{ userComment.userName.lastname|upper }}</a> - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
-                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block;  float:right"><i class="fa fa-thumbs-down fa-lg" style="margin: 0 5px"></i> {{ userComment.voteNeg }} <i class="fa fa-thumbs-up fa-lg" style="margin: 0 5px"></i> {{ userComment.votePos }}</span>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    </table>
+                                            {% for userComment in page.business.comments %}
+                                            <tr>
+                                                <td style="padding:5px; vertical-align:top; ">
+                                                    <div style="border-right:1px solid #f0f0f0;display:inline-block; padding:10px;">
+                                                        <a href="#" style="margin:0 10px">
+                                                            <img width="40" height="40" title="Elias R." class="avatar " src="{{ media(userComment.userAvatar) }}" style="margin-top:2px">
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td style="width:100%; padding:15px">
+                                                    <p style="word-break:break-all;">{{ userComment.comment }}</p>
+                                                    <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block"><a style="color:#2C3E50" href="#">{{ userComment.userName.firstname }} {{ userComment.userName.lastname|upper }}</a> - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
+                                                    <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block;  float:right"><i class="fa fa-thumbs-down fa-lg" style="margin: 0 5px"></i> {{ userComment.voteNeg }} <i class="fa fa-thumbs-up fa-lg" style="margin: 0 5px"></i> {{ userComment.votePos }}</span>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -180,8 +188,7 @@
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
 
                         <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Suggestions</span>
-                        {% for suggested_business in page.suggested_businesses %}
-                        {% if not (suggested_business.id == page.business.id) %}
+                        {% for suggested_business in page.suggested_businesses %} {% if not (suggested_business.id == page.business.id) %}
                         <div class="home-business-box">
                             <div class="row">
                                 <div class="col-md-12">
@@ -199,8 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% endif %}
-                        {% endfor %}
+                        {% endif %} {% endfor %}
 
                     </div>
                 </div>
@@ -239,7 +245,12 @@ function readURL(input) {
 
         reader.onload = function (e) {
             $('#blah').attr('src', e.target.result);
-            $('#blah').attr('style', 'max-width: 100%;max-height:100%;margin:20px;padding:10px;');
+            $('#blah').attr('style', 'height:100px; min-width:100px;display:block');
+            $('#smallpic').attr('style', 'overflow:hidden;border-radius:5px; margin-top:10px');
+            if (!($('#smallpic').hasClass('img-container'))) {
+                var d = document.getElementById("smallpic");
+                d.className = d.className + "img-container";
+            }
         }
 
         reader.readAsDataURL(input.files[0]);
@@ -249,6 +260,7 @@ function readURL(input) {
 $("#imgInp").change(function(){
     readURL(this);
 });
+
 </script>
 <script type="text/javascript" src="{{ media('vendor/googlemap-api/js/googlemap-api.js')}}"></script>
 <script type="text/javascript">

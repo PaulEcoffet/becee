@@ -78,10 +78,10 @@ class Businesses
         $userManager = $request->getManager('currentUser');
         $user_id = $userManager->getId();
         $comment = $request->getPost('comment');
-        $manager->insertComment($business_id, $user_id, $comment);
-        if(!$error)
-        {
-            $informationArray = array('id' => '#information', 'message' => "Votre commentaire a été publié.");
+        if (!empty($comment)) {
+            $image = $request->getFiles('business_user_image');
+            $manager->insertComment($business_id, $user_id, $comment, $image);
+            $informationArray = array('id' => '#information', 'message' => "Le commentaire suivant a été publié :<hr/>".$comment);
         }
         else
         {

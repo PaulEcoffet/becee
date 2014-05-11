@@ -330,7 +330,7 @@ class BusinessesManager
         $score1 = computeScoreForFeature($business_id1, $feature_id);
         $score2 = computeScoreForFeature($business_id2, $feature_id);
 
-        if ($business_id1 = $winner_i
+        if ($business_id1 = $winner_i)
         {
             $score_final = computeEloScore($score1, $score2);
         }
@@ -368,10 +368,7 @@ class BusinessesManager
 
 
      /* ========================================== BUSINESS SEARCH  ====================================================================================================================== */
-    public function searchBusinesses($category='%', $tags=null, $location='%')
-    {
 
-    }
 
     public function searchBusinesses($location, $category=null, $tags=null, $limit=20, $offset=0)
     {
@@ -560,7 +557,7 @@ class BusinessesManager
         $visit_req->execute();
     }
 
-    public function insertComment($business_id, $user_id, $comment)
+    public function insertComment($business_id, $user_id, $comment, $image=NULL)
     {
 
         $sql = 'INSERT INTO business_comments( user_id, business_id, comment, pub_date, status)

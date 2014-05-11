@@ -136,6 +136,19 @@ textarea, input[type="text"], .uneditable-input {
 box-shadow: none;
 outline: 0 none;}
 
+.img-container {
+    height: 100px;
+    width: 100px;
+    background-color: #fff;
+    border: 3px solid rgba(180,180,180,0.22);
+    overflow: hidden;
+}
+.img-container img {
+    display: block;
+    height: auto; 
+    max-width: none;
+}
+
 .form-control::-moz-placeholder {
     color: #fff;
     opacity: 1;
