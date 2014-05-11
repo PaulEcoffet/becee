@@ -26,6 +26,7 @@ class App
     {
         // PHP SPECIFIC
         session_start();
+        date_default_timezone_set('Europe/Paris');
 
 
         //Setting the config
