@@ -43,7 +43,6 @@ class Businesses
     {
         $manager = $request->getManager('businesses');
         //TODO
-        
     }
 
     public function addCommentAction($request)

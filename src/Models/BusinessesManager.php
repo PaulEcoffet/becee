@@ -22,7 +22,7 @@ class BusinessesManager
         $Additionnal_info = new Business();
 
         $sql = 'SELECT GROUP_CONCAT(business_images.path),
-        GROUP_CONCAT(business_tags.name) as tags, 
+        GROUP_CONCAT(business_tags.name) as tags,
         GROUP_CONCAT(business_features.name) as features,
 
         FROM business
@@ -33,9 +33,9 @@ class BusinessesManager
         ON business_features.id = link_business_features.features_id
 
 
-        INNER JOIN link_business_tags 
+        INNER JOIN link_business_tags
         ON link_business_tags.business_id = businesses.id   /* Getting alltags, separated by "," */
-        INNER JOIN business_tags                            
+        INNER JOIN business_tags
         ON business_tags.id = link_business_tags.tag_id
 
         INNER JOIN business_images
@@ -180,8 +180,8 @@ class BusinessesManager
     public function getBusinessCategories($business_id = '%')
     {
         $sql = 'SELECT
-                business_categories.id as categorie_id, 
-                business_categories.name as categorie_name, 
+                business_categories.id as categorie_id,
+                business_categories.name as categorie_name,
                 business_categories.fontAwesomeIconName as categorie_icon
             FROM
                 businesses
@@ -313,7 +313,7 @@ class BusinessesManager
         $data2 = $score->fetch();
         $score_neg = $data2['score2'];
 
-        return $score_pos - $score_neg;        
+        return $score_pos - $score_neg;
     }
 
 
@@ -363,14 +363,18 @@ class BusinessesManager
      /* ========================================== BUSINESS SEARCH  ====================================================================================================================== */
 
 
-   
 
-    
 
-    public function searchBusinesses($category='%', $tags=null, $location='%')
+
+
+    public function searchBusinesses($location, $category=null, $tags=null)
     {
-        if($tags === null)
-            $in_content = 'LIKE %';
+        if($category === null)
+        {
+            $category = '%';
+        }
+        if(empty($tags))
+            $in_content = 'LIKE \'%\'';
         else
         {
             $in_content = 'IN(';
@@ -384,7 +388,7 @@ class BusinessesManager
                 b.name,
                 b.description,
                 ba.line1,
-                c.name,
+                c.name as city_name,
                 bi.path,
                 bi.id,
                 GROUP_CONCAT(bc.name) as categories,
@@ -443,7 +447,7 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
-    /* ========================================== HYDRATE BUSINESS  ====================================================================================================================== */
+    /* ========================================== INSERT BUSINESS  ====================================================================================================================== */
 
 
 
@@ -554,8 +558,4 @@ class BusinessesManager
         $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
         $business_req->execute();
     }
-
-
-
-
-}    //END
+}

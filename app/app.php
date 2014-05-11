@@ -27,7 +27,7 @@ class App
         // PHP SPECIFIC
         session_start();
         date_default_timezone_set('Europe/Paris');
-
+        setlocale(LC_CTYPE, 'fr_FR');
 
         //Setting the config
         $this->becee_root = realpath(dirname(__FILE__).'/../');

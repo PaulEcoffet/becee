@@ -37,7 +37,7 @@ class CurrentUserManager
         $this->app->setSession('user_name', array('firstname' => $user['firstname'], 'lastname' => $user['lastname']));
         $this->app->setSession('user_session_type', 'normal');
         $this->app->setCookie('user_id', $user['id'], time()+3600*24*31);
-        
+
         $business_req = $this->pdo->prepare("UPDATE `users` SET last_visit_time=NOW() WHERE id = ?;"); 
         $business_req->execute(array($user['id']));
     }
@@ -86,12 +86,12 @@ class CurrentUserManager
         }
         $geocode = $this->app->getGeocoder()->geocode($ip);
         $nearestcity = $this->app->getManager('Location')->getNearestZone($geocode->getLatitude(), $geocode->getLongitude());
-        $this->setPrefferedCity($nearestcity->id);
+        $this->setPrefferedCity($nearestcity);
     }
 
-    public function setPrefferedCity($city_id)
+    public function setPrefferedCity($city)
     {
-        $this->app->setSession('user_preffered_city', $city_id);
+        $this->app->setSession('user_preffered_city', $city);
     }
 
     public function getPrefferedCity()
@@ -111,11 +111,10 @@ class CurrentUserManager
             $path = '../media/img/default-user-avatar.png';
         }
         $sql = "UPDATE `users` SET avatar_path=:avatar_path WHERE id = :user_id;";
-        
-        $avatar_req = $this->pdo->prepare($sql); 
+
+        $avatar_req = $this->pdo->prepare($sql);
         $avatar_req->bindValue(':avatar_path', $path,\PDO::PARAM_STR);
         $avatar_req->bindValue(':user_id', $user->id,\PDO::PARAM_INT);
         $avatar_req->execute();
-
     }
 }
