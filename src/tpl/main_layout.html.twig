@@ -51,7 +51,7 @@
                   </ul>
                 </div>
             </div>
-            {% if not user.is_logged or (user.name.firstname == 'visitor' and user.name.lastname == 'visitor' and user.id == 1) %}
+            {% if not user.is_logged or (user.name.firstname == 'visitor' and user.name.lastname == 'visitor') %}
             <ul class="nav-tools nav-tools-right">
                 <li>
                     <a class="btn-categories btn-default" data-toggle="modal" data-target="#login">
