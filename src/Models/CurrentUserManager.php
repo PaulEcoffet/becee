@@ -12,7 +12,7 @@ class CurrentUserManager
         $this->pdo = $this->app->getPdo();
         if($this->app->hasSession('user_id') === false && $this->app->hasCookie('user_id') === true)
         {
-            $this->connectUser(array('id' => $this->app->getCookie('user_id'), 'name' => 'visitor'));
+            $this->connectUser(array('id' => $this->app->getCookie('user_id'), 'firstname' => 'visitor', 'lastname' => 'visitor'));
 
         }
         elseif($this->app->hasSession('user_id') === false) //We create a fake account waiting for the user to sign in or sign up
@@ -32,7 +32,7 @@ class CurrentUserManager
     public function connectUser($user)
     {
         $this->app->setSession('user_id', $user['id']);
-        $this->app->setSession('user_name', $user['name']);
+        $this->app->setSession('user_name', array('firstname' => $user['firstname'], 'lastname' => $user['lastname']));
         $this->app->setSession('user_session_type', 'normal');
         $this->app->setCookie('user_id', $user['id'], time()+3600*24*31);
         
@@ -62,6 +62,13 @@ class CurrentUserManager
     public function getId()
     {
         return $this->app->getSession('user_id');
+    }
+
+    public function getAvatar()
+    {
+        $avatar_req = $this->pdo->prepare('SELECT avatar_path as path FROM users WHERE users.id = ?');
+        $avatar_req->execute(array($this->getId()));
+        return $avatar_req->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function setPrefferedCityFromGeoLoc() //Warning: Do not work in local
@@ -103,10 +110,10 @@ class CurrentUserManager
         }
         $sql = "UPDATE `users` SET avatar_path=:avatar_path WHERE id = :user_id;";
         
-        $business_req = $this->pdo->prepare($sql); 
-        $business_req->bindValue(':avatar_path', $path,\PDO::PARAM_STR);
-        $business_req->bindValue(':user_id', $user->id,\PDO::PARAM_INT);
-        $business_req->execute();
+        $avatar_req = $this->pdo->prepare($sql); 
+        $avatar_req->bindValue(':avatar_path', $path,\PDO::PARAM_STR);
+        $avatar_req->bindValue(':user_id', $user->id,\PDO::PARAM_INT);
+        $avatar_req->execute();
 
     }
 }

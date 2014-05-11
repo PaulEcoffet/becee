@@ -5,15 +5,17 @@ namespace Becee\Entities;
 class BusinessImage
 {
     protected $path;
-    protected $uploaderName;
+    protected $uploaderFirstName;
+    protected $uploaderLastName;
     protected $uploaderId;
     protected $priority;
     protected $businessId;
 
-    public function __construct($path=null, $uploader_name=null, $uploader_id=null, $priority=null, $business_id=null)
+    public function __construct($path=null, $uploader_firstname=null, $uploader_lastname=null, $uploader_id=null, $priority=null, $business_id=null)
     {
         $this->path = $path;
-        $this->uploaderName = $uploader_name;
+        $this->uploaderFirstName = $uploader_firstname;
+        $this->uploaderLastName = $uploader_lastname;
         $this->uploaderId = $uploader_id;
         $this->priority = $priority;
         $this->businessId = $business_id;
@@ -53,23 +55,43 @@ class BusinessImage
     }
 
     /**
-     * Get uploaderName.
+     * Get uploaderFirstName.
      *
-     * @return uploaderName.
+     * @return uploaderFirstName.
      */
-    public function getUploaderName()
+    public function getUploaderFirstName()
     {
-        return $this->uploaderName;
+        return $this->uploaderFirstName;
     }
 
     /**
-     * Set uploaderName.
+     * Set uploaderFirstName.
      *
-     * @param uploaderName the value to set.
+     * @param uploaderFirstName the value to set.
      */
-    public function setUploaderName($uploaderName)
+    public function setUploaderFirstName($uploaderFirstName)
     {
-        $this->uploaderName = $uploaderName;
+        $this->uploaderFirstName = $uploaderFirstName;
+    }
+
+    /**
+     * Get uploaderLastName.
+     *
+     * @return uploaderLastName.
+     */
+    public function getUploaderLastName()
+    {
+        return $this->uploaderLastName;
+    }
+
+    /**
+     * Set uploaderLastName.
+     *
+     * @param uploaderLastName the value to set.
+     */
+    public function setUploaderLastName($uploaderLastName)
+    {
+        $this->uploaderLastName = $uploaderLastName;
     }
 
     /**

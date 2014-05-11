@@ -51,7 +51,7 @@
                   </ul>
                 </div>
             </div>
-            {% if not user.is_logged or user.name == 'visitor' %}
+            {% if not user.is_logged or (user.name.firstname == 'visitor' and user.name.lastname == 'visitor' and user.id == 1) %}
             <ul class="nav-tools nav-tools-right">
                 <li>
                     <a class="btn-categories btn-default" data-toggle="modal" data-target="#login">
@@ -70,8 +70,8 @@
             {% else %}
             <ul class="nav-tools nav-tools-right">
                 <li>
-                    <a class="btn-categories btn-default" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
-                    <img src="{{ media(user.image) }}"><span>{{ user.name }}</span>
+                    <a class="btn-categories btn-default" style="border:none;display:inline-block;margin-top:5px" href="{{ path('user_manager',{'id':1, 'section':'account'}) }}">
+                    <img src="{{ media(user.avatar.path) }}" width="34" style="display:inline-block; float:left;"><span style="margin-top:7px">{{ user.name.firstname }} {{ user.name.lastname }}</span>
                     </a>
                 </li>
                 <li>
@@ -113,7 +113,7 @@
             {% endif %}
             <div class="user_login">
                 <form role="form" method="post" enctype="multipart/form-data" action="{{path('user_login_processing')}}">
-                    <label>Email / Username</label> <input type="text" name="email"><br>
+                    <label>Email</label> <input type="email" name="email"><br>
                     <label>Password <span class="forgot_password">Forgot password</span></label><input type="password" name="password"><br>
 
                     <div class="checkbox">
@@ -180,7 +180,8 @@
                 {% endif %}
                 <div class="user_register">
                     <form role="form" method="post" enctype="multipart/form-data" action="{{path('user_signup_process')}}">
-                        <label>Full Name</label> <input name="name" type="text"><br>
+                        <label>First Name</label> <input name="firstname" type="text"><br>
+                        <label>Last Name</label> <input name="lastname" type="text"><br>
                         <label>Email Address</label> <input name="email" type="email"><br>
                         <label>Password</label> <input name="password" type="password"><br>
                         <label>Verify Password</label> <input name="verifypassword" type="password"><br>

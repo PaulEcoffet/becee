@@ -58,7 +58,7 @@ class BusinessesManager
         businesses.phone_number,
         businesses.price,
         businesses.description,
-        users.name as manager,
+        users.id as manager,
         business_addresses.line1 as address_1,
         business_addresses.line2 as adresse_2,
         cities.id as city
@@ -336,7 +336,7 @@ class BusinessesManager
                     ;'
                     ;
 
-        $app_data = $this->pdo->prepare($sql)
+        $app_data = $this->pdo->prepare($sql);
         $add_data->bindValue('bus1', $business_id1);
         $add_data->bindValue('bus2', $business_id2);
         $add_data->bindValue('win', $winner_id);
@@ -351,7 +351,7 @@ class BusinessesManager
     public function computeEloScore($score1, $score2) //Maybe try to change the K factor ......
     {
 
-        $score = $score1 + 30*(1 - 1/(1 + (pow(10, -($score1 - $score2)))/400)))
+        $score = $score1 + 30*(1 - 1/(1 + (pow(10, -($score1 - $score2)))/400));
         return abs($score);
     }
 
