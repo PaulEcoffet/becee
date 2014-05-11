@@ -367,16 +367,36 @@ class BusinessesManager
 
 
 
-    public function searchBusinesses($location, $category=null, $tags=null)
+    public function searchBusinesses($location, $category=null, $tags=null, $limit=20, $offset=0)
     {
         if($category === null)
         {
             $category = '%';
         }
-        if(empty($tags))
-            $in_content = 'LIKE \'%\'';
+        if(is_string($category))
+        {
+            $category_search = 'bc.name LIKE :category';
+        }
         else
         {
+            $category_search = 'bc.id = :category';
+        }
+        if(is_string($location))
+        {
+            $location_search = 'c.name LIKE :city';
+        }
+        else
+        {
+            $location_search = 'c.id = :city';
+        }
+        if(empty($tags))
+        {
+            $in_content = 'LIKE \'%\'';
+            $having_content = '';
+        }
+        else
+        {
+            $having_content = 'HAVING tags_score > 0';
             $in_content = 'IN(';
             for($i = 0; $i < count($tags) - 1; $i++) // Ugly but I haven't found anything better
             {
@@ -409,8 +429,8 @@ class BusinessesManager
                             link_businesses_categories lbt
                                 INNER JOIN
                             business_categories bc ON lbt.category_id = bc.id
-                        WHERE
-                            bc.name LIKE :category
+                        WHERE '
+                            .$category_search. '
                                 AND lbt.business_id = b.id),
                     1,
                     0) as category_score
@@ -426,16 +446,19 @@ class BusinessesManager
                 business_addresses ba ON b.id = ba.business_id
                     INNER JOIN
                 cities c ON c.id = ba.city_id
-            WHERE c.name LIKE :cityname
-            GROUP BY b.id
-            /* HAVING tags_score > 0 */
-            ORDER BY tags_score + category_score DESC
+            WHERE '. $location_search. '
+            GROUP BY b.id '.
+            $having_content.
+            ' ORDER BY tags_score + category_score DESC
+            LIMIT :limit OFFSET :offset
             ;'
 
             ;
         $business_req = $this->pdo->prepare($sql);
         $business_req->bindValue(':category', $category, \PDO::PARAM_STR);
-        $business_req->bindValue(':cityname', $location, \PDO::PARAM_STR);
+        $business_req->bindValue(':city', $location, \PDO::PARAM_STR);
+        $business_req->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $business_req->bindValue(':offset', $offset, \PDO::PARAM_INT);
         if($tags !== null)
         {
             for($i = 0; $i <count($tags); $i++)
