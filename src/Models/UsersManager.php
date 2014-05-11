@@ -68,6 +68,6 @@ class UsersManager
     {
         //TODO: Create a user without any information and with category 'Dummy'
         echo "dummy_user_creation = TRUE";
-        return $this->insertUser(array('firstname' => NULL, 'lastname' => NULL, 'email' => NULL, 'password' => NULL), 0);
+        return $this->insertUser(array('firstname' => NULL, 'lastname' => NULL, 'email' => NULL, 'password' => NULL), 4);
     }
 }
