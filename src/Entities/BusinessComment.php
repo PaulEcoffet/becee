@@ -14,7 +14,7 @@ class BusinessComment
     protected $id;
 
 
-    public function __construct($comment='', $user_name='Anonymous', $user_id=0, $user_avatar=null, $pub_date=0, $vote_pos=0, $vote_neg=0, $id='')
+    public function __construct($comment='', $user_name=array('firstname' => 'Anonymous', 'lastname' => ''), $user_id=0, $user_avatar=null, $pub_date=0, $vote_pos=0, $vote_neg=0, $id='')
     {
         $this->setComment($comment);
         $this->setUserName($user_name);
