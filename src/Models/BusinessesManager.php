@@ -368,17 +368,12 @@ class BusinessesManager
 
 
      /* ========================================== BUSINESS SEARCH  ====================================================================================================================== */
-
-<<<<<<< HEAD
     public function searchBusinesses($category='%', $tags=null, $location='%')
-=======
+    {
 
-
-
-
+    }
 
     public function searchBusinesses($location, $category=null, $tags=null, $limit=20, $offset=0)
->>>>>>> c90a81d5ac0ecbe10cd9045dce77f35980d4b134
     {
         if($category === null)
         {

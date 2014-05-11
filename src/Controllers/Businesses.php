@@ -61,15 +61,13 @@ class Businesses
     public function business_clash($request)
     {
         $manager = $request->getManager('businesses');
-<<<<<<< HEAD
         $business_id1 = $request->getParamsUri('business_id1');
         $business_id2 = $request->getParamsUri('business_id2');
         $winner_id = $request->getParamsUri('winner_id');
         $feature_id = $request->getParamsUri('feature_id');
 
         $manager->businessesComparaisonByFeature($business_id1, $business_id2, $winner_id, $feature_id);
-        return new \QDE\Responses\TwigResponse('comparaisons_processing.html.twig', array('countries' => $countries, 'cities' => $cities));
-=======
+        return new \QDE\Responses\TwigResponse('comparaisons_processing.html.twig');
         //TODO
     }
 
@@ -93,6 +91,5 @@ class Businesses
             'view_business', 
             array('id' => $business_id), 
             array('information' => $informationArray));
->>>>>>> c90a81d5ac0ecbe10cd9045dce77f35980d4b134
     }
 }
