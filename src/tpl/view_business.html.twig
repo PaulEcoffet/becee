@@ -26,22 +26,19 @@
                     </div>
             </div>
                 <div class="row" style="margin-top:50px">
-                    <div class="col-md-9">
+                    <div class="col-md-7">
                         <form class="input-group" action="{{ path('home') }}" method="POST">
                             <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="{{ page.business.name }}" autocomplete=off style="text-align:left; font-size:4.5em; height:100px; background:none; border-color: rgba(100,100,100,0.1)">
                         </form>
                         <p style="font-size:1.5em; color: white; float: left; font-family: 'Roboto'; margin:7px 15px;">{{ page.business.address_1 }},  {{ page.business.city.postal_code }} {{ page.business.city.name }}</p>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <ul style="list-style-type: none; margin-top:40px; float: right">
+                        {% for categorie in page.business.categories|slice(0,3) %}
                             <li  style="display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center; float:right; margin-left: 20px">
-                                <a href="#"><i class="fa fa-cutlery fa-5x" style="color:rgba(250,250,250,0.98); margin-top:25px"></i></a>
+                                <a href="#"><i class="fa fa-{{ categorie.categorie_icon }} fa-5x" style="color:rgba(250,250,250,0.98); margin-top:25px"></i></a>
                             </li>
-                            <li  style="display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center;">
-                                <a href="#"><i class="fa fa-h-square fa-5x" style="color:rgba(250,250,250,0.98);margin-top:25px"></i>
-                                    <p style="margin-top:20px; display:block; color:#fff; text-decoration:none"></p>
-                                </a>
-                            </li>
+                        {%endfor%}
                         </ul>
                     </div>
                 </div>
