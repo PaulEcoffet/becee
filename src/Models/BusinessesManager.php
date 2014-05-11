@@ -23,7 +23,7 @@ class BusinessesManager
         $Additionnal_info = new Business();
 
         $sql = 'SELECT GROUP_CONCAT(business_images.path),
-        GROUP_CONCAT(business_tags.name) as tags, 
+        GROUP_CONCAT(business_tags.name) as tags,
         GROUP_CONCAT(business_features.name) as features,
 
         FROM business
@@ -34,9 +34,9 @@ class BusinessesManager
         ON business_features.id = link_business_features.features_id
 
 
-        INNER JOIN link_business_tags 
+        INNER JOIN link_business_tags
         ON link_business_tags.business_id = businesses.id   /* Getting alltags, separated by "," */
-        INNER JOIN business_tags                            
+        INNER JOIN business_tags
         ON business_tags.id = link_business_tags.tag_id
 
         INNER JOIN business_images
@@ -118,7 +118,8 @@ class BusinessesManager
     {
         $sql = 'SELECT
                 business_images.path,
-                COALESCE(users.name, \'Anonymous\') as uploaderName,
+                COALESCE(users.firstname, \'Anonymous\') as uploaderFirstName,
+                COALESCE(users.lastname, \'Anonymous\') as uploaderLastName,
                 users.id as uploaderId,
                 business_images.priority,
                 businesses.id as businessId
@@ -180,8 +181,8 @@ class BusinessesManager
     public function getBusinessCategories($business_id = '%')
     {
         $sql = 'SELECT
-                business_categories.id as categorie_id, 
-                business_categories.name as categorie_name, 
+                business_categories.id as categorie_id,
+                business_categories.name as categorie_name,
                 business_categories.fontAwesomeIconName as categorie_icon
             FROM
                 businesses
@@ -212,7 +213,8 @@ class BusinessesManager
                 business_comments.vote_neg as voteNeg,
                 business_comments.vote_pos as votePos,
                 users.id as userId,
-                COALESCE(users.name, \'Anonymous\') as userName,
+                COALESCE(users.firstname, \'Anonymous\') as userFirstName,
+                COALESCE(users.lastname, \'\') as userLastName,
                 users.avatar_path as userAvatar
             FROM
                 business_comments
@@ -232,6 +234,7 @@ class BusinessesManager
         $comments = array();
         while($comment_arr = $comments_req->fetch(\PDO::FETCH_ASSOC))
         {
+            $comment_arr['userName'] = array('firstname' => $comment_arr['userFirstName'], 'lastname' => $comment_arr['userLastName']);
             $comment = new BusinessComment();
             $comment->hydrate($comment_arr);
             $comments[] = $comment;
@@ -317,7 +320,7 @@ class BusinessesManager
         $data2 = $score->fetch();
         $score_neg = $data2['score2'];
 
-        return $score_pos - $score_neg;        
+        return $score_pos - $score_neg;
     }
 
 
@@ -366,12 +369,45 @@ class BusinessesManager
 
      /* ========================================== BUSINESS SEARCH  ====================================================================================================================== */
 
+<<<<<<< HEAD
     public function searchBusinesses($category='%', $tags=null, $location='%')
+=======
+
+
+
+
+
+    public function searchBusinesses($location, $category=null, $tags=null, $limit=20, $offset=0)
+>>>>>>> c90a81d5ac0ecbe10cd9045dce77f35980d4b134
     {
-        if($tags === null)
-            $in_content = 'LIKE %';
+        if($category === null)
+        {
+            $category = '%';
+        }
+        if(is_string($category))
+        {
+            $category_search = 'bc.name LIKE :category';
+        }
         else
         {
+            $category_search = 'bc.id = :category';
+        }
+        if(is_string($location))
+        {
+            $location_search = 'c.name LIKE :city';
+        }
+        else
+        {
+            $location_search = 'c.id = :city';
+        }
+        if(empty($tags))
+        {
+            $in_content = 'LIKE \'%\'';
+            $having_content = '';
+        }
+        else
+        {
+            $having_content = 'HAVING tags_score > 0';
             $in_content = 'IN(';
             for($i = 0; $i < count($tags) - 1; $i++) // Ugly but I haven't found anything better
             {
@@ -383,7 +419,7 @@ class BusinessesManager
                 b.name,
                 b.description,
                 ba.line1,
-                c.name,
+                c.name as city_name,
                 bi.path,
                 bi.id,
                 GROUP_CONCAT(bc.name) as categories,
@@ -404,8 +440,8 @@ class BusinessesManager
                             link_businesses_categories lbt
                                 INNER JOIN
                             business_categories bc ON lbt.category_id = bc.id
-                        WHERE
-                            bc.name LIKE :category
+                        WHERE '
+                            .$category_search. '
                                 AND lbt.business_id = b.id),
                     1,
                     0) as category_score
@@ -421,16 +457,19 @@ class BusinessesManager
                 business_addresses ba ON b.id = ba.business_id
                     INNER JOIN
                 cities c ON c.id = ba.city_id
-            WHERE c.name LIKE :cityname
-            GROUP BY b.id
-            /* HAVING tags_score > 0 */
-            ORDER BY tags_score + category_score DESC
+            WHERE '. $location_search. '
+            GROUP BY b.id '.
+            $having_content.
+            ' ORDER BY tags_score + category_score DESC
+            LIMIT :limit OFFSET :offset
             ;'
 
             ;
         $business_req = $this->pdo->prepare($sql);
         $business_req->bindValue(':category', $category, \PDO::PARAM_STR);
-        $business_req->bindValue(':cityname', $location, \PDO::PARAM_STR);
+        $business_req->bindValue(':city', $location, \PDO::PARAM_STR);
+        $business_req->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $business_req->bindValue(':offset', $offset, \PDO::PARAM_INT);
         if($tags !== null)
         {
             for($i = 0; $i <count($tags); $i++)
@@ -442,7 +481,7 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
-    /* ========================================== HYDRATE BUSINESS  ====================================================================================================================== */
+    /* ========================================== INSERT BUSINESS  ====================================================================================================================== */
 
 
 
@@ -521,9 +560,24 @@ class BusinessesManager
 
         $visit_req = $this->pdo->prepare($sql);
         $visit_req->bindValue(':user', $user_id);
-        $visit_req->bindValues(':business', $business_id);
+        $visit_req->bindValue(':business', $business_id);
 
         $visit_req->execute();
+    }
+
+    public function insertComment($business_id, $user_id, $comment)
+    {
+
+        $sql = 'INSERT INTO business_comments( user_id, business_id, comment, pub_date, status)
+                VALUES (:user, :business , :comment, NOW(), 0)
+                ;'
+                ;
+
+        $comment_req = $this->pdo->prepare($sql);
+        $comment_req->bindValue(':user', $user_id);
+        $comment_req->bindValue(':business', $business_id);
+        $comment_req->bindValue(':comment', $comment);
+        $comment_req->execute();
     }
 
     public function insertBusinessImage($business_id, $image_path)
@@ -538,8 +592,4 @@ class BusinessesManager
         $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
         $business_req->execute();
     }
-
-
-
-
-}    //END
+}

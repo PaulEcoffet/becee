@@ -6,46 +6,42 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12" id="head">
-        <div style="float:left; position:absolute; top:0; left:0">
-            <div class="container container-fluid">
-                <div class="row">
-                    <div class="col-md-4 hidden-ms hidden-xs title">
-                        <p>
-                        becee<span class="saumon">.</span> 
-                        </p>
-                    </div>
-                </div>
+        <div style="float:left; position:absolute; top:0; left:15px; z-index:999">
+            <div class="col-md-4 hidden-ms hidden-xs title">
+                <p>
+                    <a href="{{ path('home') }}" style="text-decoration:none; color:white">becee<span class="saumon">.</span></a>
+                </p>
             </div>
         </div>
-            <div class="container container-fluid" style="background:rgba(0,0,0,0.4); height:100%">
+        <div class="container container-fluid" style="background:rgba(0,0,0,0.4); height:100%">
             <div class="row">
-                            <div class="col-md-12">
-                        <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.business.city.name }}" style="background:none;" autocomplete=off>
-                        </form>
-                    </div>
+                <div class="col-md-12">
+                    <form class="input-group" action="{{ path('home') }}" method="POST">
+                        <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.business.city.name }}" style="background:none;" autocomplete=off>
+                    </form>
+                </div>
             </div>
-                <div class="row" style="margin-top:50px">
-                    <div class="col-md-7">
-                        <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="{{ page.business.name }}" autocomplete=off style="text-align:left; font-size:4.5em; height:100px; background:none; border-color: rgba(100,100,100,0.1)">
-                        </form>
-                        <p style="font-size:1.5em; color: white; float: left; font-family: 'Roboto'; margin:7px 15px;">{{ page.business.address_1 }},  {{ page.business.city.postal_code }} {{ page.business.city.name }}</p>
-                    </div>
-                    <div class="col-md-5">
-                        <ul style="list-style-type: none; margin-top:40px; float: right">
+            <div class="row" style="margin-top:50px">
+                <div class="col-md-7">
+                    <form class="input-group" action="{{ path('home') }}" method="POST">
+                        <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="{{ page.business.name }}" autocomplete=off style="text-align:left; font-size:4.5em; height:100px; background:none; border-color: rgba(100,100,100,0.1)">
+                    </form>
+                    <p style="font-size:1.5em; color: white; float: left; font-family: 'Roboto'; margin:7px 15px;">{{ page.business.address_1 }}, {{ page.business.city.postal_code }} {{ page.business.city.name }}</p>
+                </div>
+                <div class="col-md-5 hidden-sm hidden-xs ">
+                    <ul class="categories" style="list-style-type: none; margin-top:40px; float: right">
                         {% for categorie in page.business.categories|slice(0,3) %}
-                            <li  style="display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center; float:right; margin-left: 20px">
-                                <a href="#"><i class="fa fa-{{ categorie.categorie_icon }} fa-5x" style="color:rgba(250,250,250,0.98); margin-top:25px"></i></a>
-                            </li>
+                        <li>
+                            <a href="#"><i class="fa fa-{{ categorie.categorie_icon }} fa-5x" style="color:rgba(250,250,250,0.98); margin-top:20px"></i></a>
+                        </li>
                         {%endfor%}
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end col-md-12 head-->
+</div>
+<!-- end col-md-12 head-->
 </div>
 <!-- end row -->
 
@@ -64,7 +60,8 @@
                                 </div>
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                        {% if page.business.price in range(1,6)  %}<li><a href="#">{% for i in range(1,page.business.price) %} <i class="fa fa-eur fa-lg"></i> {% endfor %}<span style="color:#ccc">{% if page.business.price != 5  %}{% for i in range(0,4-page.business.price) %} — {% endfor %}{% endif %}</span></a>
+                                        {% if page.business.price in range(1,6) %}
+                                        <li><a href="#">{% for i in range(1,page.business.price) %} <i class="fa fa-eur fa-lg"></i> {% endfor %}<span style="color:#ccc">{% if page.business.price != 5  %}{% for i in range(0,4-page.business.price) %} — {% endfor %}{% endif %}</span></a>
                                         </li>{% endif %}
                                         <li><a href="#"><i class="fa fa-phone fa-lg" style="margin:0 5px;"></i> {{ page.business.phone_number }}</a>
                                         </li>
@@ -72,67 +69,91 @@
                                 </div>
                             </div>
                         </nav>
-
                         <div class="row">
-                        <div class="col-md-12" style="height:95px; overflow:hidden; margin-bottom:0px; padding:5px 15px;">
-                            {% for x in [1,2,3,4,5,6,3,4,5] %}
-                            <img src="{{ media('img/imagetest%s.jpg'|format(x)) }}" class="img-responsive" alt="Responsive image" style="padding-right:1px; border-right:1px solid #eee; margin-left: 0px; display:inline-block; border-radius:3px;width:93px">
-                            {% endfor %}
-                        </div>
+                            <div class="col-md-12">
+                                <div style="padding:5px; border:1px solid #eee; margin:0 15px;">
+                                    <span style="background:#fff; color:#555; padding:0px 20px; border-left:5px solid #fdf3c6; margin-right:0px; width:70px; text-align:left; display: inline-block; font-weight:bold;">Tags</span>
+                                    {% for tag in page.business.tags %} {% if not tag is empty %}<a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }} <i class="fa fa-times" style="color:#ddd;"></i></span></a>{%endif%} {% endfor %}<i class="fa fa-plus" style="color:#bbb; margin-left:5px"></i>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
-                        <div class="col-md-6">
-                            <div style="padding:10px; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
+                            <div class="col-md-12" style="height:95px; overflow:hidden; margin-bottom:0px; padding:5px 15px;">
+                                {% for x in [1,2,3,4,5,6,3,4,5] %}
+                                <img src="{{ media('img/imagetest%s.jpg'|format(x)) }}" class="img-responsive" alt="Responsive image" style="padding-right:1px; border-right:1px solid #eee; margin-left: 0px; display:inline-block; border-radius:3px;width:93px">{% endfor %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="padding:10px; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                 font-weight: 400
                 font-style:  normal
                 font-size-adjust:    none
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
+                                    <span style="background:#fff; color:#555; padding:5px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Heures d'ouverture</span>
+                                    Probablement ouvert (Voir à quel moment les utilisateurs publient un check-in)
+                                    <hr style="margin: 7px 0" />
+                                    <span style="background:#fff; color:#555; padding:5px; border-left:5px solid #a1f9a5; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Menus</span>
+                                    Brunch, Déjeuner, Dîner
+                                    <hr style="margin: 7px 0" />
+                                    <span style="background:#fff; color:#555; padding:5px; border-left:5px solid #c5e9fd; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Cartes de crédit</span>
+                                    Oui (y compris American Express)
+                                    <hr style="margin: 7px 0" />
+                                    <span style="background:#fff; color:#555; padding:5px; border-left:5px solid #fdf3c6; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Terrasse</span>
+                                    Oui
+                                    <hr style="margin: 7px 0" />
 
-<span style="background:#fbfbfb; color:#222; padding:5px; border-right:2px solid #fcfcfc; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Heures d'ouverture</span>
-Probablement <span style="color:#43c64f">ouvert</span>
-<hr style="margin: 0px 0;border-color:#f3f3f3;"/>
-<span style="background:#fbfbfb; color:#222; padding:5px; border-right:2px solid #fcfcfc; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Cartes de crédit</span>
-Oui (y compris American Express)
-<hr style="margin: 0px 0;border-color:#f3f3f3;"/>
-</div>
+                                    <p style="padding:5px 15px">{{ page.business.description }}</p>
+
+                                </div>
                             </div>
                             <div class="col-md-6">
                             </div>
-                        <div class="row">
+                            <div class="row">
                                 <div class="col-md-12" style="background:#f8f8f8; padding:10px">
-                            <div style="width:100%; background:#efefe;">
-                                <form class="form-inline" role="form" style="background:#f8f8f8; padding:10px; border:1px solid #eaeaea">
-                                    <label style="    display: inline-block;
+                                    <div style="width:100%; background:#efefe;">
+                                        <form class="form-inline" action="{{path('add_comment', {'id' : page.business.id })}}" role="form" method="POST" style="background:#f8f8f8; padding:10px; border:1px solid #eaeaea" runat="server">
+                                            <label style="    display: inline-block;
                                 margin-bottom: 0;
                                 margin-top: 0;
                                 padding-left: 0;
                                 vertical-align: middle; float:left">
-                                        <img width="32" height="32" data-retina-url="https://irs2.4sqi.net/img/user/64x64/85462955-UXUT2SSJFPV5OVKQ.jpg" title="Elias R." class="avatar " alt="Elias R." src="https://irs2.4sqi.net/img/user/64x64/85462955-UXUT2SSJFPV5OVKQ.jpg">
-                                    </label>
-                                    <div class="form-group" style="display: block;
+                                                <img width="32" height="32" data-retina-url="https://irs2.4sqi.net/img/user/64x64/85462955-UXUT2SSJFPV5OVKQ.jpg" title="Elias R." class="avatar " alt="Elias R." src="https://irs2.4sqi.net/img/user/64x64/85462955-UXUT2SSJFPV5OVKQ.jpg">
+                                            </label>
+                                            <div class="form-group" style="display: block;
                             overflow: hidden;
                             padding: 0 4px 0 6px;">
-                                        <input type="text" placeholder="  Laissez un commentaire" style="width:calc(100% - 30px); height:33px; display:inline-block">
-                                    <a style="float:right; margin-top: 10px; color:#ccc" href="#"><i class="fa fa-camera fa-lg"></i>
-                                    </a>
-                                    </div>
-                                </form>
-                        </div>
-                                    {% for userComment in page.business.comments %}
-                                    <blockquote style="display:block; padding:10px; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
+                                                <input type="text" placeholder="  Laissez un commentaire" style="width:calc(100% - 105px); height:33px; display:inline-block" name="comment">
+                                                <button type="submit" class="btn btn-default" style="width:70px; height:33px; float:right; padding-top:6px">Envoyer</button>
+<div class="image-upload" style="float:right; margin: 5px; color:#ccc">
+    <label for="imgInp">
+        <i class="fa fa-camera fa-lg" style="cursor:pointer;margin-right: 3px;"></i>
+    </label>
+    <input id="imgInp" style="display:none" type="file"/>
+</div></div>
+                                            <div class='smallpic' style="float:left; width:100px; max-height:100px; overflow:hidden;"><img style="max-width: 100%;
+   max-height: 100%;"id="blah" src="#" alt="" /></div>
+                                        </form></div>
+                                    <div class="col-md-12">
+                                    <table style="padding:10px; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                         font-weight: 400
                         font-style:  normal
                         font-size-adjust:    none
-                        color:   #4D4D4D; border:0px solid #eee; border-left:1px solid #93c2db; background-color:#fff; margin-top:0px; position:relative;overflow:hidden;">
-                                        <a style="display:inline-block; float: left; padding-right: 15px; border-right:1px solid #ddd; margin: 5px 15px">
-                                            <img width="40" height="40" title="Elias R." class="avatar " alt="Elias R." src="{{ media(userComment.userAvatar) }}">
-                                        </a>
-                                        <p>
-                                            {{ userComment.comment }}</p>
-                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block"><a style="color:#2C3E50" href="#">{{ userComment.userName }}</a> - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
+                        color:   #4D4D4D; background-color:#fff; margin-top:0px; position:relative;overflow:hidden;border-left:1px solid #93c2db; background-color:#fff;">
+                                    {% for userComment in page.business.comments %}
+                                    <tr>
+                                        <td style="padding:5px; vertical-align:top; ">
+                                        <div style="border-right:1px solid #f0f0f0;display:inline-block; padding:10px;"><a href="#" style="margin:0 10px"><img width="40" height="40" title="Elias R." class="avatar " src="{{ media(userComment.userAvatar) }}" style="margin-top:2px"></a></div>
+                                        </td>
+                                        <td style="width:100%; padding:15px">
+                                            <p style="word-break:break-all;">{{ userComment.comment }}</p>
+                                        <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block"><a style="color:#2C3E50" href="#">{{ userComment.userName.firstname }} {{ userComment.userName.lastname|upper }}</a> - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
                                         <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block;  float:right"><i class="fa fa-thumbs-down fa-lg" style="margin: 0 5px"></i> {{ userComment.voteNeg }} <i class="fa fa-thumbs-up fa-lg" style="margin: 0 5px"></i> {{ userComment.votePos }}</span>
-                                    </blockquote>
+                                        </td>
+                                    </tr>
                                     {% endfor %}
+                                    </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -140,26 +161,48 @@ Oui (y compris American Express)
                 </div>
                 <div class="col-md-3">
                     <div id="map-canvas" style="box-shadow: 0px 0px 2px 0px #cfcfcf; margin: 15px 10px"></div>
-                            <div style="padding:10px; width:100%; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
+                    <div style="padding:10px; width:100%; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                 font-weight: 400
                 font-style:  normal
                 font-size-adjust:    none
-                color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;"><a href="#" style="text-decoration:none"><p style="float:left; display:inline-block; background:#f15959; padding:10px; color:#fff">J'y suis déjà venu</p></a><a href="#" style="text-decoration:none"><p style="float:right; display:inline-block; background:#3498DB; padding:10px; color:#fff">Je veux clasher</p></a></div>
-                            <div style="padding:10px; width:100%; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
+                color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
+                        <a href="#" style="text-decoration:none">
+                            <p style="float:left; display:inline-block; background:#f15959; padding:10px; color:#fff">J'y suis déjà venu</p>
+                        </a>
+                        <a href="#" style="text-decoration:none">
+                            <p style="float:right; display:inline-block; background:#3498DB; padding:10px; color:#fff">Je veux clasher</p>
+                        </a>
+                    </div>
+                    <div style="padding:10px; width:100%; height:auto; letter-spacing: 0;font: 13px/140% 'Helvetica Neue',Helvetica,Verdana,Arial,sans-serif;
                 font-weight: 400
                 font-style:  normal
                 font-size-adjust:    none
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
 
-<span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Description</span>
-                           <p style="padding:5px 15px">{{ page.business.description[:250] }}</p>
-                                        
-<span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fdf3c6; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin:10px 15px 10px 0">Tags</span>
-                                        {% for tag in page.business.tags %}
-                                        {% if not tag is empty %}<a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }}</span></a>{%endif%}
-                                        {% endfor %}
-                                        <input type="text" placeholder="Ajoute un tag !"style="height:23px; margin: 5px 0; padding-left:5px">
+                        <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Suggestions</span>
+                        {% for suggested_business in page.suggested_businesses %}
+                        {% if not (suggested_business.id == page.business.id) %}
+                        <div class="home-business-box">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="business-box-container" style="background:url({{ media(suggested_business.path) }}) no-repeat center; height:100px">
+                                        {% for tag in page.tags|slice(0, 4) %} <a class="btn btn-small tag" href="{{ path('business_add') }}">
+                                    {{ tag.name }}</a> {% endfor %}
+
+                                        <a alt="page_restaurant" href="{{ path('view_business', {'id':suggested_business.id, 'name':suggested_business.name}) }}" style="display:block">
+                                            <p class="business-info">{{ suggested_business.name }}
+                                                <br>
+                                                <span style="font-size:12px">{{ suggested_business.line1 }}</span>
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -172,22 +215,39 @@ Oui (y compris American Express)
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0bzuk1i_1CC2CldMPylb88Wj4AizQo-s&sensor=true"></script>
 <script type="text/javascript" src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js"></script>
 <script type="text/javascript">
- $(function() {
-    var cities = [
-        {% for categorie in page.categories %}
-            {% for city in page.cities %}
-            '{{ categorie.categorie_name|title }} near {{ city.name }}',
-            {% endfor %}
-        {% endfor %}
-    ];
-    $( "#autocomplete-city" ).autocomplete({
-    source: cities,
-    messages: {
-        noResults: '',
-        results: function() {}
+ $(function () {
+     var cities = [{% for categorie in page.categories %} 
+        {% for city in page.cities %}
+         '{{ categorie.categorie_name|title }} near {{ city.name }}', 
+         {% endfor %}
+         {% endfor %}
+     ];
+     $("#autocomplete-city").autocomplete({
+         source: cities,
+         messages: {
+             noResults: '',
+             results: function () {}
+         }
+     });
+     console.debug(cities);
+ });
+
+function readURL(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+            $('#blah').attr('style', 'max-width: 100%;max-height:100%;margin:20px;padding:10px;');
+        }
+
+        reader.readAsDataURL(input.files[0]);
     }
-    });
-console.debug(cities);
+}
+
+$("#imgInp").change(function(){
+    readURL(this);
 });
 </script>
 <script type="text/javascript" src="{{ media('vendor/googlemap-api/js/googlemap-api.js')}}"></script>

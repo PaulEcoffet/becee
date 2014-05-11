@@ -4,13 +4,31 @@ namespace Becee\Controllers;
 
 class Businesses
 {
+
     public function viewBusinessAction($request) //Send information needed to generate a business page (using the id)
     {
+        try
+        {
+            $flash = $request->getCustomVariable('flash');
+        }
+        catch (\Exception $e)
+        {
+            $flash = array();
+        }
 
         $manager = $request->getManager('businesses');
         $id = $request->getParamsUri('id');
         $response = $manager->getBusinessById($id, array('with_images', 'with_comments'));
-        return new \QDE\Responses\TwigResponse('view_business.html.twig', array('business' => $response));
+        $suggested_businesses = $manager->searchBusinesses(
+            $response->city->name, 
+            $response->categories[0]['categorie_name'],
+            null,
+            5);
+        return new \QDE\Responses\TwigResponse(
+            'view_business.html.twig', 
+            array('business' => $response, 
+                'suggested_businesses' => $suggested_businesses,
+                'flash' => $flash));
     }
 
     public function registerProcessingAction($request)
@@ -36,12 +54,14 @@ class Businesses
         $LocationManager = $request->getManager('Location');
         $countries = $LocationManager->getCountries();
         $cities = $LocationManager->getCities();
-        return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $countries, 'cities' => $cities));
+        return new \QDE\Responses\TwigResponse('add_business.html.twig', 
+            array('countries' => $countries, 'cities' => $cities));
     }
 
     public function business_clash($request)
     {
         $manager = $request->getManager('businesses');
+<<<<<<< HEAD
         $business_id1 = $request->getParamsUri('business_id1');
         $business_id2 = $request->getParamsUri('business_id2');
         $winner_id = $request->getParamsUri('winner_id');
@@ -49,5 +69,30 @@ class Businesses
 
         $manager->businessesComparaisonByFeature($business_id1, $business_id2, $winner_id, $feature_id);
         return new \QDE\Responses\TwigResponse('comparaisons_processing.html.twig', array('countries' => $countries, 'cities' => $cities));
+=======
+        //TODO
+    }
+
+    public function addCommentAction($request)
+    {
+        $manager = $request->getManager('businesses');
+        $business_id = $request->getParamsUri('id');
+        $userManager = $request->getManager('currentUser');
+        $user_id = $userManager->getId();
+        $comment = $request->getPost('comment');
+        $manager->insertComment($business_id, $user_id, $comment);
+        if(!$error)
+        {
+            $informationArray = array('id' => '#information', 'message' => "Votre commentaire a été publié.");
+        }
+        else
+        {
+            $informationArray = array('id' => '#information', 'message' => 'Une erreur est survenu, votre commentaire n\'a pas été publié.');
+        }
+        return new \QDE\Responses\RedirectResponse(
+            'view_business', 
+            array('id' => $business_id), 
+            array('information' => $informationArray));
+>>>>>>> c90a81d5ac0ecbe10cd9045dce77f35980d4b134
     }
 }

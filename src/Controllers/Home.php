@@ -18,21 +18,12 @@ class Home
         $BusinessManager = $request->getManager('Businesses');
         $user = $request->getManager('CurrentUser');
         $POST = $request->getPost();
-        if(isset($POST['city']))
-        {
-            $user->setPrefferedCity($POST['city']);
-        }
-        if($user->hasPrefferedCity() === false)
-        {
-            $user->setPrefferedCityFromGeoLoc();
-        }
-        $prefCity = $user->getPrefferedCity();
         $cities = $BusinessManager->getCities(); //TODO: Why in BusinessManager?
         if($user->hasPrefferedCity() === false)
         {
             $user->setPrefferedCityFromGeoLoc();
         }
-
+        $prefCity = $user->getPrefferedCity();
         $categories = $BusinessManager->getBusinessCategories();
         if(isset($POST['search']))
         {
@@ -49,30 +40,24 @@ class Home
                 '<hr/><strong>Keywords</strong> : '.implode(',', $keywords).
                 '<hr/><strong>City</strong> : '.$location);
             if($location === null or $location == 'moi')
-                $location = $prefCity;
+            {
+                $location = $prefCity->name;
+            }
             if($category === null)
             {
                 $category = '%';
             }
-            $businesses = $BusinessManager->searchBusinesses($category, $keywords, $location);
+            $businesses = $BusinessManager->searchBusinesses($location, $category, $keywords);
 
         }
         else
         {
-            $businesses = $BusinessManager->searchBusinesses($prefCity);
-        }
-        $current_city = array(0, 'undefined');
-        foreach($cities as $city)
-        {
-            if($city['id'] == $prefCity)
-            {
-                $current_city = $city;
-            }
+            $businesses = $BusinessManager->searchBusinesses($prefCity->name);
         }
         $tags = $BusinessManager->getBusinessMostReleventTags(1, 5);
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities,
-                'current_city' => $current_city, 'tags' => $tags,
+                'current_city' => $prefCity, 'tags' => $tags,
                 'categories' => $categories, 'flash' => $flash));
     }
 
@@ -82,7 +67,7 @@ class Home
         $location_delimiters = array('pres de', 'a cote', 'dans les environs', 'a', 'near');
         $location = null;
 
-        $str = strtolower(iconv('UTF-8','ASCII//TRANSLIT',$str)); //Removing accents and weird chars
+        $str = strtolower(iconv('ISO-8859-1','ASCII//TRANSLIT',$str)); //Removing accents and weird chars
         $keywords_str = $str;
         foreach($location_delimiters as $loc_del)
         {
