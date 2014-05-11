@@ -41,13 +41,14 @@ class UsersManager
 
     public function insertUser($user)
     {
-        $sql = "INSERT INTO `users` (name, email, hashed_password, salt, inscription_time)
-                VALUES(:name, :email, SHA1(CONCAT(:hashed_password, :salt)), :salt, NOW())
+        $sql = "INSERT INTO `users` (firstname, lastname, email, hashed_password, salt, inscription_time)
+                VALUES(:firstname, :lastname, :email, SHA1(CONCAT(:hashed_password, :salt)), :salt, NOW())
                 ;
                 ";
 
         $business_req = $this->pdo->prepare($sql);
-        $business_req->bindValue(':name', $user['name'],\PDO::PARAM_STR);
+        $business_req->bindValue(':firstname', $user['firstname'],\PDO::PARAM_STR);
+        $business_req->bindValue(':lastname', $user['lastname'],\PDO::PARAM_STR);
         $business_req->bindValue(':email', $user['email'],\PDO::PARAM_STR);
         $business_req->bindValue(':hashed_password', $user['password'],\PDO::PARAM_STR);
         $business_req->bindValue(':salt', uniqid(),\PDO::PARAM_STR);
