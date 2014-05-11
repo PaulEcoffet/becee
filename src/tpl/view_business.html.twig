@@ -171,7 +171,8 @@
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
 
                         <span style="background:#fff; color:#555; padding:5px 20px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:left; display: block; font-weight:bold; margin-bottom:10px">Suggestions</span>
-                        {% for suggested_business in page.suggested_businesses|slice(0,4) %}
+                        {% for suggested_business in page.suggested_businesses %}
+                        {% if not (suggested_business.id == page.business.id) %}
                         <div class="home-business-box">
                             <div class="row">
                                 <div class="col-md-12">
@@ -189,7 +190,8 @@
                                 </div>
                             </div>
                         </div>
-                        {%endfor%}
+                        {% endif %}
+                        {% endfor %}
 
                     </div>
                 </div>

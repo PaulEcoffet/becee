@@ -12,7 +12,9 @@ class Businesses
         $response = $manager->getBusinessById($id, array('with_images', 'with_comments'));
         $suggested_businesses = $manager->searchBusinesses(
             $response->city->name, 
-            $response->categories[0]['categorie_name']);
+            $response->categories[0]['categorie_name'],
+            null,
+            5);
         return new \QDE\Responses\TwigResponse(
             'view_business.html.twig', 
             array('business' => $response, 
