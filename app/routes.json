@@ -1,5 +1,18 @@
 [
     {
+        "name" : "comparaisons_processing",
+        "route" : "comparaisons_processing",
+        "controller" : "Businesses",
+        "action" : "registerComparaisons",
+        "variables" : {
+            "business_id1" : "\\d+",
+            "business_id2" : "\\d+",
+            "winner_id" : "\\d+",
+            "feature_id" : "\\d+"
+            }
+
+    }, 
+    {
         "name": "view_user",
         "route": "user/{id}",
         "controller": "Users",
