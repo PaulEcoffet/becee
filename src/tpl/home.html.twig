@@ -107,22 +107,18 @@
                 <div class="col-md-6 home-business">
                     <div class="home-business-box">
                         <div class="row">
-                            <a href=
-                            "{{ path('view_business', {'id':restaurant.id, 'name':restaurant.name}) }}"
-                            style="display:block"></a>
-
                             <div class="col-md-12">
                                 <div class="business-box-container" style=
                                 "background:url({{ media(restaurant.path) }}) no-repeat center;">
                                 {% for tag in page.tags|slice(0, 4) %} <a class=
                                 "btn btn-small tag" href="{{ path('business_add') }}">
-                                    {{tag.name}}</a> {% endfor %}
+                                    {{ tag.name }}</a> {% endfor %}
 
-                                    <p class="business-info">{{restaurant.name}}<br>
+                                    <a alt="page_restaurant" href="{{ path('view_business', {'id':restaurant.id, 'name':restaurant.name}) }}" style="display:block"><p class="business-info">{{ restaurant.name }}<br>
                                     <span style=
-                                    "font-size:12px">{{restaurant.line1}}</span>
+                                    "font-size:12px">{{ restaurant.line1 }}</span>
                                     <span class="secondary-info-business-box">€ € € - 3.2
-                                    km</span></p>
+                                    km</span></p></a>
                                 </div>
 
                                 <div class="description-info-business-box">

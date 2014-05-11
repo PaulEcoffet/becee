@@ -4,8 +4,17 @@ namespace Becee\Controllers;
 
 class Businesses
 {
-    public function viewBusinessAction($request, $errorArray=null) //Send information needed to generate a business page (using the id)
+
+    public function viewBusinessAction($request) //Send information needed to generate a business page (using the id)
     {
+        try
+        {
+            $flash = $request->getCustomVariable('flash');
+        }
+        catch (\Exception $e)
+        {
+            $flash = array();
+        }
 
         $manager = $request->getManager('businesses');
         $id = $request->getParamsUri('id');
@@ -18,8 +27,8 @@ class Businesses
         return new \QDE\Responses\TwigResponse(
             'view_business.html.twig', 
             array('business' => $response, 
-                'suggested_businesses' => $suggested_businesses, 
-                'information' => $errorArray));
+                'suggested_businesses' => $suggested_businesses,
+                'flash' => $flash));
     }
 
     public function registerProcessingAction($request)
@@ -64,14 +73,16 @@ class Businesses
         $comment = $request->getPost('comment');
         $manager->insertComment($business_id, $user_id, $comment);
         if(!$error)
-            return new \QDE\Responses\RedirectResponse(
-                'view_business', 
-                array('id' => $business_id));
+        {
+            $informationArray = array('id' => '#information', 'message' => "Votre commentaire a été publié.");
+        }
         else
-            $errorArray = array('id' => '#register', 'message' => $errorMessage);
-            return new \QDE\Responses\RedirectResponse(
-                'view_business', 
-                array('id' => $business_id), 
-                array('information' => $errorArray));
+        {
+            $informationArray = array('id' => '#information', 'message' => 'Une erreur est survenu, votre commentaire n\'a pas été publié.');
+        }
+        return new \QDE\Responses\RedirectResponse(
+            'view_business', 
+            array('id' => $business_id), 
+            array('information' => $informationArray));
     }
 }
