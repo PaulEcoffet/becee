@@ -140,6 +140,13 @@ outline: 0 none;}
     color: #fff;
     opacity: 1;
 }
+.categories li{
+display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center; float:right; margin-left: 20px;
+    border-radius: 6px
+    transition-property: background, border-radius;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;}
+.categories li:hover{border-radius: 50%; background: rgba(255,255,255,0.09);}
 /* nav-tools styles */
 .nav-tools {display: block; float: left; margin-top: 2px; padding: 7px 30px;}
 .nav-tools .btn-categories.btn-default > i {display: inline-block; float: left; margin-top: 5px;}

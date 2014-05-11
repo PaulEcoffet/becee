@@ -4,6 +4,7 @@ namespace Becee\Models;
 use \Becee\Entities\Business;
 use \Becee\Entities\BusinessImage;
 use \Becee\Entities\BusinessComment;
+use \Becee\CurrentUserManager;
 
 class BusinessesManager
 {
@@ -275,9 +276,15 @@ class BusinessesManager
 
     /* ========================================== BUSINESS CLASH  ====================================================================================================================== */
 
-    public function getAllBattleForUser()
+    public function getAllBattleForUser($business_id)
     {
-        //TODO
+        $manager = $this->app->getManager('currentuser');
+        $user_id = $manager->getId();
+
+        $sql = 'SELECT businesses.id, businesses.name, features.id, features.name
+
+
+        ;';
     }
 
     public function computeScoreForFeature($business_id, $feature_id_clash)
@@ -323,7 +330,7 @@ class BusinessesManager
         $score1 = computeScoreForFeature($business_id1, $feature_id);
         $score2 = computeScoreForFeature($business_id2, $feature_id);
 
-        if ($score1 = $winner_id)
+        if ($business_id1 = $winner_i
         {
             $score_final = computeEloScore($score1, $score2);
         }
@@ -333,7 +340,7 @@ class BusinessesManager
             $score_final = computeEloScore($score2, $score1);
         }
 
-        $add_data = 'INSERT INTO businesses_comparaisons (business_visit1_id,business_visit1_id,
+        $add_data = 'INSERT INTO businesses_comparaisons (business_visit1_id,business_visit2_id,
                     winner, feature_id, score)
                     VALUES ( :bus1, :bus2, :win, :feat, :score)
                     ;'
@@ -351,7 +358,7 @@ class BusinessesManager
     }
 
 
-    public function computeEloScore($score1, $score2) //Maybe try to change the K factor ......
+    public function computeEloScore($score1, $score2) //Maybe try to change the K factor 
     {
 
         $score = $score1 + 30*(1 - 1/(1 + (pow(10, -($score1 - $score2)))/400));
@@ -361,11 +368,10 @@ class BusinessesManager
 
 
      /* ========================================== BUSINESS SEARCH  ====================================================================================================================== */
+    public function searchBusinesses($category='%', $tags=null, $location='%')
+    {
 
-
-
-
-
+    }
 
     public function searchBusinesses($location, $category=null, $tags=null, $limit=20, $offset=0)
     {

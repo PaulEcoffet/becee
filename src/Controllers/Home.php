@@ -54,7 +54,6 @@ class Home
         {
             $businesses = $BusinessManager->searchBusinesses($prefCity->name);
         }
-        $tags = $BusinessManager->getBusinessMostReleventTags(1, 5);
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities,
                 'current_city' => $prefCity, 'tags' => $tags,
