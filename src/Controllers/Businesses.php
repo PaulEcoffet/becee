@@ -10,7 +10,14 @@ class Businesses
         $manager = $request->getManager('businesses');
         $id = $request->getParamsUri('id');
         $response = $manager->getBusinessById($id, array('with_images', 'with_comments'));
-        return new \QDE\Responses\TwigResponse('view_business.html.twig', array('business' => $response, 'information' => $errorArray));
+        $suggested_businesses = $manager->searchBusinesses(
+            $response->city->name, 
+            $response->categories[0]['categorie_name']);
+        return new \QDE\Responses\TwigResponse(
+            'view_business.html.twig', 
+            array('business' => $response, 
+                'suggested_businesses' => $suggested_businesses, 
+                'information' => $errorArray));
     }
 
     public function registerProcessingAction($request)
@@ -36,7 +43,8 @@ class Businesses
         $LocationManager = $request->getManager('Location');
         $countries = $LocationManager->getCountries();
         $cities = $LocationManager->getCities();
-        return new \QDE\Responses\TwigResponse('add_business.html.twig', array('countries' => $countries, 'cities' => $cities));
+        return new \QDE\Responses\TwigResponse('add_business.html.twig', 
+            array('countries' => $countries, 'cities' => $cities));
     }
 
     public function business_clash($request)
@@ -54,9 +62,14 @@ class Businesses
         $comment = $request->getPost('comment');
         $manager->insertComment($business_id, $user_id, $comment);
         if(!$error)
-            return new \QDE\Responses\RedirectResponse('view_business', array('id' => $business_id));
+            return new \QDE\Responses\RedirectResponse(
+                'view_business', 
+                array('id' => $business_id));
         else
             $errorArray = array('id' => '#register', 'message' => $errorMessage);
-            return new \QDE\Responses\RedirectResponse('view_business', array('id' => $business_id), array('information' => $errorArray));
+            return new \QDE\Responses\RedirectResponse(
+                'view_business', 
+                array('id' => $business_id), 
+                array('information' => $errorArray));
     }
 }
