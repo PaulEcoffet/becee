@@ -333,12 +333,26 @@ class BusinessesManager
         return (1400 + $score_pos - $score_neg) ;
     }
 
+    public function getScoreforFeatures($business_id, $feature_id)
+    {
+       $sql = 'SELECT elo_score 
+                FROM vm_score_businesses_features
+                WHERE business_id = :business AND feature_id = :feature
+                ;';
+        $req = $this->pdo->prepare($sql);
+        $req->bindValue('business', $business_id);
+        $req->bindValue('feature', $feature_id);
+        $data = $req->execute();
+        $data_fetched = $data->fetch();
+        $score = $data_fetched['elo_score']; 
+    }
+
 
     public function businessesComparaisonByFeature($business_id1, $business_id2, $winner_id, $feature_id)
     {
 
-        $score1 = computeScoreForFeature($business_id1, $feature_id);
-        $score2 = computeScoreForFeature($business_id2, $feature_id);
+        $score1 = getScoreforFeatures($business_id1, $feature_id)
+        $score2 = getScoreforFeatures($business_id2, $feature_id)
 
         if ($business_id1 == $winner_id)
         {
