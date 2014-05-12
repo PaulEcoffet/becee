@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-7">
                         <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}" autocomplete=off>
+                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}" autocomplete="off">
                         </form>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
 
                                 {% if comment_id is defined %}
                                 {% for comment in business.comments %}
-                                {% if loop.index ==  comment_id %}       
+                                {% if loop.index ==  comment_id %}
                                 <div class="description-info-business-box">
                                     <div>
                                         <p style="display:inline-block; width:auto;float:left">
@@ -117,14 +117,6 @@
                 </div>
                 {% endfor %}
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div style=
-                        "text-align:center; color:#aaa;text-style:italic;padding:10px;margin: 10px 0">
-                        <p><i class="fa fa-spinner"></i> Loading</p>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="tab-pane" id="nearest">
@@ -174,15 +166,6 @@
                     </div>
                 </div>
                 {% endfor %}
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div style=
-                        "text-align:center; color:#aaa;text-style:italic;padding:10px;margin: 10px 0">
-                        <p><i class="fa fa-spinner"></i> Loading</p>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="tab-pane" id="suggested">
