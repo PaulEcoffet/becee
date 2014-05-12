@@ -117,7 +117,6 @@ header {}
 #head select > option[selected] {color: rgb(255,102,102) !important; font-style: italic;}
 #head .title {border-left: 2px solid #f15959; height:100px; padding:35px 15px 0;font-style:normal; font-size:28px; font-family:'Roboto'; color:white;}
 /* logo styles */
-#logo {background: url(../img/logo.png) no-repeat center center; background-size: 110px; float: right; height: 35px; margin-top: 8px; width: 110px;}
 .white-logo {margin: 0px 5px 0 10px; width: 100px;}
 
 /* input styles */
@@ -216,8 +215,10 @@ a.sub-header-btn {color: #222; text-align: center; text-decoration: none;}
 .panel-heading {background-color: #cbdbea; height: 2px; padding: 0 15px;}
 .secondary-info-business-box {display: inline-block; float: right; font-size: 1em; padding: 0px; position: absolute; right: 5px;}
 
-@media all and (min-width: 80em) {header > .nav-tools-dropdown, .nav-tools-dropdown-right {display: none}}
-@media all and (max-width: 80em) {header > .nav-tools {display: none;} header > .nav-tools-dropdown, header > .nav-tools-dropdown-right {display: block;} #logo{float: center; float: none; margin: 3px auto;}}
+@media all and (max-width: 90em) {
+    header > .nav-tools,#logo {display: none;} 
+    header > .nav-tools-dropdown, header > .nav-tools-dropdown-right {display: block;} 
+}
 @media all and (max-width: 80em) {header > .input-group, #sub-header > .input-group, .head-categories > .input-group {display: none}}
 
 

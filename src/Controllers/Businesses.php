@@ -170,11 +170,11 @@ class Businesses
         $business_id2 = $request->getParamsUri('business_id2');
         $response1 = $manager->getBusinessById($business_id1, array('with_images', 'with_comments'));
         $response2 = $manager->getBusinessById($business_id2, array('with_images', 'with_comments'));
-        $all_tags = $manager->getAllTags();
+        $all_features = $manager->getAllFeatures();
         return new \QDE\Responses\TwigResponse(
             'clash_businesses.html.twig', 
             array(
-                'tags' => $all_tags,
+                'features' => $all_features,
                 'business1' => $response1,
                 'business2' => $response2, 
                 'flash' => $flash));
