@@ -355,7 +355,7 @@ class BusinessesManager
 
 
         $req = $bdd->prepare($sql);
-        $req->bindValue('id', 2);
+        $req->bindValue('id', $user_id);
         $req->execute();
         $data = $req->fetchAll();
 
