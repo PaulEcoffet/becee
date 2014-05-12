@@ -104,6 +104,7 @@ class BusinessScoreManager
                 $i++;
             }
         }
+        $this->app->getManager('Businesses')->clearBusinessCache();
     }
 
     public function addMissingEntries()

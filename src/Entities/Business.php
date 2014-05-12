@@ -22,6 +22,7 @@ class Business
     public $price = null;
     public $address_1 = null;
     public $address_2 = null;
+    public $ranks = null;
 
     public function __construct($data=null)
     {
@@ -40,6 +41,12 @@ class Business
             }
         }
     }
+
+    public function setRanks(array $ranks)
+    {
+        $this->ranks = $ranks;
+    }
+
     public function add_features($new_features)
     {
         $this->$features = array_merge($this->$features, $new_features);

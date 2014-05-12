@@ -40,9 +40,19 @@ class BusinessesManager
     {
             $filename = strtolower(base_convert(strval($business_id), 10, 36)).'.business.php_serialized';
             $file_path = $this->cache_folder. '/'. $filename;
-            $business = $this->getBusinessByIdFromDB($business_id, array('with_images', 'with_comments'));
+            $business = $this->getBusinessByIdFromDB($business_id, array('with_images', 'with_comments', 'with_ranks'));
             file_put_contents($file_path, serialize($business));
             return $business;
+    }
+
+    public function clearBusinessCache()
+    {
+        $files = glob($this->cache_folder.'/*');
+        foreach($files as $file)
+        {
+            if(is_file($file))
+                unlink($file);
+        }
     }
 
     public function getBusinessByIdFromDB($business_id, $option=null)
@@ -105,11 +115,38 @@ class BusinessesManager
             {
                 $business->setComments($this->getBusinessComments($business_id));
             }
+            if(in_array('with_rank', $option))
+            {
+                $business->setRanks($this->getBusinessMostRelevantRanks($business_id));
+            }
         }
         return $business;
     }
 
-     public function getBusinessImages($business_id, $limit=8, $offset=0)
+    public function getBusinessMostRelevantRanks($business_id, $limit=5, $offset=0)
+    {
+        $sql = 'SELECT
+                feature_id,
+                business_features.name as feature_name,
+                rank_zone,
+                rank_country,
+                rank_world
+            FROM
+                vm_score_businesses_features
+                    INNER JOIN
+                business_features ON business_features.id = vm_score_businesses_features.feature_id
+            WHERE
+                vm_score_businesses_features.business_id = :business_id
+            ORDER BY rank_zone
+            LIMIT :limit OFFSET :offset;';
+        $ranks_req = $this->pdo->prepare($sql);
+        $ranks_req->bindValue('business_id', $business_id);
+        $ranks_req->bindValue('limit', $limit);
+        $ranks_req->bindValue('offset', $offset);
+        return $ranks_req->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getBusinessImages($business_id, $limit=8, $offset=0)
     {
         $sql = 'SELECT
                 business_images.path,
@@ -146,7 +183,7 @@ class BusinessesManager
 
     /* ==========================================  GET THE BUSINESS DETAILS FUNCTIONS  ====================================================================================================================== */
 
-    public function getBusinessMostReleventTags($business_id, $limit=5)
+    public function getBusinessMostRelevantTags($business_id, $limit=5)
     {
         $sql = 'SELECT
                 business_tags.id as tag_id, business_tags.name as tag_name, businesses.name as business_name
@@ -238,8 +275,6 @@ class BusinessesManager
         while($comment_arr = $comments_req->fetch(\PDO::FETCH_ASSOC))
         {
             $comment_arr['userName'] = array('firstname' => $comment_arr['userFirstName'], 'lastname' => $comment_arr['userLastName']);
-            print_r($comment_arr);
-            echo "string";
             $comment = new BusinessComment();
             $comment->hydrate($comment_arr);
             $comments[] = $comment;
@@ -351,8 +386,8 @@ class BusinessesManager
     public function businessesComparaisonByFeature($business_id1, $business_id2, $winner_id, $feature_id)
     {
 
-        $score1 = getScoreforFeatures($business_id1, $feature_id)
-        $score2 = getScoreforFeatures($business_id2, $feature_id)
+        $score1 = getScoreforFeatures($business_id1, $feature_id);
+        $score2 = getScoreforFeatures($business_id2, $feature_id);
 
         if ($business_id1 == $winner_id)
         {
