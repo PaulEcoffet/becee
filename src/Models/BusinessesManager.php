@@ -641,7 +641,7 @@ class BusinessesManager
         $userManager = $this->app->getManager('currentUser');
         $user_id = $userManager->getId();
 
-        $sql = 'SELECT businesses.id
+        $sql = 'SELECT DISTINCT businesses.id
                 FROM businesses
                 INNER JOIN business_visits
                 ON businesses.id = business_visits.business_id

@@ -71,7 +71,7 @@ h1 { padding: .2em; margin: 0; }
                 <div>
                     <ul>
                         {% for feature in page.features %} {% if not feature.name is empty %}
-                        <li data-product="{{ feature.id }}"><i class="fa fa-feature" style="color:#ccc; margin-right:5px"></i>{{ feature.name }}</li>
+                        <li data-product="{{ feature.id }}" id="{{ feature.id }}"><i class="fa fa-feature" style="color:#ccc; margin-right:5px"></i>{{ feature.name }}</li>
                         {%endif%}{% endfor %}
                     </ul>
                 </div>
@@ -300,6 +300,7 @@ hoverClass: "ui-state-hover",
 accept: ":not(.ui-sortable-helper)",
 drop: function( event, ui ) {
 $( this ).find( ".placeholder" ).remove();
+$( "li#"+ui.draggable.data('product') ).remove();
 $("select#features_business1").append("<option value='"+ui.draggable.data('product')+"' selected='selected'>"+ui.draggable.data('product')+"</option>");
 $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
 }
@@ -311,6 +312,14 @@ sort: function() {
 $( this ).removeClass( "ui-state-default" );
 }
 });
+    $("#catalog ul").droppable({
+        drop: function(event, ui) {
+            $(ui.draggable).remove();
+        },
+        hoverClass: "ui-state-hover",
+        accept: '.cart-item'
+    });
+
 });
 </script>
 
@@ -327,6 +336,7 @@ hoverClass: "ui-state-hover",
 accept: ":not(.ui-sortable-helper)",
 drop: function( event, ui ) {
 $( this ).find( ".placeholder" ).remove();
+$( "li#"+ui.draggable.data('product') ).remove();
 $("select#features_business2").append("<option value='"+ui.draggable.data('product')+"' selected='selected'>"+ui.draggable.data('product')+"</option>");
 $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
 }
@@ -338,7 +348,16 @@ sort: function() {
 $( this ).removeClass( "ui-state-default" );
 }
 });
+    $("#catalog ul").droppable({
+        drop: function(event, ui) {
+            $(ui.draggable).remove();
+        },
+        hoverClass: "ui-state-hover",
+        accept: '.cart-item'
+    });
+
 });
+
 </script>
 {% endblock %}
 
