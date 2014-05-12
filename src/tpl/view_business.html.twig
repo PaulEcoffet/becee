@@ -206,7 +206,7 @@
                         <a href="{{ path('add_visit', {'id': page.business.id}) }}" style="text-decoration:none">
                             <p style="float:left; display:inline-block; background:#f15959; padding:10px; color:#fff">J'y suis déjà venu</p>
                         </a>
-                        <a href="{{ path('clash_businesses', {'business_id1' : page.business.id, 'business_id2' : page.business.id}) }}" style="text-decoration:none">
+                        <a data-toggle="modal" data-target="#suggested-clash" style="text-decoration:none">
                             <p style="float:right; display:inline-block; background:#3498DB; padding:10px; color:#fff">Je veux clasher</p>
                         </a>
                     </div>
@@ -241,6 +241,73 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="suggested-clash" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="false" data-dismiss="modal" class="close" type="button"><i class="fa fa-times"></i></button>
+          <h4 id="myLargeModalLabel" class="modal-title">Clash suggérés</h4>
+        </div>
+        <div class="modal-body">
+        <div class="row">
+        Business visités récemments :
+        <hr/>
+        {% for business in page.visited_businesses %}
+        <div class="col-md-6">
+                    <div class="home-business-box">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="business-box-container" style=
+                                "background:url({{ media(business.images[0].path) }}) no-repeat center;">
+                                {% for tag in business.getTags() %}{% if not tag.name is empty %} <a class=
+                                "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
+                                    {{ tag }}</a>
+                                    {% endif %}
+                                {% endfor %}
+
+                                    <a href="{{ path('clash_businesses', {'business_id1' : page.business.id, 'business_id2' : business.id}) }}" style="display:block"><p class="business-info">{{ business.name }}<br>
+                                    <span style=
+                                    "font-size:12px">{{ business.address_1 }}</span>
+                                    <span class="secondary-info-business-box">
+                                    {% for i in 1..business.price %}
+                                    €
+                                    {% endfor %}
+
+                                    <small style="font-size: 0.8em">- environ 500 mètres</small>
+                                    </span></p></a>
+                                </div>
+
+                                <div class="description-info-business-box">
+                                    <div>
+                                        <p style="display:inline-block; width:auto;float:left">
+                                        <i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i>
+                                        </p>
+
+                                        <p>{{ business.description[0:150] }}…</p>
+                                    </div>
+
+                                    <div>
+                                        <hr style="margin: 5px 0">
+
+                                        <p style="color:#aaa; float:right;">
+                                        <i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 -
+                                        <i class="fa fa-thumbs-o-up"></i> 5</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+    {% endfor %}
+            </div>
+
+
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
 </div>
 {% endblock %}
 
