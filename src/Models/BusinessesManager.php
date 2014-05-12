@@ -327,20 +327,65 @@ class BusinessesManager
 
     /* ========================================== BUSINESS CLASH  ====================================================================================================================== */
 
-    public function getAllBattleForUser($business_id)
+    public function getAllBattleForUser($user_id)
     {
         $manager = $this->app->getManager('currentuser');
         $user_id = $manager->getId();
 
-        $sql = 'SELECT businesses.id, businesses.name, business_categories.id , business_categories.name
-                FROM businesses
-                INNER JOIN link_businesses_categories
-                ON businesses.id = link_businesses_categories.business_id
-                LEFT JOIN business_categories
-                ON link_businesses_categories.categories_id = business_categories.id
+        $sql = 'SELECT DISTINCT
+        v1.business_id AS bid1,
+        v2.business_id AS bid2,
+        v1.user_id,
+        v2.user_id
+        FROM
+        business_visits v1,
+        business_visits v2
+        WHERE
+        v1.user_id = :id AND v2.user_id = :id
+            AND v1.business_id < v2.business_id
+                    AND
+                            NOT EXISTS(SELECT * FROM businesses_comparisons bc
+                            INNER JOIN
+                                    business_visits iv1 ON iv1.id = bc.business_visit1_id
+                            INNER JOIN
+                                    business_visits iv2 ON iv2.id = bc.business_visit2_id
+                            WHERE (iv1.business_id = v1.business_id AND iv2.business_id = v2.business_id)
+                                    OR (iv1.business_id = v2.business_id AND iv2.business_id = v1.business_id)
+                                    AND iv1.user_id = :id AND iv2.user_id = :id);';
 
 
+        $req = $bdd->prepare($sql);
+        $req->bindValue('id', 2);
+        $req->execute();
+        $data = $req->fetchAll();
+
+for($i = 0; $i < count($data); $i++)
+{
+    $business1 = $this->getBusinessById($data[$i][0]);
+    $category1 = $business1->categories[0]['category_id'];
+    $business2 = $this->getBusinessById($data[$i][1]);
+    $category2 = $business2->$categories[0]['category_id'];
+
+    
+    if($category1 = $category2)
+    {
+        $sql = 'SELECT business_features.id, business_features.name
+                FROM link_categories_features
+                INNER JOIN business_features
+                ON business_features.id = link_categories_features.feature_id
+                WHERE link_categories_features.category_id = :cat
         ;';
+
+        $req = $bdd->prepare($sql);
+        $req->bindValue('cat', $category1);
+        $req->execute();
+        $ans = $req->fetchAll();
+
+        $data[$i]['features'] = $ans;
+
+    }
+
+}
     }
 
     public function computeScoreForFeature($business_id, $feature_id_clash)
