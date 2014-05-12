@@ -11,7 +11,17 @@
             "feature_id" : "\\d+"
             }
 
-    }, 
+    },
+    {
+        "name": "clash_businesses",
+        "route" : "clash/{business_id1}/versus/{business_id2}",
+        "controller": "Businesses",
+        "action" : "clash",
+        "variables" : {
+            "business_id1" : "\\d+",
+            "business_id2" : "\\d+"
+        }
+    },
     {
         "name": "view_user",
         "route": "user/{id}",
@@ -19,6 +29,16 @@
         "action": "viewUser",
         "variables": {
             "id": "\\d+"
+        }
+    },
+    {
+        "name": "clashProcess",
+        "route": "clashprocess/{id_business1}/versus/{id_business2}",
+        "controller": "Businesses",
+        "action" : "clashProcess",
+        "variables" : {
+            "id_business1" : "\\d+",
+            "id_business2" : "\\d+"
         }
     },
     {
@@ -122,11 +142,5 @@
             "id": "\\d+",
             "section": "[-A-Z0-9a-z]?|[-A-Z0-9a-z]+"
         }
-    },
-    {
-        "name": "compute_score",
-        "route": "fu/compute",
-        "controller": "Businesses",
-        "action": "computeScore"
     }
 ]

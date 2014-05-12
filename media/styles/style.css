@@ -108,7 +108,7 @@ header {}
 }
 .nav-pills {padding:20px; background-color:rgb(245,245,245);}
 /* head styles */
-#head {background: url(../img/head.jpg) center center; background-size: cover; border-bottom: 0px solid #ddd; height: 320px; margin: 0; width: 100%;}
+#head {background: url(../img/head.jpg) center center; background-size: cover; border-bottom: 0px solid #ddd; height: auto;  padding-bottom: 50px; margin: 0; width: 100%;}
 #head-content {background-color: rgba(0,0,0,0.1); display: block; margin: auto; margin-top: 50px; max-width: 520px; text-align: center;}
 #head .nav-tools {float: none; margin: auto; margin-top: 20px; padding: 0; max-width: 425px; width: auto; overflow: hidden;}
 #head form {margin-top: 25px;}
@@ -220,7 +220,6 @@ a.sub-header-btn {color: #222; text-align: center; text-decoration: none;}
 @media all and (max-width: 80em) {header > .nav-tools {display: none;} header > .nav-tools-dropdown, header > .nav-tools-dropdown-right {display: block;} #logo{float: center; float: none; margin: 3px auto;}}
 @media all and (max-width: 80em) {header > .input-group, #sub-header > .input-group, .head-categories > .input-group {display: none}}
 
-@media all and (max-width: 70em) {#sub-header {display: none} }
 
 @media all and (max-width: 60em) {.head-categories {display: none}; }
 
@@ -232,4 +231,14 @@ a.sub-header-btn {color: #222; text-align: center; text-decoration: none;}
     font-family: 'Roboto';
 	color:#303537;
     vertical-align: middle;
+}
+
+.ui-widget-header {
+    background:#fafafa;
+    color: #222;
+    border: none;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    background:#eee !important;
 }

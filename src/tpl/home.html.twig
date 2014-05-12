@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-md-12" id="head">
+    <div class="col-md-12" id="head" style="height:320px;">
         <div id="bottom-head">
             <div class="container container-fluid">
                 <div class="row">
@@ -50,7 +50,7 @@
         </ul>
     </div>
     <div class="row top15">
-        <div class="tab-content col-md-12">
+        <div class="tab-content col-md-10">
             <div class="tab-pane active" id="reviews">
                 {% for business in page.businesses|slice(0,6) %}
                 <div class="col-md-6 home-business">
@@ -59,9 +59,10 @@
                             <div class="col-md-12">
                                 <div class="business-box-container" style=
                                 "background:url({{ media(business.images[0].path) }}) no-repeat center;">
-                                {% for tag in business.getTags() %} <a class=
+                                {% for tag in business.getTags() %}{% if not tag.name is empty %} <a class=
                                 "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
                                     {{ tag }}</a>
+                                    {% endif %}
                                 {% endfor %}
 
                                     <a href="{{ path('view_business', {'id':business.id, 'name':business.name}) }}" style="display:block"><p class="business-info">{{ business.name }}<br>

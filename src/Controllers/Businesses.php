@@ -131,4 +131,52 @@ class Businesses
         $businessScore->compute_score();
         echo microtime(true) - $start;
     }
+
+    public function clashProcessAction($request)
+    {
+        try
+        {
+            $flash = $request->getCustomVariable('flash');
+        }
+        catch (\Exception $e)
+        {
+            $flash = array();
+        }
+
+        $manager = $request->getManager('businesses');
+        $id_business1 = $request->getParamsUri('id_business1');
+        $id_business2 = $request->getParamsUri('id_business2');
+        $tags_business1 = $request->getPost('tags_business1');
+        $tags_business2 = $request->getPost('tags_business2');
+        return new \QDE\Responses\RedirectResponse(
+            'home', 
+            array('id' => $business_id), 
+            array('information' => array('id'=>'#information', 'message' => 'Votre clash a bien été pris en compte')));
+    }
+
+    public function clashAction($request)
+    {
+        try
+        {
+            $flash = $request->getCustomVariable('flash');
+        }
+        catch (\Exception $e)
+        {
+            $flash = array();
+        }
+
+        $manager = $request->getManager('businesses');
+        $business_id1 = $request->getParamsUri('business_id1');
+        $business_id2 = $request->getParamsUri('business_id2');
+        $response1 = $manager->getBusinessById($business_id1, array('with_images', 'with_comments'));
+        $response2 = $manager->getBusinessById($business_id2, array('with_images', 'with_comments'));
+        $all_tags = $manager->getAllTags();
+        return new \QDE\Responses\TwigResponse(
+            'clash_businesses.html.twig', 
+            array(
+                'tags' => $all_tags,
+                'business1' => $response1,
+                'business2' => $response2, 
+                'flash' => $flash));
+    }
 }
