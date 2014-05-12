@@ -24,12 +24,36 @@ class Businesses
             $response->categories[0]['categorie_name'],
             null,
             5);
+        $visited_businesses_id = $manager->getVisitedBusinesses();
+        $visited_businesses = array();
+        foreach ($visited_businesses_id as $businessid => $value) {
+            array_push($visited_businesses, $manager->getBusinessById($businessid));
+        }
         return new \QDE\Responses\TwigResponse(
             'view_business.html.twig', 
             array('business' => $response, 
                 'suggested_businesses' => $suggested_businesses,
+                'visited_businesses' => $visited_businesses,
                 'flash' => $flash));
     }
+
+    public function addVisitAction($request)
+    {
+        $businessManager = $request->getManager('businesses');
+        $id = intval($request->getParamsUri('id'));
+        if($id != 0)
+        {
+            $businessManager->insertVisit($id);
+            return new \QDE\Responses\RedirectResponse('view_business', array('id' => $id),
+                array('information' => array('id'=>'#information', 'message'=>'Votre visite a bien été prise en compte')));
+        }
+        else
+        {
+            return new \QDE\Responses\RedirectResponse('view_business', array('id' => $id),
+                array('information' => array('id' => '#information', 'message' => 'Votre visite n\'a pas été prise en compte')));
+        }
+    }
+
 
     public function registerProcessingAction($request)
     {
@@ -54,25 +78,8 @@ class Businesses
         $LocationManager = $request->getManager('Location');
         $countries = $LocationManager->getCountries();
         $cities = $LocationManager->getCities();
-        return new \QDE\Responses\TwigResponse('add_business.html.twig',
+        return new \QDE\Responses\TwigResponse('add_business.html.twig', 
             array('countries' => $countries, 'cities' => $cities));
-    }
-
-    public function addVisitAction($request)
-    {
-        $businessManager = $request->getManager('businesses');
-        $id = intval($request->getParamsUri('id'));
-        if($id != 0)
-        {
-            $businessManager->insertVisit($id);
-            return new \QDE\Responses\RedirectResponse('view_business', array('id' => $id),
-                array('information' => array('id'=>'#information', 'message'=>'Votre visite a bien été prise en compte')));
-        }
-        else
-        {
-            return new \QDE\Responses\RedirectResponse('view_business', array('id' => $id),
-                array('information' => array('id' => '#information', 'message' => 'Votre visite n\'a pas été prise en compte')));
-        }
     }
 
     public function business_clash($request)
@@ -135,8 +142,8 @@ class Businesses
             $informationArray = array('id' => '#information', 'message' => 'Une erreur est survenu, votre commentaire n\'a pas été publié.');
         }
         return new \QDE\Responses\RedirectResponse(
-            'view_business',
-            array('id' => $business_id),
+            'view_business', 
+            array('id' => $business_id), 
             array('information' => $informationArray));
     }
 

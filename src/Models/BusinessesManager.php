@@ -636,6 +636,25 @@ class BusinessesManager
         $business = $this->createBusinessCache($business_id);
     }
 
+    public function getVisitedBusinesses()
+    {
+        $userManager = $this->app->getManager('currentUser');
+        $user_id = $userManager->getId();
+
+        $sql = 'SELECT businesses.id
+                FROM businesses
+                INNER JOIN business_visits
+                ON businesses.id = business_visits.business_id
+                INNER JOIN users
+                ON users.id = business_visits.user_id
+                WHERE users.id = ?
+                ;'
+                ;
+        $visit_req = $this->pdo->prepare($sql);
+        $visit_req->execute(array($user_id));
+        return $visit_req->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function insertComment($business_id, $user_id, $comment)
     {
 

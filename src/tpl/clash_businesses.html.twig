@@ -71,7 +71,7 @@ h1 { padding: .2em; margin: 0; }
                 <div>
                     <ul>
                         {% for feature in page.features %} {% if not feature.name is empty %}
-                        <li data-product="{{ feature.name }}"><i class="fa fa-feature" style="color:#ccc; margin-right:5px"></i> {{ feature.name }}</li>
+                        <li data-product="{{ feature.id }}"><i class="fa fa-feature" style="color:#ccc; margin-right:5px"></i>{{ feature.name }}</li>
                         {%endif%}{% endfor %}
                     </ul>
                 </div>
@@ -101,7 +101,6 @@ h1 { padding: .2em; margin: 0; }
         </div>
         <form action="{{ path('clashProcess', {'id_business1' : page.business1.id, 'id_business2' : page.business2.id }) }}" method="POST">
             <select name="features_business1[]" id="features_business1" style="display:none" multiple>
-                <option value="s"></option>
             </select>
             <select name="features_business2[]" id="features_business2" style="display:none" multiple>
             </select>
@@ -301,7 +300,7 @@ hoverClass: "ui-state-hover",
 accept: ":not(.ui-sortable-helper)",
 drop: function( event, ui ) {
 $( this ).find( ".placeholder" ).remove();
-$("select#features_business1").append("<option value='"+ui.draggable.text()+"' selected='selected'>"+ui.draggable.text()+"</option>");
+$("select#features_business1").append("<option value='"+ui.draggable.data('product')+"' selected='selected'>"+ui.draggable.data('product')+"</option>");
 $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
 }
 }).sortable({
@@ -328,7 +327,7 @@ hoverClass: "ui-state-hover",
 accept: ":not(.ui-sortable-helper)",
 drop: function( event, ui ) {
 $( this ).find( ".placeholder" ).remove();
-$("select#features_business2").append("<option value='"+ui.draggable.text()+"' selected='selected'>"+ui.draggable.text()+"</option>");
+$("select#features_business2").append("<option value='"+ui.draggable.data('product')+"' selected='selected'>"+ui.draggable.data('product')+"</option>");
 $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
 }
 }).sortable({
