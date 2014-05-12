@@ -1,6 +1,7 @@
 {% extends "main_layout.html.twig" %}
 {% from 'general.html.twig' import navtools%}
-
+{% set month_en_fr = {'January': 'Janvier', 'February': 'Février','March': 'Mars','April': 'Avril','May': 'Mai','June': 'Juin', 'July' : 'Juillet', 'August': 'Aout', 'September': 'Septembre', 'November': 'Novembre', 'December': 'Décembre'} %}
+{% set day_en_fr = {'Monday': 'Lundi', 'Tuesday': 'Mardi', 'Wednesday': 'Mercredi', 'Thursday': 'Jeudi', 'Friday': 'Vendredi', 'Saturday': 'Samedi', 'Sunday': 'Dimanche'} %}
 {% block content %}
 
 <div class="row">
@@ -59,7 +60,7 @@
                             <div class="col-md-12">
                                 <div class="business-box-container" style=
                                 "background:url({{ media(business.images[0].path) }}) no-repeat center;">
-                                <span style="display:block; padding:5px"><i class="fa fa-trophy fa-5x" style="color:rgba(255,215,0,0.5); "></i> <span style="position:absolute; top:10px; left:25px; font-size:2.4em; font-family:'Roboto'">{{ business.ranks.0.rank_zone }}</span></span><span style="font-size:1.6em; padding:5px; background:rgba(0,0,0,0.4); color:white">{{ business.ranks.0.feature_name }}</span>
+                                <span style="display:block; padding:5px"><i class="fa fa-trophy fa-5x" style="color:rgba(196,196,196,0.5); "></i> <span style="position:absolute; top:10px; left:25px; font-size:2.4em; font-family:'Roboto';">{{ business.ranks.0.rank_zone }}</span></span><span style="font-size:1.6em; padding:5px; background:rgba(0,0,0,0.4); color:white">{{ business.ranks.0.feature_name }}</span>
                                 {% for tag in business.getTags() %}{% if not tag.name is empty %} <a class=
                                 "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
                                     {{ tag }}</a>
@@ -77,24 +78,39 @@
                                     <small style="font-size: 0.8em">- environ 500 mètres</small>
                                     </span></p></a>
                                 </div>
+                                        {% set comment_id = 0 %}
+                                        {% set foo = 0 %}
+                                        {% for comment in business.comments %}
+                                        {% if comment.votePos >= foo %}
+                                        
+                                        {% set foo = comment.votePos %}
+                                        {% set comment_id = loop.index %}
+                                        {% endif %}
+                                        {% endfor %}
+                                        
 
+                                {% if comment_id is defined %}
+                                {% for comment in business.comments %}
+                                {% if loop.index ==  comment_id %}       
                                 <div class="description-info-business-box">
                                     <div>
                                         <p style="display:inline-block; width:auto;float:left">
                                         <i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i>
                                         </p>
-
-                                        <p>{{ business.description[0:150] }}…</p>
+                                        <p>{{ comment.comment[0:150] }}</p>
                                     </div>
 
                                     <div>
                                         <hr style="margin: 5px 0">
-
+<p style="float:left; color:#aaa;">{{ comment.userName.firstname }} {{ (comment.userName.lastname|upper)[0] }}.</p>
                                         <p style="color:#aaa; float:right;">
-                                        <i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 -
-                                        <i class="fa fa-thumbs-o-up"></i> 5</p>
+                                        <i class="fa fa-clock-o"></i> {{ comment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}
+                                        <i class="fa fa-thumbs-o-up"></i> <span style="color:#1ec416">{{comment.votePos}}</span></p>
                                     </div>
                                 </div>
+                                {% endif %}
+                                {% endfor %}
+                            {%endif%}
                             </div>
                         </div>
                     </div>
