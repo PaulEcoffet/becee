@@ -286,7 +286,12 @@ class BusinessesManager
         $manager = $this->app->getManager('currentuser');
         $user_id = $manager->getId();
 
-        $sql = 'SELECT businesses.id, businesses.name, features.id, features.name
+        $sql = 'SELECT businesses.id, businesses.name, business_categories.id , business_categories.name
+                FROM businesses
+                INNER JOIN link_businesses_categories
+                ON businesses.id = link_businesses_categories.business_id
+                LEFT JOIN business_categories
+                ON link_businesses_categories.categories_id = business_categories.id
 
 
         ;';
