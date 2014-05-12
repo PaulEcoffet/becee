@@ -76,7 +76,7 @@ class Businesses
         $manager = $request->getManager('businesses');
         $business_id = $request->getParamsUri('business_id');
         $comment_id = $request->getParamsUri('comment_id');
-        $manager->insertVoteToComment($comment_id, $request->getPost('vote') === 'pos');
+        $manager->insertVoteToComment($business_id, $comment_id, $request->getPost('vote') === 'pos');
 
         return new \QDE\Responses\RedirectResponse(
             'view_business', 

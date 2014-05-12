@@ -286,7 +286,12 @@ class BusinessesManager
         $manager = $this->app->getManager('currentuser');
         $user_id = $manager->getId();
 
-        $sql = 'SELECT businesses.id, businesses.name, features.id, features.name
+        $sql = 'SELECT businesses.id, businesses.name, business_categories.id , business_categories.name
+                FROM businesses
+                INNER JOIN link_businesses_categories
+                ON businesses.id = link_businesses_categories.business_id
+                LEFT JOIN business_categories
+                ON link_businesses_categories.categories_id = business_categories.id
 
 
         ;';
@@ -540,7 +545,7 @@ class BusinessesManager
         return $business;
     }
 
-    public function insertVoteToComment($comment_id, $is_votePos)
+    public function insertVoteToComment($business_id, $comment_id, $is_votePos)
     {
         $sql = 'UPDATE business_comments
                 SET vote_pos = vote_pos + ?, vote_neg = vote_neg + ?
