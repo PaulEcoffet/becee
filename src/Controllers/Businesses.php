@@ -122,4 +122,13 @@ class Businesses
             array('id' => $business_id), 
             array('information' => $informationArray));
     }
+
+
+    public function computeScoreAction($request)
+    {
+        $start = microtime(true);
+        $businessScore = $request->getManager('BusinessScore');
+        $businessScore->compute_score();
+        echo microtime(true) - $start;
+    }
 }
