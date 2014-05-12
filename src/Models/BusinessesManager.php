@@ -330,7 +330,7 @@ class BusinessesManager
         $data2 = $score->fetch();
         $score_neg = $data2['score2'];
 
-        return $score_pos - $score_neg;
+        return (1400 + $score_pos - $score_neg) ;
     }
 
 
