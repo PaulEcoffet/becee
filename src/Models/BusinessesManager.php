@@ -109,7 +109,7 @@ class BusinessesManager
         return $business;
     }
 
-     public function getBusinessImages($business_id, $limit=5, $offset=0)
+     public function getBusinessImages($business_id, $limit=8, $offset=0)
     {
         $sql = 'SELECT
                 business_images.path,
