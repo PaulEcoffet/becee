@@ -18,6 +18,7 @@ class BusinessScoreManager
      */
     public function compute_score()
     {
+        $this->pdo->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING );
         $this->addMissingEntries();
 
         $business_score_update_req = $this->pdo->prepare('UPDATE vm_score_businesses_features
@@ -72,25 +73,6 @@ class BusinessScoreManager
                 $businesses[$feature_id][$id_b1]['score'] += (($id_b1 === $bus_last_comp['winner'])? 1 : -1) * $bus_last_comp['score'];
                 $businesses[$feature_id][$id_b2]['score'] += (($id_b2 === $bus_last_comp['winner'])? 1 : -1) * $bus_last_comp['score'];
             }
-            foreach($businesses_current_elo as $business_old_score)
-            {
-                $businesses[$business_old_score['business_id']][$business_old_score['feature_id']]['score'] += $business_old_score['elo_score'];
-            }
-            foreach($businesses as $feature_id => &$bus_list)
-            {
-                uasort($bus_list, '\\Becee\\Models\\cmp_desc');
-                $i = 1;
-                foreach($bus_list as $business_id => $business)
-                {
-                    $business_score_update_req->bindValue('elo_score', $business['score']);
-                    $business_score_update_req->bindValue('rank_zone', $i);
-                    $business_score_update_req->bindValue('feature_id', $feature_id);
-                    $business_score_update_req->bindValue('business_id', $business_id);
-                    $business_score_update_req->execute();
-                    $i++;
-                }
-            }
-
             echo '<pre>';
             print_r($businesses);
             echo '</pre>';
@@ -98,6 +80,29 @@ class BusinessScoreManager
         else
         {
             echo 'Nothing to do<br />';
+        }
+        foreach($businesses_current_elo as $business_old_score)
+        {
+            if(!isset($businesses[$business_old_score['feature_id']][$business_old_score['business_id']]))
+            {
+                $businesses[$business_old_score['feature_id']][$business_old_score['business_id']] = array('score' => 0);
+            }
+            $businesses[$business_old_score['feature_id']][$business_old_score['business_id']]['score'] += $business_old_score['elo_score'];
+
+        }
+        foreach($businesses as $feature_id => &$bus_list)
+        {
+            uasort($bus_list, '\\Becee\\Models\\cmp_desc');
+            $i = 1;
+            foreach($bus_list as $business_id => $business)
+            {
+                $business_score_update_req->bindValue('elo_score', $business['score']);
+                $business_score_update_req->bindValue('rank_zone', $i);
+                $business_score_update_req->bindValue('feature_id', $feature_id);
+                $business_score_update_req->bindValue('business_id', $business_id);
+                $business_score_update_req->execute();
+                $i++;
+            }
         }
     }
 
