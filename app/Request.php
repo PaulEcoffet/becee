@@ -24,10 +24,6 @@ class Request
     public function parseTemplate($file, $page_data)
     {
         $data['page'] = $page_data;
-        /*foreach($this->template_hooks as $hook)
-        {
-            $data[$hook->getName()] = $hook->execute();
-        }*/
         return $this->app->getTwig()->render($file, $data);
     }
 
