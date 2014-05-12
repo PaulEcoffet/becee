@@ -120,8 +120,8 @@ header {}
 .white-logo {margin: 0px 5px 0 10px; width: 100px;}
 
 /* input styles */
-#head .input-group  {float:right; display:inline-block; width:100%}
-#head .input-group > input[type='text'] {background-color:rgba(0,0,0,0.5); color:white; border:1px solid rgba(250,250,250,0.35); width:100%; height:50px}
+#head .input-group  {margin-left: auto; margin-right: auto; width: 100%}
+#head .input-group > input[type='text'] {background-color:rgba(0,0,0,0.5); color:white; border:1px solid rgba(250,250,250,0.35); width:100%; height:50px;}
 .head-categories > .input-group {display: inline-table; float: right ; margin: 0 25px; width: auto;}
 input.empty {
     font-family: FontAwesome, 'Open Sans','Helvetica Neue',Helvetica,Arial,Verdana,Sans-serif;
@@ -220,9 +220,10 @@ a.sub-header-btn {color: #222; text-align: center; text-decoration: none;}
     header > .nav-tools-dropdown, header > .nav-tools-dropdown-right {display: block;} 
 }
 @media all and (max-width: 80em) {header > .input-group, #sub-header > .input-group, .head-categories > .input-group {display: none}}
+@media all and (max-width: 100em) {#head .input-group  {width: 80%}}
 
 
-@media all and (max-width: 60em) {.head-categories {display: none}; }
+@media all and (max-width: 60em) {.head-categories {display: none} }
 
 .info-box{background-color: #ececec; border-left: none; border-radius: 2px; box-shadow: 0px 1px 1px 0px #D0D0D0; display: block; filter: progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5); height: auto; margin: 20px; moz-border-radius: 1px; moz-box-shadow: 0px 2px 5px 0px #D0D0D0; o-box-shadow: 0px 1px 3px 0px #D0D0D0; padding: 10px !important; position: relative; webkit-border-radius: 1px; webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;}
 .info-box .label-img{left: 25px; position: absolute; top: 0px;}

@@ -146,12 +146,19 @@ class Businesses
         $manager = $request->getManager('businesses');
         $id_business1 = $request->getParamsUri('id_business1');
         $id_business2 = $request->getParamsUri('id_business2');
-        $tags_business1 = $request->getPost('tags_business1');
-        $tags_business2 = $request->getPost('tags_business2');
+        $features_business1 = $request->getPost('features_business1');
+        $features_business2 = $request->getPost('features_business2');
+        foreach ($features_business1 as $feature_id) {
+            $manager->businessesComparaisonByFeature($id_business1, $id_business2, $id_business1, $feature_id);
+        }
+        foreach ($features_business2 as $feature_id) {
+            $manager->businessesComparaisonByFeature($id_business1, $id_business2, $id_business2, $feature_id);
+        }
         return new \QDE\Responses\RedirectResponse(
             'home', 
             array('id' => $business_id), 
-            array('information' => array('id'=>'#information', 'message' => 'Votre clash a bien été pris en compte')));
+            array('information' => array('id'=>'#information', 
+                'message' => 'Votre clash a bien été pris en compte<hr/> - id_business1 = '.$id_business1.' <br/> id_business2 = '.$id_business2)));
     }
 
     public function clashAction($request)

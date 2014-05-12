@@ -387,8 +387,8 @@ class BusinessesManager
         $req = $this->pdo->prepare($sql);
         $req->bindValue('business', $business_id);
         $req->bindValue('feature', $feature_id);
-        $data = $req->execute();
-        $data_fetched = $data->fetch();
+        $req->execute();
+        $data_fetched = $req->fetch();
         $score = $data_fetched['elo_score']; 
     }
 
@@ -396,17 +396,17 @@ class BusinessesManager
     public function businessesComparaisonByFeature($business_id1, $business_id2, $winner_id, $feature_id)
     {
 
-        $score1 = getScoreforFeatures($business_id1, $feature_id);
-        $score2 = getScoreforFeatures($business_id2, $feature_id);
+        $score1 = $this->getScoreforFeatures($business_id1, $feature_id);
+        $score2 = $this->getScoreforFeatures($business_id2, $feature_id);
 
         if ($business_id1 == $winner_id)
         {
-            $score_final = computeEloScore($score1, $score2);
+            $score_final = $this->computeEloScore($score1, $score2);
         }
 
         else
         {
-            $score_final = computeEloScore($score2, $score1);
+            $score_final = $this->computeEloScore($score2, $score1);
         }
 
         $add_data = 'INSERT INTO businesses_comparaisons (business_visit1_id,business_visit2_id,
@@ -415,14 +415,14 @@ class BusinessesManager
                     ;'
                     ;
 
-        $app_data = $this->pdo->prepare($sql);
-        $add_data->bindValue('bus1', $business_id1);
-        $add_data->bindValue('bus2', $business_id2);
-        $add_data->bindValue('win', $winner_id);
-        $add_data->bindValue('feat', $feature_id);
-        $add_data->bindValue('score', $score_final);
+        $app_data = $this->pdo->prepare($add_data);
+        $app_data->bindValue('bus1', $business_id1);
+        $app_data->bindValue('bus2', $business_id2);
+        $app_data->bindValue('win', $winner_id);
+        $app_data->bindValue('feat', $feature_id);
+        $app_data->bindValue('score', $score_final);
 
-        $add_data->execute();
+        $app_data->execute();
 
     }
 
