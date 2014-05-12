@@ -26,30 +26,31 @@
 
 <div class="container container-fluid">
     <div class="row top15">
-        <ul class="nav nav-pills nav-stacked col-md-2">
+        <ul class="nav nav-pills col-md-12" style="padding:0">
             <li><a data-toggle="pill" href=
             "#suggested">
-            <i class="fa fa-crosshairs  fa-5x"></i>
+            <i class="fa fa-crosshairs  fa-2x"></i>
             <span style="font-size:25px">
             Suggested</span></a></li>
 
             <li><a data-toggle="pill" href="#nearest">
-            <i class="fa  fa-location-arrow  fa-5x"></i>
+            <i class="fa  fa-location-arrow  fa-2x"></i>
             <span style="font-size:25px">
             Nearest</span></a></li>
 
             <li class="active"><a data-toggle="pill" href="#reviews">
-            <i class="fa  fa-comments-o  fa-5x"></i>
+            <i class="fa  fa-comments-o  fa-2x"></i>
             <span style="font-size:25px">
             Reviews</span></a></li>
 
             <li><a data-toggle="pill" href="#random">
-            <i class="fa  fa-random  fa-5x"></i>
+            <i class="fa  fa-random  fa-2x"></i>
             <span style="font-size:25px">
             Random</span></a></li>
         </ul>
-
-        <div class="tab-content col-md-10">
+    </div>
+    <div class="row top15">
+        <div class="tab-content col-md-12">
             <div class="tab-pane active" id="reviews">
                 {% for business in page.businesses|slice(0,6) %}
                 <div class="col-md-6 home-business">
@@ -59,7 +60,7 @@
                                 <div class="business-box-container" style=
                                 "background:url({{ media(business.images[0].path) }}) no-repeat center;">
                                 {% for tag in business.getTags() %} <a class=
-                                "btn btn-small tag" href="{{ path('business_add') }}">
+                                "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
                                     {{ tag }}</a>
                                 {% endfor %}
 
@@ -113,22 +114,24 @@
                 <div class="col-md-6 home-business">
                     <div class="home-business-box">
                         <div class="row">
-                            <a href=
-                            "{{ path('view_business', {'id':business.id, 'name':business.name}) }}"
-                            style="display:block"></a>
-
                             <div class="col-md-12">
                                 <div class="business-box-container" style=
-                                "background:url({{ media(business.path) }}) no-repeat center;">
-                                {% for tag in page.tags|slice(0, 4) %} <a class=
-                                "btn btn-small tag" href="{{ path('business_add') }}">
-                                    {{tag.name}}</a> {% endfor %}
+                                "background:url({{ media(business.images[0].path) }}) no-repeat center;">
+                                {% for tag in business.getTags() %} <a class=
+                                "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
+                                    {{ tag }}</a>
+                                {% endfor %}
 
-                                    <p class="business-info">{{business.name}}<br>
+                                    <a href="{{ path('view_business', {'id':business.id, 'name':business.name}) }}" style="display:block"><p class="business-info">{{ business.name }}<br>
                                     <span style=
-                                    "font-size:12px">{{business.line1}}</span>
-                                    <span class="secondary-info-business-box">€ € € - 3.2
-                                    km</span></p>
+                                    "font-size:12px">{{ business.address_1 }}</span>
+                                    <span class="secondary-info-business-box">
+                                    {% for i in 1..business.price %}
+                                    €
+                                    {% endfor %}
+
+                                    <small style="font-size: 0.8em">- environ 500 mètres</small>
+                                    </span></p></a>
                                 </div>
 
                                 <div class="description-info-business-box">
@@ -137,14 +140,14 @@
                                         <i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i>
                                         </p>
 
-                                        <p>{{ business.description[0:150] }}...</p>
+                                        <p>{{ business.description[0:150] }}…</p>
                                     </div>
 
                                     <div>
                                         <hr style="margin: 5px 0">
 
                                         <p style="color:#aaa; float:right;">
-                                        <i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 - 
+                                        <i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 -
                                         <i class="fa fa-thumbs-o-up"></i> 5</p>
                                     </div>
                                 </div>
@@ -165,18 +168,17 @@
             </div>
 
             <div class="tab-pane" id="suggested">
-                <h1>#Suggestions#</h1>
+                <div id="map-canvas" style="box-shadow: 0px 0px 2px 0px #cfcfcf; margin: 15px 10px"></div>
             </div>
 
             <div class="tab-pane" id="random">
-                <h1>#Random#</h1>
 
             </div>
         </div><!-- tab content -->
     </div>
 </div>
 
-
+{% endblock %}
 {% block scripts %}
 {{ parent() }}
 <script type="text/javascript">
@@ -206,6 +208,10 @@
 console.debug(cities);
 });
 </script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0bzuk1i_1CC2CldMPylb88Wj4AizQo-s&sensor=true"></script>
+<script type="text/javascript" src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js"></script>
+<script type="text/javascript" src="{{ media('vendor/googlemap-api/js/googlemap-api.js')}}"></script>
+<script type="text/javascript">
+   initialize(44.8377890, -0.5791800, '');
+</script>
 {% endblock %}
-{% endblock %}
-

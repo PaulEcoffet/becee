@@ -126,7 +126,7 @@ class BusinessesManager
                 users ON business_images.user_id = users.id
             WHERE
                 businesses.id = :business_id
-            ORDER BY priority
+            ORDER BY priority DESC
             LIMIT :limit OFFSET :offset;';
 
         $images_req = $this->pdo->prepare($sql);
@@ -207,7 +207,9 @@ class BusinessesManager
                 pub_date as pubDate,
                 business_comments.vote_neg as voteNeg,
                 business_comments.vote_pos as votePos,
+                business_images.path as imagePath,
                 users.id as userId,
+                user_categories.name as userCategory,
                 COALESCE(users.firstname, \'Anonymous\') as userFirstName,
                 COALESCE(users.lastname, \'\') as userLastName,
                 users.avatar_path as userAvatar
@@ -215,6 +217,12 @@ class BusinessesManager
                 business_comments
                     LEFT JOIN
                 users ON business_comments.user_id = users.id
+            LEFT OUTER JOIN user_categories
+            ON user_categories.id = users.category   /* Getting all categories */                
+            LEFT OUTER JOIN link_comments_images
+            ON link_comments_images.comment_id = business_comments.id   /* Getting all categories */
+            LEFT OUTER JOIN business_images
+            ON link_comments_images.comment_id = business_images.id   /* Getting all categories */
             WHERE
                 business_comments.business_id = :business_id
             ORDER BY pub_date DESC
@@ -230,6 +238,8 @@ class BusinessesManager
         while($comment_arr = $comments_req->fetch(\PDO::FETCH_ASSOC))
         {
             $comment_arr['userName'] = array('firstname' => $comment_arr['userFirstName'], 'lastname' => $comment_arr['userLastName']);
+            print_r($comment_arr);
+            echo "string";
             $comment = new BusinessComment();
             $comment->hydrate($comment_arr);
             $comments[] = $comment;
@@ -363,8 +373,6 @@ class BusinessesManager
 
 
      /* ========================================== BUSINESS SEARCH  ====================================================================================================================== */
-
-
     public function searchBusinesses($location, $category=null, $tags=null, $limit=20, $offset=0)
     {
         if($category === null)
@@ -532,6 +540,19 @@ class BusinessesManager
         return $business;
     }
 
+    public function insertVoteToComment($comment_id, $is_votePos)
+    {
+        $sql = 'UPDATE business_comments
+                SET vote_pos = vote_pos + ?, vote_neg = vote_neg + ?
+                WHERE id = ?
+                ;
+                ';
+
+        $visit_req = $this->pdo->prepare($sql);
+        $visit_req->execute(array(($is_votePos ? 1 : 0), ($is_votePos ? 0 : 1), $comment_id));
+        $business = $this->createBusinessCache($business_id);
+    }
+
     public function insertVisit($business_id)
     {
         $userManager = $app->getManager('currentuser');
@@ -550,20 +571,25 @@ class BusinessesManager
         $business = $this->createBusinessCache($business_id);
     }
 
-    public function insertComment($business_id, $user_id, $comment, $image=NULL)
+    public function insertComment($business_id, $user_id, $comment)
     {
 
-        $sql = 'INSERT INTO business_comments( user_id, business_id, comment, pub_date, status)
-                VALUES (:user, :business , :comment, NOW(), 0)
-                ;'
+        $sql = "INSERT INTO business_comments(user_id, business_id, comment, pub_date, status)
+                VALUES (:user, :business, :comment, NOW(), 0)
                 ;
+                ";
 
         $comment_req = $this->pdo->prepare($sql);
         $comment_req->bindValue(':user', $user_id);
         $comment_req->bindValue(':business', $business_id);
         $comment_req->bindValue(':comment', $comment);
         $comment_req->execute();
-        $business = $this->createBusinessCache($business_id);
+
+        $sql = "SELECT id FROM `business_comments` WHERE id = (SELECT MAX(id) FROM `business_comments`);";
+
+        $comment_req = $this->pdo->prepare($sql);
+        $comment_req->execute();
+        return $comment_req->fetch(\PDO::FETCH_ASSOC)['id'];
     }
 
     public function insertBusinessImage($business_id, $image_path)
@@ -577,6 +603,26 @@ class BusinessesManager
         $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
         $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
         $business_req->execute();
-        $business = $this->createBusinessCache($business_id);
+
+        $sql = "SELECT id FROM `business_images` WHERE id = (SELECT MAX(id) FROM `business_images`);";
+
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->execute();
+
+        return $business_req->fetch(\PDO::FETCH_ASSOC)['id'];
     }
+
+    public function linkCommentWithImage($comment_id, $image_id)
+    {
+        $sql = "INSERT INTO `link_comments_images` (comment_id, image_id)
+                VALUES(:comment_id, :image_id)
+                ;
+                ";
+
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->bindValue(':comment_id', $comment_id,\PDO::PARAM_INT);
+        $business_req->bindValue(':image_id', $image_id,\PDO::PARAM_INT);
+        $business_req->execute();
+    }
+
 }

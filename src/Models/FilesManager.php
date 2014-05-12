@@ -35,7 +35,7 @@ class FilesManager
 			     if(move_uploaded_file($file['tmp_name'], getcwd() . '/' . $folder . $filename . '.png'))
 			     {
 			          echo '<br/>Upload completed successfully ! <br/>';
-			          return $folder . $filename . '.png';
+			          return 'upload/' . $foldername . '/' . $filename . '.png';
 			     }
 			}
 		     echo '<br/>Upload failed ! <br/>';

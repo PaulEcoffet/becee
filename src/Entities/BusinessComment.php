@@ -12,9 +12,11 @@ class BusinessComment
     protected $votePos;
     protected $voteNeg;
     protected $id;
+    protected $imagePath;
+    protected $userCategory;
 
 
-    public function __construct($comment='', $user_name=array('firstname' => 'Anonymous', 'lastname' => ''), $user_id=0, $user_avatar=null, $pub_date=0, $vote_pos=0, $vote_neg=0, $id='')
+    public function __construct($comment='', $user_name=array('firstname' => 'Anonymous', 'lastname' => ''), $user_id=0, $user_avatar=null, $pub_date=0, $vote_pos=0, $vote_neg=0, $id='', $image_path=null, $user_category=null)
     {
         $this->setComment($comment);
         $this->setUserName($user_name);
@@ -24,6 +26,8 @@ class BusinessComment
         $this->setVotePos($vote_pos);
         $this->setVoteNeg($vote_neg);
         $this->setId($id);
+        $this->setImagePath($image_path);
+        $this->setUserCategory($user_category);
     }
 
     public function hydrate(array $data)
@@ -215,5 +219,45 @@ class BusinessComment
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+     /**
+      * Get imagePath.
+      *
+      * @return imagePath.
+      */
+     public function getImagePath()
+     {
+         return $this->imagePath;
+     }
+
+    /**
+     * Set imagePath.
+     *
+     * @param imagePath the value to set.
+     */
+    public function setImagePath($imagePath)
+    {
+        $this->imagePath = $imagePath;
+    }
+
+     /**
+      * Get userCategory.
+      *
+      * @return userCategory.
+      */
+     public function getUserCategory()
+     {
+         return $this->userCategory;
+     }
+
+    /**
+     * Set userCategory.
+     *
+     * @param userCategory the value to set.
+     */
+    public function setUserCategory($userCategory)
+    {
+        $this->userCategory = $userCategory;
     }
 }

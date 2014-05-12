@@ -48,7 +48,6 @@ class Home
                 $category = '%';
             }
             $businesses = $BusinessManager->searchBusinesses($location, $category, $keywords);
-
         }
         else
         {

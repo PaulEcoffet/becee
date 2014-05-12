@@ -142,7 +142,7 @@ CREATE TABLE `business_images` (
   `business_id` int(10) unsigned DEFAULT NULL,
   `comment_id` int(10) unsigned DEFAULT NULL,
   `priority` tinyint(3) unsigned DEFAULT NULL,
-  `path` varchar(255) DEFAULT '../media/img/default-business-img.png',
+  `path` varchar(255) DEFAULT 'img/default-business-img.png',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `business_id` (`business_id`),
@@ -158,8 +158,36 @@ CREATE TABLE `business_images` (
 
 LOCK TABLES `business_images` WRITE;
 /*!40000 ALTER TABLE `business_images` DISABLE KEYS */;
-INSERT INTO `business_images` (id, user_id, business_id, priority, path) VALUES (1,NULL,1,NULL,'../media/upload/images_businesses/home-holder1.png'),(2,NULL,2,NULL,'../media/img/default-business-img.png'),(3,NULL,3,NULL,'../media/img/default-business-img.png'),(4,NULL,4,NULL,'../media/img/default-business-img.png'),(5,NULL,5,NULL,'../media/img/default-business-img.png'),(6,NULL,6,NULL,'../media/upload/images_businesses/home-holder4.png'),(7,NULL,7,NULL,'../media/upload/images_businesses/home-holder2.png'),(8,NULL,8,NULL,'../media/upload/images_businesses/home-holder3.png'),(9,NULL,9,NULL,'../media/img/default-business-img.png'),(10,NULL,10,NULL,'../media/img/default-business-img.png');
+INSERT INTO `business_images` (id, user_id, business_id, priority, path) VALUES (1,NULL,1,999,'upload/images_businesses/home-holder1.png'),(2,NULL,2,999,'img/default-business-img.png'),(3,NULL,3,999,'img/default-business-img.png'),(4,NULL,4,999,'img/default-business-img.png'),(5,NULL,5,999,'img/default-business-img.png'),(6,NULL,6,999,'upload/images_businesses/home-holder4.png'),(7,NULL,7,999,'upload/images_businesses/home-holder2.png'),(8,NULL,8,999,'upload/images_businesses/home-holder3.png'),(9,NULL,9,999,'img/default-business-img.png'),(10,NULL,10,999,'img/default-business-img.png');
 /*!40000 ALTER TABLE `business_images` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `link_comments_images`
+--
+
+DROP TABLE IF EXISTS `link_comments_images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `link_comments_images` (
+  `comment_id` int(10) unsigned DEFAULT NULL,
+  `image_id` int(10) unsigned DEFAULT NULL,
+  KEY `image_id` (`image_id`),
+  KEY `comment_id` (`comment_id`),
+  UNIQUE KEY `image_comment` (`image_id`, `comment_id`),
+  CONSTRAINT `link_comments_images_ibfk_1` FOREIGN KEY (`image_id`) REFERENCES `business_images` (`id`),
+  CONSTRAINT `link_comments_images_ibfk_2` FOREIGN KEY (`comment_id`) REFERENCES `business_comments` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `link_comments_images`
+--
+
+LOCK TABLES `link_comments_images` WRITE;
+/*!40000 ALTER TABLE `link_comments_images` DISABLE KEYS */;
+INSERT INTO `link_comments_images` (comment_id, image_id) VALUES (1,1);
+/*!40000 ALTER TABLE `link_comments_images` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -566,7 +594,7 @@ CREATE TABLE `users` (
   `firstname` varchar(40) DEFAULT NULL,
   `lastname` varchar(40) DEFAULT NULL,
   `hashed_password` varchar(255) DEFAULT NULL,
-  `category` int(10) unsigned DEFAULT '1',
+  `category` int(10) unsigned DEFAULT 1,
   `language` varchar(80) DEFAULT 'FR',
   `avatar_path` varchar(80) DEFAULT 'img/default-user-avatar-small.png',
   `salt` varchar(255) DEFAULT NULL,

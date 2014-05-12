@@ -22,6 +22,16 @@
         }
     },
     {
+        "name": "vote_comment",
+        "route": "business/{business_id}/comment/{comment_id}",
+        "controller": "Businesses",
+        "action": "voteComment",
+        "variables" : {
+            "business_id": "\\d+",
+            "comment_id": "\\d+"
+        }
+    },
+    {
         "name": "edit_user",
         "route": "user/edit",
         "controller": "Profile",

@@ -43,7 +43,7 @@ class Businesses
         $path = $FilesManager->uploadImage($FILES['img_business_med'], $filename,'images_businesses');
         if($path==NULL)
         {
-            $path = '../media/img/default-business-img.png';
+            $path = 'img/default-business-img.png';
         }
         $BusinessManager->insertBusinessImage($business['id'], $path);
         echo "<br/><a href='../../'>Back to Home</a>";
@@ -71,6 +71,19 @@ class Businesses
         //TODO
     }
 
+    public function voteCommentAction($request)
+    {
+        $manager = $request->getManager('businesses');
+        $business_id = $request->getParamsUri('business_id');
+        $comment_id = $request->getParamsUri('comment_id');
+        $manager->insertVoteToComment($comment_id, $request->getPost('vote') === 'pos');
+
+        return new \QDE\Responses\RedirectResponse(
+            'view_business', 
+            array('id' => $business_id), 
+            array('information' => $informationArray));
+    }
+
     public function addCommentAction($request)
     {
         $manager = $request->getManager('businesses');
@@ -78,10 +91,27 @@ class Businesses
         $userManager = $request->getManager('currentUser');
         $user_id = $userManager->getId();
         $comment = $request->getPost('comment');
+        $image_info = '';
+        $path = '';
+        $image_id = null;
         if (!empty($comment)) {
+            $comment_id = $manager->insertComment($business_id, $user_id, $comment);
             $image = $request->getFiles('business_user_image');
-            $manager->insertComment($business_id, $user_id, $comment, $image);
-            $informationArray = array('id' => '#information', 'message' => "Le commentaire suivant a été publié :<hr/>".$comment);
+            if ($image['error'] === 0 && $image['size'] !== 0) {
+                $image_info = print_r($image, true);
+                $FilesManager = $request->getManager('files');
+                $filename = "becee_".time()."_".$business['id'];
+                $path = $FilesManager->uploadImage($image, $filename,'images_businesses');
+                if (!empty($path)) {
+                    $image_id = $manager->insertBusinessImage($business_id, $path);
+                    $manager->linkCommentWithImage($comment_id, $image_id);
+                }
+                else
+                {
+                    $error = 'Image upload failed.';
+                }
+            }
+            $informationArray = array('id' => '#information', 'message' => "<hr/>Le commentaire suivant a été publié :<hr/>".$comment.'<hr/>L\'image suivante a été attaché au commentaire :<hr/>'.$image_info.'<hr/>path:'.$path.' image_id:'.$image_id.'<hr/>'.' business_id:'.$business_id.' comment_id:'.$comment_id);
         }
         else
         {
