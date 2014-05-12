@@ -29,7 +29,6 @@ class Businesses
         foreach ($visited_businesses_id as $business) {
             $visited_businesses[] = $manager->getBusinessById($business['id']);
         }
-        var_dump($visited_businesses);
         return new \QDE\Responses\TwigResponse(
             'view_business.html.twig',
             array('business' => $response,
