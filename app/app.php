@@ -234,8 +234,9 @@ class App
         {
             $this->db_connection = new \PDO('mysql:host='. $this->config['mysql_host'] .
                 ';dbname='.$this->config['mysql_dbname'], $this->config['mysql_user'],
-                $this->config['mysql_password'],
-                array(\PDO::ATTR_PERSISTENT => true));
+                $this->config['mysql_password']);
+            $this->db_connection->query("SET NAMES utf8");
+            $this->db_connection->query("SET CHARACTER SET utf8");
         }
         catch (Exception $exception)
         {
