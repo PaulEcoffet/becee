@@ -109,7 +109,7 @@ class BusinessesManager
         return $business;
     }
 
-     public function getBusinessImages($business_id, $limit=5, $offset=0)
+     public function getBusinessImages($business_id, $limit=8, $offset=0)
     {
         $sql = 'SELECT
                 business_images.path,
@@ -218,11 +218,11 @@ class BusinessesManager
                     LEFT JOIN
                 users ON business_comments.user_id = users.id
             LEFT OUTER JOIN user_categories
-            ON user_categories.id = users.category   /* Getting all categories */                
+            ON user_categories.id = users.category                
             LEFT OUTER JOIN link_comments_images
-            ON link_comments_images.comment_id = business_comments.id   /* Getting all categories */
+            ON link_comments_images.comment_id = business_comments.id  
             LEFT OUTER JOIN business_images
-            ON link_comments_images.comment_id = business_images.id   /* Getting all categories */
+            ON link_comments_images.image_id = business_images.id  
             WHERE
                 business_comments.business_id = :business_id
             ORDER BY pub_date DESC
@@ -589,6 +589,7 @@ class BusinessesManager
 
         $comment_req = $this->pdo->prepare($sql);
         $comment_req->execute();
+        $business = $this->createBusinessCache($business_id);
         return $comment_req->fetch(\PDO::FETCH_ASSOC)['id'];
     }
 
@@ -608,11 +609,11 @@ class BusinessesManager
 
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute();
-
+        $business = $this->createBusinessCache($business_id);
         return $business_req->fetch(\PDO::FETCH_ASSOC)['id'];
     }
 
-    public function linkCommentWithImage($comment_id, $image_id)
+    public function linkCommentWithImage($business_id, $comment_id, $image_id)
     {
         $sql = "INSERT INTO `link_comments_images` (comment_id, image_id)
                 VALUES(:comment_id, :image_id)
@@ -623,6 +624,7 @@ class BusinessesManager
         $business_req->bindValue(':comment_id', $comment_id,\PDO::PARAM_INT);
         $business_req->bindValue(':image_id', $image_id,\PDO::PARAM_INT);
         $business_req->execute();
+        $business = $this->createBusinessCache($business_id);
     }
 
 }
