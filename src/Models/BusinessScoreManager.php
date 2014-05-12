@@ -18,6 +18,8 @@ class BusinessScoreManager
      */
     public function compute_score()
     {
+        $this->addMissingEntries();
+
         $business_score_update_req = $this->pdo->prepare('UPDATE vm_score_businesses_features
             SET
                 elo_score=:elo_score,
@@ -97,6 +99,27 @@ class BusinessScoreManager
         {
             echo 'Nothing to do<br />';
         }
+    }
+
+    public function addMissingEntries()
+    {
+        $this->pdo->prepare('
+            INSERT IGNORE INTO vm_score_businesses_features
+                (business_id, feature_id, elo_score, rank_zone, last_computation_date)
+             SELECT DISTINCT
+                    businesses.id as business_id,
+                    features.id as feature_id,
+                    1400 as elo_score,
+                    1000 as rank_zone,
+                    NOW() as last_computation_date
+                FROM
+                    business_features features
+                        INNER JOIN
+                    link_categories_features lcf ON features.id = lcf.feature_id
+                        INNER JOIN
+                    link_businesses_categories lbc ON lcf.category_id = lbc.category_id
+                        INNER JOIN
+                    businesses ON businesses.id = lbc.business_id;')->execute();
     }
 }
 
