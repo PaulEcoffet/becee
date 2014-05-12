@@ -382,11 +382,12 @@ for($i = 0; $i < count($data); $i++)
         $ans = $req->fetchAll();
 
         $data[$i]['features'] = $ans;
-
     }
 
 }
-    }
+
+    return($data);
+}
 
     public function computeScoreForFeature($business_id, $feature_id_clash)
     {
@@ -469,6 +470,9 @@ for($i = 0; $i < count($data); $i++)
         $app_data->bindValue('score', $score_final);
 
         $app_data->execute();
+
+        $scoreManager = $this->app->getManager('businessscore');
+        $scoreManaer->compute_score();
 
     }
 
