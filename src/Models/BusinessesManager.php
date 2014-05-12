@@ -620,7 +620,7 @@ class BusinessesManager
 
     public function insertVisit($business_id)
     {
-        $userManager = $app->getManager('currentuser');
+        $userManager = $this->app->getManager('currentUser');
         $user_id = $userManager->getId();
 
         $sql = 'INSERT INTO business_visits( user_id, business_id, visit_date)

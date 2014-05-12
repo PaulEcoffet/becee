@@ -100,6 +100,15 @@
         }
     },
     {
+        "name": "add_visit",
+        "route": "business/add_visit/{id}",
+        "controller": "Businesses",
+        "action": "addVisit",
+        "variables": {
+            "id": "\\d+"
+        }
+    },
+    {
         "name": "view_business",
         "route": "business/{id}/{name}",
         "controller": "Businesses",
