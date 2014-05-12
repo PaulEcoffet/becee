@@ -104,7 +104,7 @@ class Businesses
                 $path = $FilesManager->uploadImage($image, $filename,'images_businesses');
                 if (!empty($path)) {
                     $image_id = $manager->insertBusinessImage($business_id, $path);
-                    $manager->linkCommentWithImage($comment_id, $image_id);
+                    $manager->linkCommentWithImage($business_id, $comment_id, $image_id);
                 }
                 else
                 {
