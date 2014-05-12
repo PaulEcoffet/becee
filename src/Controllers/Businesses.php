@@ -26,12 +26,13 @@ class Businesses
             5);
         $visited_businesses_id = $manager->getVisitedBusinesses();
         $visited_businesses = array();
-        foreach ($visited_businesses_id as $businessid => $value) {
-            array_push($visited_businesses, $manager->getBusinessById($businessid));
+        foreach ($visited_businesses_id as $business) {
+            $visited_businesses[] = $manager->getBusinessById($business['id']);
         }
+        var_dump($visited_businesses);
         return new \QDE\Responses\TwigResponse(
-            'view_business.html.twig', 
-            array('business' => $response, 
+            'view_business.html.twig',
+            array('business' => $response,
                 'suggested_businesses' => $suggested_businesses,
                 'visited_businesses' => $visited_businesses,
                 'flash' => $flash));
