@@ -115,7 +115,7 @@ class BusinessesManager
             {
                 $business->setComments($this->getBusinessComments($business_id));
             }
-            if(in_array('with_rank', $option))
+            if(in_array('with_ranks', $option))
             {
                 $business->setRanks($this->getBusinessMostRelevantRanks($business_id));
             }
@@ -140,9 +140,10 @@ class BusinessesManager
             ORDER BY rank_zone
             LIMIT :limit OFFSET :offset;';
         $ranks_req = $this->pdo->prepare($sql);
-        $ranks_req->bindValue('business_id', $business_id);
-        $ranks_req->bindValue('limit', $limit);
-        $ranks_req->bindValue('offset', $offset);
+        $ranks_req->bindValue('business_id', $business_id, \PDO::PARAM_INT);
+        $ranks_req->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $ranks_req->bindValue('offset', $offset, \PDO::PARAM_INT);
+        $ranks_req->execute();
         return $ranks_req->fetchAll(\PDO::FETCH_ASSOC);
     }
 
