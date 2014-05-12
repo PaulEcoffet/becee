@@ -53,6 +53,7 @@ class Home
         {
             $businesses = $BusinessManager->searchBusinesses($prefCity->name);
         }
+        print_r($businesses);
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities,
                 'current_city' => $prefCity,
