@@ -122,5 +122,11 @@
             "id": "\\d+",
             "section": "[-A-Z0-9a-z]?|[-A-Z0-9a-z]+"
         }
+    },
+    {
+        "name": "compute_score",
+        "route": "fu/compute",
+        "controller": "Businesses",
+        "action": "computeScore"
     }
 ]

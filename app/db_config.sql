@@ -204,7 +204,7 @@ CREATE TABLE `business_visits` (
   KEY `business_id` (`business_id`),
   CONSTRAINT `business_visits_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `business_visits_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -213,7 +213,7 @@ CREATE TABLE `business_visits` (
 
 LOCK TABLES `business_visits` WRITE;
 /*!40000 ALTER TABLE `business_visits` DISABLE KEYS */;
-INSERT INTO `business_visits` VALUES (1,1,1,'2014-05-02 07:55:46'),(2,2,2,'2014-05-02 07:55:46'),(3,1,1,'2014-05-02 07:55:46'),(4,2,3,'2014-05-02 07:55:46'),(5,3,3,'2014-05-02 07:55:46'),(6,1,2,'2014-05-08 19:33:00');
+INSERT INTO `business_visits` VALUES (1,1,1,'2014-05-02 07:55:46'),(2,2,2,'2014-05-02 07:55:46'),(3,1,1,'2014-05-02 07:55:46'),(4,2,3,'2014-05-02 07:55:46'),(5,3,3,'2014-05-02 07:55:46'),(6,1,2,'2014-05-08 19:33:00'),(7,1,1,'2014-05-12 08:57:50'),(8,1,2,'2014-05-12 08:57:50');
 /*!40000 ALTER TABLE `business_visits` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,13 +251,13 @@ INSERT INTO `businesses` VALUES (1,'The Black Pearl','Lorem ipsum dolor sit amet
 UNLOCK TABLES;
 
 --
--- Table structure for table `businesses_comparaisons`
+-- Table structure for table `businesses_comparisons`
 --
 
-DROP TABLE IF EXISTS `businesses_comparaisons`;
+DROP TABLE IF EXISTS `businesses_comparisons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `businesses_comparaisons` (
+CREATE TABLE `businesses_comparisons` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `business_visit1_id` int(10) unsigned DEFAULT NULL,
   `business_visit2_id` int(10) unsigned DEFAULT NULL,
@@ -270,19 +270,20 @@ CREATE TABLE `businesses_comparaisons` (
   KEY `business_visit1_id` (`business_visit1_id`),
   KEY `business_visit2_id` (`business_visit2_id`),
   KEY `feature_id` (`feature_id`),
-  CONSTRAINT `businesses_comparaisons_ibfk_1` FOREIGN KEY (`business_visit1_id`) REFERENCES `businesses` (`id`),
-  CONSTRAINT `businesses_comparaisons_ibfk_2` FOREIGN KEY (`business_visit2_id`) REFERENCES `businesses` (`id`),
-  CONSTRAINT `businesses_comparaisons_ibfk_3` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `businesses_comparisons_ibfk_1` FOREIGN KEY (`business_visit1_id`) REFERENCES `businesses` (`id`),
+  CONSTRAINT `businesses_comparisons_ibfk_2` FOREIGN KEY (`business_visit2_id`) REFERENCES `businesses` (`id`),
+  CONSTRAINT `businesses_comparisons_ibfk_3` FOREIGN KEY (`feature_id`) REFERENCES `business_features` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `businesses_comparaisons`
+-- Dumping data for table `businesses_comparisons`
 --
 
-LOCK TABLES `businesses_comparaisons` WRITE;
-/*!40000 ALTER TABLE `businesses_comparaisons` DISABLE KEYS */;
-/*!40000 ALTER TABLE `businesses_comparaisons` ENABLE KEYS */;
+LOCK TABLES `businesses_comparisons` WRITE;
+/*!40000 ALTER TABLE `businesses_comparisons` DISABLE KEYS */;
+INSERT INTO `businesses_comparisons` VALUES (1,1,2,1,1,'2014-05-12 08:57:50',20,1);
+/*!40000 ALTER TABLE `businesses_comparisons` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -706,13 +707,14 @@ DROP TABLE IF EXISTS `vm_score_businesses_features`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vm_score_businesses_features` (
-  `business_id` int(10) unsigned DEFAULT NULL,
-  `feature_id` int(10) unsigned DEFAULT NULL,
+  `business_id` int(10) unsigned NOT NULL,
+  `feature_id` int(10) unsigned NOT NULL,
   `elo_score` int(10) unsigned DEFAULT NULL,
   `rank_zone` int(11) DEFAULT NULL,
   `rank_country` int(11) DEFAULT NULL,
   `rank_world` int(11) DEFAULT NULL,
   `last_computation_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`business_id`,`feature_id`),
   KEY `feature_id` (`feature_id`),
   KEY `business_id` (`business_id`),
   CONSTRAINT `vm_score_businesses_features_ibfk_1` FOREIGN KEY (`feature_id`) REFERENCES `business_tags` (`id`),
@@ -726,6 +728,7 @@ CREATE TABLE `vm_score_businesses_features` (
 
 LOCK TABLES `vm_score_businesses_features` WRITE;
 /*!40000 ALTER TABLE `vm_score_businesses_features` DISABLE KEYS */;
+INSERT INTO `vm_score_businesses_features` VALUES (1,1,1420,1,1,1,'2014-05-12 13:31:55');
 /*!40000 ALTER TABLE `vm_score_businesses_features` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -765,4 +768,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-12 10:52:23
+-- Dump completed on 2014-05-12 13:35:55
