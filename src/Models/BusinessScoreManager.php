@@ -73,13 +73,6 @@ class BusinessScoreManager
                 $businesses[$feature_id][$id_b1]['score'] += (($id_b1 === $bus_last_comp['winner'])? 1 : -1) * $bus_last_comp['score'];
                 $businesses[$feature_id][$id_b2]['score'] += (($id_b2 === $bus_last_comp['winner'])? 1 : -1) * $bus_last_comp['score'];
             }
-            echo '<pre>';
-            print_r($businesses);
-            echo '</pre>';
-        }
-        else
-        {
-            echo 'Nothing to do<br />';
         }
         foreach($businesses_current_elo as $business_old_score)
         {
