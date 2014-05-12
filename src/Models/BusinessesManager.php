@@ -292,6 +292,16 @@ class BusinessesManager
         return($business_req->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    public function getAllFeatures()
+    {
+        $sql = "SELECT * FROM business_features;
+        ;
+        ";
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->execute();
+        return($business_req->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
     public function getBusinessesByCity($city_id)
     {
         $sql = "SELECT b.name, b.description, ba.line1, bi.path, bi.id

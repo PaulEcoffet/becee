@@ -67,11 +67,11 @@ h1 { padding: .2em; margin: 0; }
     <div class="row">
         <div id="products" style="width:100%">
             <div id="catalog">
-                <h2><a href="#">Placez ces tags dans l'une des deux boîte</a></h2>
+                <h2><a href="#">Placez ces features dans l'une des deux boîte</a></h2>
                 <div>
                     <ul>
-                        {% for tag in page.tags %} {% if not tag.name is empty %}
-                        <li data-product="{{ tag.name }}"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i> {{ tag.name }}</li>
+                        {% for feature in page.features %} {% if not feature.name is empty %}
+                        <li data-product="{{ feature.name }}"><i class="fa fa-feature" style="color:#ccc; margin-right:5px"></i> {{ feature.name }}</li>
                         {%endif%}{% endfor %}
                     </ul>
                 </div>
@@ -81,7 +81,7 @@ h1 { padding: .2em; margin: 0; }
     <div class="row">
         <div class="col-md-6" style="margin-top:5px;">
             <div id="droppable_business1" style="width:100%">
-                <h2>Boîte à tag de {{ page.business1.name }}</h2>
+                <h2>Boîte à feature de {{ page.business1.name }}</h2>
                 <div class="ui-widget-content">
                     <ol>
                         <li class="placeholder">Add your items here</li>
@@ -91,7 +91,7 @@ h1 { padding: .2em; margin: 0; }
         </div>
         <div class="col-md-6" style="margin-top:5px;">
             <div id="droppable_business2" style="width:100%">
-                <h2>Boîte à tag de  {{ page.business2.name }}</h2>
+                <h2>Boîte à feature de  {{ page.business2.name }}</h2>
                 <div class="ui-widget-content">
                     <ol>
                         <li class="placeholder">Add your items here</li>
@@ -100,10 +100,10 @@ h1 { padding: .2em; margin: 0; }
             </div>
         </div>
         <form action="{{ path('clashProcess', {'id_business1' : page.business1.id, 'id_business2' : page.business2.id }) }}" method="POST">
-            <select name="tags_business1[]" id="tags_business1" style="display:none" multiple>
+            <select name="features_business1[]" id="features_business1" style="display:none" multiple>
                 <option value="s"></option>
             </select>
-            <select name="tags_business2[]" id="tags_business2" style="display:none" multiple>
+            <select name="features_business2[]" id="features_business2" style="display:none" multiple>
             </select>
             <input type="submit">
         </form>
@@ -301,7 +301,7 @@ hoverClass: "ui-state-hover",
 accept: ":not(.ui-sortable-helper)",
 drop: function( event, ui ) {
 $( this ).find( ".placeholder" ).remove();
-$("select#tags_business1").append("<option value='"+ui.draggable.text()+"' selected='selected'>"+ui.draggable.text()+"</option>");
+$("select#features_business1").append("<option value='"+ui.draggable.text()+"' selected='selected'>"+ui.draggable.text()+"</option>");
 $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
 }
 }).sortable({
@@ -328,7 +328,7 @@ hoverClass: "ui-state-hover",
 accept: ":not(.ui-sortable-helper)",
 drop: function( event, ui ) {
 $( this ).find( ".placeholder" ).remove();
-$("select#tags_business2").append("<option value='"+ui.draggable.text()+"' selected='selected'>"+ui.draggable.text()+"</option>");
+$("select#features_business2").append("<option value='"+ui.draggable.text()+"' selected='selected'>"+ui.draggable.text()+"</option>");
 $( "<li></li>" ).text( ui.draggable.text() ).appendTo( this );
 }
 }).sortable({

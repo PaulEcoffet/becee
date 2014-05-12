@@ -25,32 +25,6 @@
 <body>
     <div class="wrapper">
         <header class="container-fluid" style="position:absolute; top:0; right:0; z-index:1; left:0;">
-            <div class="nav-tools-dropdown">
-                <div class="btn-group">
-                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                    <span class="fa fa-bars fa-2x"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-                    <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-                    <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="i"></i> Make admin</a></li>
-                  </ul>
-                </div>
-            </div>
-            <div class="nav-tools-dropdown-right">
-                <div class="btn-group">
-                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                    <span class="fa fa-bars fa-2x"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-                    <li><a href="#"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
-                    <li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="i"></i> Make admin</a></li>
-                  </ul>
-                </div>
-            </div>
             {% if not user.is_logged or (user.name.firstname == 'visitor' and user.name.lastname == 'visitor') %}
             <ul class="nav-tools nav-tools-right">
                 <li>
