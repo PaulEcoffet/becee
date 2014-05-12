@@ -545,7 +545,7 @@ class BusinessesManager
         return $business;
     }
 
-    public function insertVoteToComment($comment_id, $is_votePos)
+    public function insertVoteToComment($business_id, $comment_id, $is_votePos)
     {
         $sql = 'UPDATE business_comments
                 SET vote_pos = vote_pos + ?, vote_neg = vote_neg + ?
