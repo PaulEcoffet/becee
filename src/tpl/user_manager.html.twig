@@ -2,16 +2,35 @@
 {% import 'user_manager_panels.html.twig' as panels %}
 
 {% block content %}
+<div class="row">
+    <div class="col-md-12" id="head">
+        <div id="logo" style="float:left; position:absolute; top:0; left:15px; z-index:999">
+            <div class="col-md-4 hidden-sm hidden-xs title">
+                <p style="width:500px">
+                    <a href="{{ path('home') }}" style="text-decoration:none; color:white">becee<span class="saumon">.</span></a>                     
+                    <span class="btn-categories btn-default"style="color:white; background:rgba(255,255,255,.1); display:inline-block; border-color:rgba(255,255,255,.2)">
+                    <span>BETA</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="container container-fluid" style="background:rgba(0,0,0,0.4); height:100%">
+
+            <div class="row" style="margin-top:80px">
+                <div class="col-md-7">
+                        <h1 style="text-align:left; font-size:5em; background:none; border-color: rgba(100,100,100,0.1); color:white; margin:10px">{{user.name.firstname|title}} {{user.name.lastname|title}}</h1>
+                    <p style="font-size:1.5em; color: white; float: left; font-family: 'Roboto'; margin:7px 15px;"><span class="label label-danger" style="margin-right:10px; background:rgba(250,250,250,0.15)">Grade</span>Founder</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="container-fluid" id="center-row" style="max-width:1100px;">
         <div class="row">
             <div class="col-md-3" style="margin-top:34px">
-                <div style="height:150px;width:150px;margin:auto;border:2px solid rgb(200,200,200);padding:3px;background:url({{ media('./img/header.gif') }}) no-repeat center white; background-size:cover;position:relative;margin:auto">
-                </div>
-                <div class="panel" style="padding-top:100px;margin-top:-95px;">
-                    <div class="panel-heading">
-                    </div>
+                <div class="panel">
                     <div class="panel-body">
-                        <span style="line-height: 30px; vertical-align:middle;">{{user.name.firstname}} {{user.name.lastname}}</span>
+                        <span style="line-height: 30px; vertical-align:middle;">Compte</span>
                         <br/>
                         <span style="font-size:12px;font-weight:300">Grade suprême : Docteur Henry Castafolte</span>
                         <hr/>
@@ -32,18 +51,65 @@
                     </div>
                 </div><!-- end panel panel-info -->
             </div><!-- end col-md-12-->
-            <div class="col-md-9" style="margin-top:84px">
-                <div style="height:150px;width:70%;width: calc(100% - 20px);;margin:auto;border:2px solid rgb(200,200,200);padding:3px;background:url({{ media('./img/header.gif') }}) no-repeat center white; background-size:cover; top:-50px;left:10px;position:absolute">
-                </div>
-                <div class="panel" style="padding-top:100px;margin:5px;">
-                    <div class="panel-heading">
-                    </div>
+            <div class="col-md-9" style="margin-top:34px">
                     <div class="panel-body">
-                        {% if page.section == "businesses" %}
-                                {{ panels.business() }}
-                        {% else %}
-                                {{ panels.account() }}
-                        {% endif %}
+                            <span style="line-height: 30px; vertical-align:middle; font-size:3em; display:block">Paramètres du compte</span><div style="height:70px;width:70px;border:1px solid rgb(200,200,200);padding:0px;background:url({{ media(user.avatar.path) }}) no-repeat center white; background-size:cover;position:relative;margin:5px 10px; text-align:center; vertical-align:middle; display:inline-block; float:right"></div>
+                            <span style="font-size:15px;font-weight:300; display:block; margin: 10px 0">Change your basic account and language settings.</span>
+                    
+                            <hr/>
+                            <form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="#">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Nom complet</label>
+                                    <div class="col-sm-9" style="font-style:italic; margin-top:7px">
+                                    {{user.name.firstname|title}} {{user.name.lastname|title}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Email</label>
+                                    <div class="col-sm-9">
+                                      <input type="{{ type }}" name={{ name }} value="{{ value }}" class="form-control" id="inputEmail3" placeholder="{{ exemple }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Language</label>
+                                    <div class="col-sm-9">
+                                      <input type="{{ type }}" name={{ name }} value="{{ value }}" class="form-control" id="inputEmail3" placeholder="{{ exemple }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Time zone</label>
+                                    <div class="col-sm-9">
+                                      <input type="{{ type }}" name={{ name }} value="{{ value }}" class="form-control" id="inputEmail3" placeholder="{{ exemple }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Country</label>
+                                    <div class="col-sm-9">
+                                      <input type="{{ type }}" name={{ name }} value="{{ value }}" class="form-control" id="inputEmail3" placeholder="{{ exemple }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile" class="col-sm-3 control-label" style="text-align:left;margin-bottom:10px">Avatar</label>
+                                    <div class="col-sm-9">
+                                         <input type="hidden" name="MAX_FILE_SIZE" value="{{ max_size }}">
+                                        <input {{ required }} type="file" name="{{ name }}" id="{{ name }}" id="exampleInputFile">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile" class="col-sm-3 control-label" style="text-align:left;margin-bottom:10px">Cover</label>
+                                    <div class="col-sm-9">
+                                         <input type="hidden" name="MAX_FILE_SIZE" value="{{ max_size }}">
+                                        <input {{ required }} type="file" name="{{ name }}" id="{{ name }}" id="exampleInputFile">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                      <button type="submit" class="btn btn-default">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr/>
+                            <a href="#">Deactivate my account</a></span>
                     </div>
                 </div><!-- end panel panel-info -->
             </div><!-- end col-md-12-->

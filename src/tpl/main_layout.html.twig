@@ -18,6 +18,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300,700italic,700,800,800italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,900italic,100,300,300italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ media('vendor/bootstrap/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="shortcut icon" href="{{ media('img/becee.ico') }}" type="image/x-icon" />
     {% endblock %}
     {% endblock %}
 </head>
@@ -184,6 +185,14 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+        {% for categorie in page.businesses_hook.categories %}
+        s
+            {% for city in page.location_hook.cities if not categorie.categorie_name is empty %}
+            '{{ categorie.categorie_name|title }} near {{ city.name }}',
+            {% else %}
+            '{{ city.name }}',
+            {% endfor %}
+        {% endfor %}
 {% endblock %}
 
 {% block scripts %}
@@ -204,7 +213,44 @@
         xfbml      : true
     })};
 </script>
-{% endblock %}
+<script type="text/javascript">
+    $('#iconified').on('keyup', function() {
+    var input = $(this);
+    if(input.val().length === 0) {
+        input.addClass('empty');
+    } else {
+        input.removeClass('empty');
+    }
+});
+ $(function() {
+    var search = [
+        {% for categorie in businesses_hook.categories %}
+            {% for city in location_hook.cities if not categorie.categorie_name is empty %}
+            '{{ categorie.categorie_name|title }} near {{ city.name }}',
+            {% else %}
+            '{{ city.name }}',
+            {% endfor %}
+        {% endfor %}
+    ];
+    $( "#autocomplete-search" ).autocomplete({
+    source: search,
+    messages: {
+        noResults: 'Aucun résultat n\'a été trouvé.',
+        results: function() {}
+    },
+    appendTo: "#results",
+    open: function() {
+        var position = $("#results").position(),
+            left = position.left, top = position.top;
 
+        $("#results > ul").css({left: left + 2 + "px",
+                                top: top + 60 + "px" });
+
+    }
+    });
+console.debug(search);
+});
+</script>
+{% endblock %}
 </body>
 </html>

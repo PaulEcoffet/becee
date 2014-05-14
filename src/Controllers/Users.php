@@ -40,7 +40,12 @@ class Users
             $error = true;
             $errorMessage = 'A field was not properly filled';
         }
-        if (!$error)
+        if (strlen($data['password']) <= 4)
+        {
+            $error = true;
+            $errorMessage = 'Le mot de passe doit comporter plus de 4 caractères.';
+        }
+        elseif (!$error)
         {
             if($data['password'] === $verifypassword)
             {

@@ -4,19 +4,20 @@
 {% set day_en_fr = {'Monday': 'Lundi', 'Tuesday': 'Mardi', 'Wednesday': 'Mercredi', 'Thursday': 'Jeudi', 'Friday': 'Vendredi', 'Saturday': 'Samedi', 'Sunday': 'Dimanche'} %}
 {% block content %}
 
-<div class="row">
+<div class="row" style="background:url({{ media('img/head.jpg') }}) repeat scroll center center / cover rgba(0, 0, 0, 0);">
     <div class="col-md-12" id="head" style="height:320px;">
-        <div id="bottom-head">
-            <div class="container container-fluid">
+        <div>
+            <div class="container container-fluid" style="margin-top:100px; background:rgba(0,0,0,0.3);">
                 <div class="row">
-                    <div class="col-md-5 hidden-ms hidden-xs title">
+                    <div class="col-md-5 title" style="border:none">
                         <p>
-                        <a href="{{ path('home') }}" style="text-decoration:none; color:white">becee<span class="saumon">. suggesting you the best</span> </a>
+                        <a href="{{ path('home') }}"><img class="white-logo" src="{{ media('img/logo1.png') }}"/></a><span class="saumon" style="font-size:20px">suggesting you the best</span>
                         </p>
                     </div>
                     <div class="col-md-7">
                         <form class="input-group" action="{{ path('home') }}" method="POST">
-                            <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}" autocomplete="off">
+                            <input type="text" id="autocomplete-search" name="search" class="form-control empty" placeholder="&#xF002; Restaurant near {{ page.current_city.name }}" autocomplete="off">
+                            <div id="results"></div>
                         </form>
                     </div>
                 </div>
@@ -24,17 +25,16 @@
         </div>
     </div><!-- end col-md-12 head-->
 </div><!-- end row -->
-
+<div class="row" style="background:#2C3E50">
 <div class="container container-fluid">
     <div class="row top15">
-        <ul class="nav nav-pills col-md-12" style="padding:0">
-            <li><a data-toggle="pill" href=
-            "#suggested">
+        <ul id="menu" class="nav nav-pills col-md-12" style="padding:0;background:none; padding:3px; ">
+            <li><a data-toggle="pill" href="#">
             <i class="fa fa-crosshairs  fa-2x"></i>
             <span style="font-size:25px">
             Suggested</span></a></li>
 
-            <li><a data-toggle="pill" href="#nearest">
+            <li><a data-toggle="pill" href="#">
             <i class="fa  fa-location-arrow  fa-2x"></i>
             <span style="font-size:25px">
             Nearest</span></a></li>
@@ -44,30 +44,52 @@
             <span style="font-size:25px">
             Reviews</span></a></li>
 
-            <li><a data-toggle="pill" href="#random">
+            <li><a data-toggle="pill" href="#">
             <i class="fa  fa-random  fa-2x"></i>
             <span style="font-size:25px">
             Random</span></a></li>
+            <li class="pull-right" style="background:#2C3E50;"><a href="{{ path('business_add') }}">
+            <i class="fa fa-plus-square-o fa-2x" style="color:#ECF0F1; font-size:170%; margin-right:5px; padding-top:-px"></i>
+            <span style="font-size:22px;color:#ECF0F1">
+            Add Business</span></a></li>
         </ul>
     </div>
+</div>
+</div>
+<div class="container container-fluid"  style="background:#f9f9f9">
     <div class="row top15">
-        <div class="tab-content col-md-10">
+        <div class="tab-content col-md-11" style="background:#fff; border:2px solid #eee">
             <div class="tab-pane active" id="reviews">
-                {% for business in page.businesses|slice(0,6) %}
-                <div class="col-md-6 home-business">
+                {% for business in page.businesses|slice(0,4) %}
+                <div class="col-md-6 home-business" style="height:300px">
                     <div class="home-business-box">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="business-box-container" style=
                                 "background:url({{ media(business.images[0].path) }}) no-repeat center;">
-                                <span style="display:block; padding:5px"><i class="fa fa-trophy fa-5x" style="color:rgba(196,196,196,0.5); "></i> <span style="position:absolute; top:10px; left:25px; font-size:2.4em; font-family:'Roboto';">{{ business.ranks.0.rank_zone }}</span></span><span style="font-size:1.6em; padding:5px; background:rgba(0,0,0,0.4); color:white">{{ business.ranks.0.feature_name }}</span>
-                                {% for tag in business.getTags() %}{% if not tag.name is empty %} <a class=
-                                "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
-                                    {{ tag }}</a>
-                                    {% endif %}
+                                {% if not business.ranks.0 is empty %}
+                                <img src="{{ media('img/label1.png')}}" style="margin-left:5px" />
+                                <span style="display:block; padding:5px; position:absolute; top:0; left:5px"><i class="fa fa-trophy fa-2x" style="color:rgba(10,10,10,0.5); "></i> <span style="position:absolute; top:35px; left:9px; font-size:2.1em; font-family:'Roboto'; font-weight:800;color:rgba(10,10,10,0.5)">{{ business.ranks.0.rank_zone }}</span><span style="font-size:1.4em; background:rgba(0,0,0,0.6); color:white;font-family:'Roboto';padding:7px;margin:0px 2px;">{{ business.ranks.0.feature_name|capitalize }}</span>
+                                </span>
+                                {% endif %}
+                                <div class="tagblock">
+                                {% for tag in business.getTags()|slice(0,4) %}
+                                {% if not tag is empty %}
+                                <a class="btn btn-small tag" href="#" style="width:auto">
+                                    {{ tag[0:9]|lower }}
+                                </a>
+                                {% endif %}
                                 {% endfor %}
+                                </div>
+                                
 
-                                    <a href="{{ path('view_business', {'id':business.id, 'name':business.name}) }}" style="display:block"><p class="business-info">{{ business.name }}<br>
+                                    <div class="main-business-info"><a href="{{ path('view_business', {'id':business.id, 'name':business.name}) }}" style="display:block">
+                                    <p class="business-info">
+                                    {% for categorie in business.categories|reverse|slice(0,3) %}
+                                        <i class="fa fa-{{ categorie.categorie_icon }} fa-lg" style="color:rgba(250,250,250,0.98); margin-bottom:10px; padding-top: 9px; margin-right:10px; float:left;"></i>
+                                    {% endfor %}
+
+                                    {{ business.name }}<br>
                                     <span style=
                                     "font-size:12px">{{ business.address_1 }}</span>
                                     <span class="secondary-info-business-box">
@@ -75,8 +97,8 @@
                                     €
                                     {% endfor %}
 
-                                    <small style="font-size: 0.8em">- environ 500 mètres</small>
-                                    </span></p></a>
+                                    <small style="font-size: 0.8em">- environ 500 m</small>
+                                    </span></p></a></div>
                                 </div>
                                         {% set comment_id = 0 %}
                                         {% set foo = 0 %}
@@ -89,7 +111,6 @@
                                         {% endfor %}
                                         
 
-                                {% if comment_id is defined %}
                                 {% for comment in business.comments %}
                                 {% if loop.index ==  comment_id %}
                                 <div class="description-info-business-box">
@@ -97,118 +118,51 @@
                                         <p style="display:inline-block; width:auto;float:left">
                                         <i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i>
                                         </p>
-                                        <p>{{ comment.comment[0:150] }}</p>
+                                        <p>{{ comment.comment[0:120] }}</p>
                                     </div>
 
                                     <div>
                                         <hr style="margin: 5px 0">
-<p style="float:left; color:#aaa;">{{ comment.userName.firstname }} {{ (comment.userName.lastname|upper)[0] }}.</p>
+<p style="float:left; color:#aaa;">{{ comment.userName.firstname }} {{ (comment.userName.lastname|upper) }}</p>
                                         <p style="color:#aaa; float:right;">
                                         <i class="fa fa-clock-o"></i> {{ comment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}
                                         <i class="fa fa-thumbs-o-up"></i> <span style="color:#1ec416">{{comment.votePos}}</span></p>
                                     </div>
                                 </div>
                                 {% endif %}
-                                {% endfor %}
-                            {%endif%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </div>
-
-            <div class="tab-pane" id="nearest">
-                {% for business in page.businesses|slice(0,4) %}
-                <div class="col-md-6 home-business">
-                    <div class="home-business-box">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="business-box-container" style=
-                                "background:url({{ media(business.images[0].path) }}) no-repeat center;">
-                                {% for tag in business.getTags() %} <a class=
-                                "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
-                                    {{ tag }}</a>
-                                {% endfor %}
-
-                                    <a href="{{ path('view_business', {'id':business.id, 'name':business.name}) }}" style="display:block"><p class="business-info">{{ business.name }}<br>
-                                    <span style=
-                                    "font-size:12px">{{ business.address_1 }}</span>
-                                    <span class="secondary-info-business-box">
-                                    {% for i in 1..business.price %}
-                                    €
-                                    {% endfor %}
-
-                                    <small style="font-size: 0.8em">- environ 500 mètres</small>
-                                    </span></p></a>
-                                </div>
-
+                                {% else %}
                                 <div class="description-info-business-box">
                                     <div>
-                                        <p style="display:inline-block; width:auto;float:left">
-                                        <i class="fa fa-user" style="padding:10px;margin:5px;background-color:#eee"></i>
-                                        </p>
-
-                                        <p>{{ business.description[0:150] }}…</p>
-                                    </div>
-
-                                    <div>
-                                        <hr style="margin: 5px 0">
-
-                                        <p style="color:#aaa; float:right;">
-                                        <i class="fa fa-clock-o"></i> Lundi 15 Avril à 19h38 -
-                                        <i class="fa fa-thumbs-o-up"></i> 5</p>
+                                         <a href="{{ path('view_business', {'id':business.id, 'name':business.name}) }}" style="display:block; text-decoration:none; color:#222"><p style="font-size:1.3em; padding:12px; height:44px; text-align:center">Soyez le premier à ajouter un commentaire !</p></a>
                                     </div>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-
-            <div class="tab-pane" id="suggested">
-                <div id="map-canvas" style="box-shadow: 0px 0px 2px 0px #cfcfcf; margin: 15px 10px"></div>
-            </div>
-
-            <div class="tab-pane" id="random">
-
-            </div>
         </div><!-- tab content -->
+        <div class="col-md-1" style=" background:#fff">
+        <span style="background:#fcfcfc; color:#555; padding:10px; margin:auto; width:100%; text-align:center; display: inline-block; font-weight:bold; border-top:5px solid #fd6767;">Derniers inscrits</span>
+        <div class="row">
+        {% for user in page.lastUsers %}
+        {% if not user.firstname is empty %}
+            <div style="height:70px;width:70px;border:1px solid rgb(200,200,200);padding:0px;background:url({{ media(user.avatar_path) }}) no-repeat center white; background-size:cover;position:relative;margin:5px 10px; text-align:center; vertical-align:middle; display:inline-block">
+                                    <p style="position:absolute;bottom:0; background:rgba(0,0,0,0.6);color:white; width:100%; height:20px; padding-top:3px">
+                                    <small style="font-size: 0.8em">{{ user.firstname|slice(0,10)|title }} {{ user.lastname|slice(0,1)|title }}.</small>
+                                    </span></p></a>
+                </div>
+        {% endif %}
+        {% endfor %}
+        </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}
 {% block scripts %}
 {{ parent() }}
-<script type="text/javascript">
-    $('#iconified').on('keyup', function() {
-    var input = $(this);
-    if(input.val().length === 0) {
-        input.addClass('empty');
-    } else {
-        input.removeClass('empty');
-    }
-});
- $(function() {
-    var cities = [
-        {% for categorie in page.categories %}
-            {% for city in page.cities %}
-            '{{ categorie.categorie_name|title }} near {{ city.name }}',
-            {% endfor %}
-        {% endfor %}
-    ];
-    $( "#autocomplete-city" ).autocomplete({
-    source: cities,
-    messages: {
-        noResults: '',
-        results: function() {}
-    }
-    });
-console.debug(cities);
-});
-</script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0bzuk1i_1CC2CldMPylb88Wj4AizQo-s&sensor=true"></script>
 <script type="text/javascript" src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js"></script>
 <script type="text/javascript" src="{{ media('vendor/googlemap-api/js/googlemap-api.js')}}"></script>

@@ -31,7 +31,8 @@ h1 { padding: .2em; margin: 0; }
             <div class="row">
                 <div class="col-md-12">
                     <form class="input-group" action="{{ path('home') }}" method="POST">
-                        <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business1.categories.0.categorie_name|title }} near {{ page.business1.city.name }}" style="background:none;" autocomplete=off>
+                        <input type="text" id="autocomplete-search" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business1.categories.0.categorie_name|title }} near {{ page.business1.city.name }}" style="background:none;" autocomplete=off>
+                        <div id="results"></div>
                     </form>
                 </div>
             </div>
@@ -218,23 +219,6 @@ h1 { padding: .2em; margin: 0; }
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0bzuk1i_1CC2CldMPylb88Wj4AizQo-s&sensor=true"></script>
 <script type="text/javascript" src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js"></script>
 <script type="text/javascript">
- $(function () {
-     var cities = [{% for categorie in page.categories %} 
-        {% for city in page.cities %}
-         '{{ categorie.categorie_name|title }} near {{ city.name }}', 
-         {% endfor %}
-         {% endfor %}
-     ];
-     $("#autocomplete-city").autocomplete({
-         source: cities,
-         messages: {
-             noResults: '',
-             results: function () {}
-         }
-     });
-     console.debug(cities);
- });
-
 function readURL(input) {
 
     if (input.files && input.files[0]) {

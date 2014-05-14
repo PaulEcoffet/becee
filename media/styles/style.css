@@ -20,7 +20,7 @@
     width: 100px;
     padding: 5px;
     font-family: 'Open Sans';
-    width: 665px; top: 300px !important; left: 921px;
+    width: 665px;
 }
 .ui-autocomplete.source:hover {
     background: rgba(250,250,250,0.95);
@@ -39,6 +39,13 @@
     padding: 10px 5px;
 }
 
+#menu.nav > li > a:hover, #menu.nav > li > a:focus {
+    background-color: #3a526a;
+}
+form#post_tag a:hover i, form#delete_tag a:hover i
+{
+    color: #222 !important;
+}
 /* main styles */
 * {moz-box-sizing: border-box; outline: none;}
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {border: 0; font: inherit; font-size: 100%; margin: 0; padding: 0; vertical-align: baseline;}
@@ -101,9 +108,9 @@ strong {font-weight: 900;}
 .modal-title {font-size: 2em; font-family: 'Roboto';}
 /* header styles */
 header {}
-.nav-pills > li > a {color: #222; text-align: center; padding: 10px; display: block; text-align: center; padding: 10px; border-radius: 0;}
+.nav-pills > li > a {color: #fff; text-align: center; padding: 10px; display: block; text-align: center; padding: 10px; border-radius: 0;}
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-    background-color: #2C3E50;
+    background-color: #3a526a;
     color: #ECF0F1;
 }
 .nav-pills {padding:20px; background-color:rgb(245,245,245);}
@@ -129,11 +136,11 @@ input.empty {
     font-weight: normal;
     text-decoration: inherit;
 }
-textarea:focus, input[type="text"]:focus, .uneditable-input:focus {   
+textarea:focus, .uneditable-input:focus {   
 border-color: rgba(250,250,250,0.8) !important;
 box-shadow: none;
 outline: 0 none;}
-textarea, input[type="text"], .uneditable-input {   
+textarea, .uneditable-input {   
 box-shadow: none;
 outline: 0 none;
 height: auto;}
@@ -154,10 +161,39 @@ height: auto;}
     max-width: none;
 }
 
-.form-control::-moz-placeholder {
+.form-control
+{
+    background-color: #FFFFFF;
+    background-image: none;
+    border-radius: 0px !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.01) inset !important;
+}
+
+#head .form-control::-moz-placeholder {
     color: #fff;
     opacity: 1;
 }
+
+#head .form-control::-webkit-input-placeholder {
+    color: #fff;
+    opacity: 1;
+}
+
+#head .form-control:-moz-placeholder { /* Firefox 18- */
+    color: #fff;
+    opacity: 1;
+}
+
+#head .form-control::-moz-placeholder {  /* Firefox 19+ */
+    color: #fff;
+    opacity: 1;
+}
+
+#head .form-control:-ms-input-placeholder {  
+    color: #fff;
+    opacity: 1;
+}
+
 .categories li{
 display:inline-block; text-decoration:none !important; height:110px; width:110px; background:rgba(0,0,0,0.09); border: 1px solid rgba(100,100,100,0.5); color:#222; text-align:center; float:right; margin-left: 20px;
     border-radius: 6px
@@ -215,6 +251,11 @@ a.sub-header-btn {color: #222; text-align: center; text-decoration: none;}
 .panel-heading {background-color: #cbdbea; height: 2px; padding: 0 15px;}
 .secondary-info-business-box {display: inline-block; float: right; font-size: 1em; padding: 0px; position: absolute; right: 5px;}
 
+.tagblock{
+    float: right;
+    display: block
+}
+
 @media all and (max-width: 90em) {
     header > .nav-tools,#logo {display: none;} 
     header > .nav-tools-dropdown, header > .nav-tools-dropdown-right {display: block;} 
@@ -222,8 +263,8 @@ a.sub-header-btn {color: #222; text-align: center; text-decoration: none;}
 @media all and (max-width: 80em) {header > .input-group, #sub-header > .input-group, .head-categories > .input-group {display: none}}
 @media all and (max-width: 100em) {#head .input-group  {width: 80%}}
 
-
-@media all and (max-width: 60em) {.head-categories {display: none} }
+@media all and (max-width: 27em) {.main-business-info {font-size:0.5em !important;} }
+@media all and (max-width: 27em) {.tagblock {display:none;} }
 
 .info-box{background-color: #ececec; border-left: none; border-radius: 2px; box-shadow: 0px 1px 1px 0px #D0D0D0; display: block; filter: progid:DXImageTransform.Microsoft.Shadow(color=#D0D0D0, Direction=180, Strength=5); height: auto; margin: 20px; moz-border-radius: 1px; moz-box-shadow: 0px 2px 5px 0px #D0D0D0; o-box-shadow: 0px 1px 3px 0px #D0D0D0; padding: 10px !important; position: relative; webkit-border-radius: 1px; webkit-box-shadow: 0px 1px 3px 0px #D0D0D0;}
 .info-box .label-img{left: 25px; position: absolute; top: 0px;}

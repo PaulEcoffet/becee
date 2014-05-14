@@ -16,3 +16,5 @@ app/config.php
 *.swo
 .*.swp
 .*.swo
+*.png
+*.php_serialized

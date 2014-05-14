@@ -20,6 +20,16 @@ class UsersManager
         return($user_req->fetch());
     }
 
+    public function getLastestUsers($limit=5)
+    // return the newest users
+    {
+        $user_req = $this->pdo->prepare('SELECT * FROM users WHERE users.category <> 4 ORDER BY users.id DESC LIMIT :limit;');
+        $user_req->bindValue(':limit',$limit, \PDO::PARAM_INT);
+        $user_req->execute();
+
+        return($user_req->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
     public function getUserByMail($user_mail)
     // return the user corresponding to the parameter $user_email (email in our databse Users )
     {
@@ -67,7 +77,6 @@ class UsersManager
     public function createDummyUser()
     {
         //TODO: Create a user without any information and with category 'Dummy'
-        echo "dummy_user_creation = TRUE";
         return $this->insertUser(array('firstname' => NULL, 'lastname' => NULL, 'email' => NULL, 'password' => NULL), 4);
     }
 }

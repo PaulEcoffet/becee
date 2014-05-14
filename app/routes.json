@@ -43,9 +43,19 @@
     },
     {
         "name": "vote_comment",
-        "route": "business/{business_id}/comment/{comment_id}",
+        "route": "business/{business_id}/comment/v/{comment_id}",
         "controller": "Businesses",
         "action": "voteComment",
+        "variables" : {
+            "business_id": "\\d+",
+            "comment_id": "\\d+"
+        }
+    },
+    {
+        "name": "delete_comment",
+        "route": "business/{business_id}/comment/d/{comment_id}",
+        "controller": "Businesses",
+        "action": "deleteComment",
         "variables" : {
             "business_id": "\\d+",
             "comment_id": "\\d+"
@@ -92,11 +102,29 @@
     },
     {
         "name": "add_comment",
-        "route": "business/add_comment/{id}",
+        "route": "business/{id}/add_comment",
         "controller": "Businesses",
         "action": "addComment",
         "variables": {
             "id": "\\d+"
+        }
+    },
+    {
+        "name": "add_tag",
+        "route": "business/{id}/add_tag",
+        "controller": "Businesses",
+        "action": "addTag",
+        "variables": {
+            "id": "\\d+"
+        }
+    },
+    {
+        "name": "delete_tag",
+        "route": "business/{id}/delete_tag",
+        "controller": "Businesses",
+        "action": "deleteTag",
+        "variables": {
+            "id": "\\d+"        
         }
     },
     {

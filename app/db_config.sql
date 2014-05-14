@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: becee
 -- ------------------------------------------------------
--- Server version	5.6.17
+-- Server version 5.6.17
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -101,7 +101,7 @@ CREATE TABLE `business_comments` (
 
 LOCK TABLES `business_comments` WRITE;
 /*!40000 ALTER TABLE `business_comments` DISABLE KEYS */;
-INSERT INTO `business_comments` VALUES (5,1,2,'Ultra cool, gg','2014-05-02 10:40:05',NULL,0,0),(6,2,2,'Super, cimer','2014-05-02 10:40:06',NULL,0,0),(7,2,1,'Ambiance de malade, (y)','2014-05-02 10:40:05',NULL,0,0),(8,3,2,'Un gros pouce vert/bleu','2014-05-02 10:40:05',NULL,0,0),(10,4,2,'C\'est merdique!','2014-05-12 14:29:20',0,0,0),(11,4,4,'Pas mal','2014-05-12 14:29:47',0,0,0);
+INSERT INTO `business_comments` VALUES (5,1,2,'Billard, écran géant, des tas de rhums arrangés, concerts ou fond de musique, bières allemandes ou trappistes, chouette ambiance sur une chouette terrasse sur une chouette place.','2014-05-02 10:40:05',NULL,0,0),(6,2,2,'Une conclusion après avoir fait le tour de la carte, tout est bon !','2014-05-02 10:40:06',NULL,0,0),(7,2,1,'Une très bonne ambiance !','2014-05-02 10:40:05',NULL,0,0),(8,3,2,'Nice and friendly place for a beer at anytime of the day. I prefer Magner\'s cider.','2014-05-02 10:40:05',NULL,0,0),(10,4,2,'Essayez leurs burgers, ils sont tous bons et pas très chers (un malus pour les frites, pas terribles)','2014-05-12 14:29:20',0,0,1),(11,4,4,'Le meilleur du quartier, tout est bon. La salade gourmande au foie gras et confit est énorme! Serveurs sympas.','2014-05-12 14:29:47',0,2,0);
 /*!40000 ALTER TABLE `business_comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,8 +172,9 @@ DROP TABLE IF EXISTS `business_tags`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `business_tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `name` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -249,39 +250,6 @@ LOCK TABLES `businesses` WRITE;
 INSERT INTO `businesses` VALUES (1,'The Black Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',1,NULL,NULL,'06 65 58 85 33',NULL,3),(2,'Heiki','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',1,NULL,NULL,'05 19 08 85 13',NULL,4),(3,'Getsumen','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',1,NULL,NULL,'07 56 89 85 22',NULL,NULL),(4,'Thorion','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',1,NULL,NULL,'05 89 08 12 13',NULL,5),(5,'Restaurant Universitaire Cap U','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',2,NULL,NULL,'08 19 11 85 13',NULL,4),(6,'The Green Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',2,NULL,NULL,'01 58 10 44 03',NULL,3),(7,'The Yellow Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',3,NULL,NULL,'02 19 18 85 03',NULL,2),(8,'The Blue Pearl','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',3,NULL,NULL,'05 11 08 85 13',NULL,5),(9,'Valkar','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',3,NULL,NULL,'03 11 11 81 13',NULL,4),(10,'Les Cerisiers en Fleur','Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',3,NULL,NULL,'09 19 88 00 00',NULL,5);
 /*!40000 ALTER TABLE `businesses` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`becee`@`localhost`*/ /*!50003 TRIGGER `businesses_AINS` AFTER INSERT ON `businesses` FOR EACH ROW
-BEGIN
-INSERT IGNORE INTO vm_score_businesses_features (business_id, feature_id, elo_score, rank_zone, last_computation_date)
- SELECT DISTINCT
-	businesses.id as business_id,
-	features.id as feature_id,
-	1400 as elo_score,
-	1000 as rank_zone,
-	NOW() as last_computation_date
-	FROM
-		business_features features
-			INNER JOIN
-		link_categories_features lcf ON features.id = lcf.feature_id
-			INNER JOIN
-		link_businesses_categories lbc ON lcf.category_id = lbc.category_id
-			INNER JOIN
-		businesses ON businesses.id = lbc.business_id
-	WHERE business.id=NOW.id;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `businesses_comparisons`
@@ -559,7 +527,7 @@ CREATE TABLE `user_categories` (
 
 LOCK TABLES `user_categories` WRITE;
 /*!40000 ALTER TABLE `user_categories` DISABLE KEYS */;
-INSERT INTO `user_categories` VALUES (1,'plébien'),(2,'modo'),(3,'admin'),(4,'dummy');
+INSERT INTO `user_categories` VALUES (1,'plébéien'),(2,'modo'),(3,'admin'),(4,'dummy');
 /*!40000 ALTER TABLE `user_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -596,7 +564,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Paul','Ecoffet','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-10 17:49:40',NULL,NULL),(2,'tagadapwet@hotmail.com','Jean-Baptiste','Klifengerd','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Eric','Judor','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(4,'ecoffet.paul@gmail.com','Paul','Ecoffet','92e6bb4ad8b6c7231fa96adf1343d928ffd59c51',1,'FR','img/default-user-avatar-small.png','5370be874dc23','2014-05-12 14:28:55','2014-05-12 14:29:05',NULL,NULL);
+INSERT INTO `users` VALUES (1,'monsiteestcool@gg.pd','Thomas','Arthur','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-10 17:49:40',NULL,NULL),(2,'tagadapwet@hotmail.com','Elias','Rhouzlane','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(3,'jeanbob@aol.com','Mathieu','Seurin','qshfsouih',1,'FR','img/default-user-avatar-small.png',NULL,'2014-05-02 07:55:47','2014-05-02 07:55:47',NULL,NULL),(4,'ecoffet.paul@gmail.com','Paul','Ecoffet','92e6bb4ad8b6c7231fa96adf1343d928ffd59c51',1,'FR','img/default-user-avatar-small.png','5370be874dc23','2014-05-12 14:28:55','2014-05-12 14:29:05',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

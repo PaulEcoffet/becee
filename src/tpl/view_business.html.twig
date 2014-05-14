@@ -20,7 +20,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <form class="input-group" action="{{ path('home') }}" method="POST">
-                        <input type="text" id="autocomplete-city" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.business.city.name }}" style="background:none;" autocomplete=off>
+                        <input type="text" id="autocomplete-search" name="search" class="form-control empty" placeholder="&#xF002; {{ page.business.categories.0.categorie_name|title }} near {{ page.business.city.name }}" style="background:none;" autocomplete=off>
+                        <div id="results"></div>
                     </form>
                 </div>
             </div>
@@ -74,7 +75,16 @@
                             <div class="col-md-12">
                                 <div style="padding:5px; border:1px solid #eee; margin:0 15px;">
                                     <span style="background:#fff; color:#555; padding:0px 20px; border-left:5px solid #fdf3c6; margin-right:0px; width:70px; text-align:left; display: inline-block; font-weight:bold;">Tags</span>
-                                    {% for tag in page.business.tags %} {% if not tag is empty %}<a href="#" style="margin:5px 0; display:inline-block; text-decoration:none"><span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i>{{ tag }} <i class="fa fa-times" style="color:#ddd;"></i></span></a>{%endif%} {% endfor %}<i class="fa fa-plus" style="color:#bbb; margin-left:5px"></i>
+                                    {% for tag in page.business.tags|slice(0,7) %} {% if not tag is empty %}<span style="border:1px solid #efefef; background:#fff; padding:2px 5px; color: #787878; max-width:10px;"><i class="fa fa-tag" style="color:#ccc; margin-right:5px"></i><a href="#" style="margin:5px 0; display:inline-block; text-decoration:none;color: #787878;">{{ tag[0:12]|lower }}</a> 
+
+                                    <form id="delete_tag" action="{{path('delete_tag', {'id' : page.business.id })}}" role="form" method="post" style="display:inline-block;" >
+                                    <input name="tag_name" type="hidden" value="{{tag}}" style="display:hidden">
+                                    <a href="#" onclick="$(this).closest('form#delete_tag').submit()"><i class="fa fa-times" style="color:#ddd;"></i></a></form></span>
+                                    {%endif%}
+                                    {% endfor %}
+                                    {% if page.business.tags|length < 7 %}
+                                     <form id="post_tag" action="{{path('add_tag', {'id' : page.business.id })}}" role="form" method="post" style="display:inline-block;" ><input required name="tag_name" type="text" placeholder="Ajouter un tag" autocomplete="off" style="height:20px; width:100px; display:inline-block"><a href="#" onclick="$(this).closest('form#post_tag').submit()"><i class="fa fa-plus" style="color:#bbb; margin-left:5px"></i></a></form>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -103,7 +113,7 @@
                 font-size-adjust:    none
                 color:   #4D4D4D; border:1px solid #eee; background-color:#fff; margin:10px; position:relative;overflow:hidden;">
                                     <span style="background:#fff; color:#555; padding:5px; border-left:5px solid #fd6767; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Heures d'ouverture</span>
-                                    Probablement ouvert (Voir à quel moment les utilisateurs publient un check-in)
+                                    Probablement ouvert
                                     <hr style="margin: 7px 0" />
                                     <span style="background:#fff; color:#555; padding:5px; border-left:5px solid #a1f9a5; margin-right:15px; width:150px; text-align:center; display: inline-block; font-weight:bold">Menus</span>
                                     Brunch, Déjeuner, Dîner
@@ -163,6 +173,13 @@
                                             <li class="media" style="padding:0px; vertical-align:top; margin:0">
                                                 <div style="display:inline-block; background:#fdfdfd; width:100%; padding:5px 10px">
                                                     <span style="font-size:9pt; color:#aaa; margin: 5px 0; display:inline-block;float:left"><a style="color:#2C3E50" href="#">{{ userComment.userName.firstname }} {{ userComment.userName.lastname|upper }}</a> - {{ userComment.pubDate|date("l, d F Y", false)|replace(month_en_fr|merge(day_en_fr)) }}</span>
+
+                                                    <form action="{{ path('delete_comment', {'business_id' : page.business.id, 'comment_id' : userComment.id }) }}" method="POST">
+                                                    <span style="font-size:9pt; color:#aaa; margin: 5px 5px; display:inline-block; float:right; color:#2ad41d">
+                                                    <button type="submit" name="vote" value="neg" style="overflow:visible; font-size:1em; display:inline; margin:0; padding:0; border:0; cursor:pointer; background:none"><i class="fa fa-times" style="margin: 0 5px; color:#ddd"></i></button>
+                                                    </span>
+                                                    </form>
+
                                                     <form action="{{ path('vote_comment', {'business_id' : page.business.id, 'comment_id' : userComment.id }) }}" method="POST">
                                                     <span style="font-size:9pt; color:#aaa; margin: 5px 20px; display:inline-block; float:right; color:#2ad41d">
                                                     <button type="submit" name="vote" value="neg" style="overflow:visible; font-size:1em; display:inline; margin:0; padding:0; border:0; cursor:pointer; background:none"><i class="fa fa-thumbs-down fa-lg" style="margin: 0 5px; color:#ddd"></i></button> <span style="color:#d42020">{{ userComment.voteNeg }}</span>
@@ -221,14 +238,22 @@
                         <div class="home-business-box">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="business-box-container" style="background:url({{ media(suggested_business.images[0].path) }}) no-repeat center; height:100px">
-                                        {% for tag in page.tags|slice(0, 4) %} <a class="btn btn-small tag" href="{{ path('business_add') }}">
-                                    {{ tag.name }}</a> {% endfor %}
+                                    <div class="business-box-container" style="background:url({{ media(suggested_business.images[0].path) }}) no-repeat center; height:160px">
+                                {% if not suggested_business.ranks.0 is empty %}
+                                <img src="{{ media('img/label1.png')}}" style="margin-left:5px" />
+                                <span style="display:block; padding:5px; position:absolute; top:0; left:5px"><i class="fa fa-trophy fa-2x" style="color:rgba(10,10,10,0.5); "></i> <span style="position:absolute; top:35px; left:9px; font-size:2.1em; font-family:'Roboto'; font-weight:800;color:rgba(10,10,10,0.5)">{{ suggested_business.ranks.0.rank_zone }}</span>
+                                </span>
+                                <span style="font-size:0.8em; background:rgba(0,0,0,0.6); color:white;font-family:'Roboto';padding:3px;margin:-9px 0px; position:absolute; display:block">{{ suggested_business.ranks.0.feature_name|capitalize }}</span>
+                                {% endif %}
+                                    <div class="tagblock">
+                                        {% for tag in suggested_business.tags|slice(0, 2) %}{% if not tag is empty %}<a class="btn btn-small tag" href="#" style="width:auto">
+                                    {{ tag|lower }}</a> {% endif %}{% endfor %}
+                                    </div>
 
                                         <a alt="page_restaurant" href="{{ path('view_business', {'id':suggested_business.id, 'name':suggested_business.name}) }}" style="display:block">
                                             <p class="business-info">{{ suggested_business.name }}
                                                 <br>
-                                                <span style="font-size:12px">{{ suggested_business.line1 }}</span>
+                                                <span style="font-size:12px;display:block">{{ suggested_business.address_1 }}</span>
                                             </p>
                                         </a>
                                     </div>
@@ -255,6 +280,7 @@
         Business visités récemments :
         <hr/>
         {% for business in page.visited_businesses %}
+        {% if business.id != page.business.id %}
         <div class="col-md-6">
                     <div class="home-business-box">
                         <div class="row">
@@ -263,7 +289,7 @@
                                 "background:url({{ media(business.images[0].path) }}) no-repeat center;">
                                 {% for tag in business.getTags() %}{% if not tag.name is empty %} <a class=
                                 "btn btn-small tag" href="{{ path('business_add') }}" style="width:auto">
-                                    {{ tag }}</a>
+                                    {{ tag|lower }}</a>
                                     {% endif %}
                                 {% endfor %}
 
@@ -300,7 +326,11 @@
                         </div>
                     </div>
             </div>
+    {%endif%}
+    {%else%}
+        <p> Vous n'avez pas visité d'autres commerces ! Veuillez cliquer sur 'J'y suis déja venu' pour activer les clashs.</p>
     {% endfor %}
+
             </div>
 
 
@@ -316,23 +346,13 @@
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0bzuk1i_1CC2CldMPylb88Wj4AizQo-s&sensor=true"></script>
 <script type="text/javascript" src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel.js"></script>
 <script type="text/javascript">
- $(function () {
-     var cities = [{% for categorie in page.categories %} 
-        {% for city in page.cities %}
-         '{{ categorie.categorie_name|title }} near {{ city.name }}', 
-         {% endfor %}
-         {% endfor %}
-     ];
-     $("#autocomplete-city").autocomplete({
-         source: cities,
-         messages: {
-             noResults: '',
-             results: function () {}
-         }
-     });
-     console.debug(cities);
- });
+$('#display_add_tag').click(function() {
+  $('#add_tag').toggle('slow', function() {
+    // Animation complete.
+  });
+});
 
+ $(function () {
 function readURL(input) {
 
     if (input.files && input.files[0]) {

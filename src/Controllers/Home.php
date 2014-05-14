@@ -53,10 +53,15 @@ class Home
         {
             $businesses = $BusinessManager->searchBusinesses($prefCity->name);
         }
+        $users = $request->getManager('users');
+        $lastUsers = $users->getLastestUsers();
+
         return new \QDE\Responses\TwigResponse('home.html.twig',
             array('businesses' => $businesses, 'cities' => $cities,
                 'current_city' => $prefCity,
-                'categories' => $categories, 'flash' => $flash));
+                'categories' => $categories, 
+                'lastUsers' => $lastUsers,
+                 'flash' => $flash));
     }
 
     private function parseSearch($str, $categories)

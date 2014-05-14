@@ -78,26 +78,25 @@ class BusinessesManager
         LEFT OUTER JOIN business_tags
         ON business_tags.id = link_businesses_tags.tag_id
 
-        INNER JOIN users
+        LEFT OUTER JOIN users
                 ON businesses.manager_id = users.id  /*Getting Manager */
 
-                INNER JOIN business_addresses
+                LEFT OUTER JOIN business_addresses
                 ON business_addresses.business_id = businesses.id  /* Getting addresse */
 
-                INNER JOIN cities
+                LEFT OUTER JOIN cities
                 ON business_addresses.city_id = cities.id  /* Getting cities */
 
-                INNER JOIN provinces
+                LEFT OUTER JOIN provinces
                 ON cities.province_id = provinces.id    /* Getting province */
 
-                INNER JOIN countries
+                LEFT OUTER JOIN countries
                 ON provinces.country_id = countries.id     /* Getting country */
 
         WHERE businesses.id = ?
         GROUP BY businesses.id
         ;'
         ;
-
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute(array($business_id));
         $business_result = $business_req->fetch(\PDO::FETCH_ASSOC);
@@ -213,7 +212,7 @@ class BusinessesManager
 
     public function getBusinessCategories($business_id = '%')
     {
-        $sql = 'SELECT
+        $sql = 'SELECT DISTINCT
                 business_categories.id as categorie_id,
                 business_categories.name as categorie_name,
                 business_categories.fontAwesomeIconName as categorie_icon
@@ -327,7 +326,7 @@ class BusinessesManager
 
     /* ========================================== BUSINESS CLASH  ====================================================================================================================== */
 
-    public function getAllBattleForUser($user_id)
+    public function getAllBattleForUser()
     {
         $manager = $this->app->getManager('currentuser');
         $user_id = $manager->getId();
@@ -354,20 +353,20 @@ class BusinessesManager
                                     AND iv1.user_id = :id AND iv2.user_id = :id);';
 
 
-        $req = $bdd->prepare($sql);
+        $req = $this->pdo->prepare($sql);
         $req->bindValue('id', $user_id);
         $req->execute();
-        $data = $req->fetchAll();
+        $data = $req->fetchAll(\PDO::FETCH_ASSOC);
 
 for($i = 0; $i < count($data); $i++)
 {
-    $business1 = $this->getBusinessById($data[$i][0]);
-    $category1 = $business1->categories[0]['category_id'];
-    $business2 = $this->getBusinessById($data[$i][1]);
-    $category2 = $business2->$categories[0]['category_id'];
+    $data[$i]['business1'] = $this->getBusinessById($data[$i]['bid1']);
+    $category1 = $data[$i]['business1']->categories[0]['categorie_id'];
+    $data[$i]['business2'] = $this->getBusinessById($data[$i]['bid2']);
+    $category2 = $data[$i]['business2']->categories[0]['categorie_id'];
 
     
-    if($category1 = $category2)
+    if($category1 == $category2)
     {
         $sql = 'SELECT business_features.id, business_features.name
                 FROM link_categories_features
@@ -376,10 +375,10 @@ for($i = 0; $i < count($data); $i++)
                 WHERE link_categories_features.category_id = :cat
         ;';
 
-        $req = $bdd->prepare($sql);
+        $req = $this->pdo->prepare($sql);
         $req->bindValue('cat', $category1);
         $req->execute();
-        $ans = $req->fetchAll();
+        $ans = $req->fetchAll(\PDO::FETCH_ASSOC);
 
         $data[$i]['features'] = $ans;
     }
@@ -471,8 +470,8 @@ for($i = 0; $i < count($data); $i++)
 
         $app_data->execute();
 
-        $scoreManager = $this->app->getManager('businessscore');
-        $scoreManaer->compute_score();
+        $scoreManager = $this->app->getManager('BusinessScore');
+        $scoreManager->compute_score();
 
     }
 
@@ -591,8 +590,18 @@ for($i = 0; $i < count($data); $i++)
 
     public function insertBusiness($business, $image_path=NULL)
     {
-        $sql = "INSERT INTO `businesses` (name, description)
-                VALUES         (:name, :description)
+        $sql = "SELECT id FROM `businesses` WHERE id = (SELECT MAX(id) FROM `businesses`);";
+
+        $id_verif = $this->pdo->prepare($sql);
+        $id_verif->execute();
+
+        $id = $id_verif->fetch()['id'];
+
+        $userManager = $this->app->getManager('currentUser');
+        $manager_id = $userManager->getId();
+
+        $sql = "INSERT INTO `businesses` (name, description, manager_id, website, email, phone_number, price)
+                VALUES         (:name, :description, :manager_id, :website, :email, :phone_number, :price)
                 ;
 
                 SELECT         MAX(id)
@@ -600,6 +609,14 @@ for($i = 0; $i < count($data); $i++)
                 INTO         @LAST_ID
                 ;
 
+                INSERT INTO `business_addresses` (business_id, city_id, line1, line2)
+                VALUES         (
+                            @LAST_ID,
+                            (SELECT cities.id FROM (provinces p INNER JOIN countries c ON p.country_id = c.id) INNER JOIN cities ON cities.province_id = p.id WHERE p.name = :province AND c.name = :country AND cities.name = :city LIMIT 1),
+                            :line1,
+                            :line2
+                            )
+                ;
 
                 INSERT INTO `provinces` (name, country_id)
                 SELECT         :province,
@@ -617,21 +634,15 @@ for($i = 0; $i < count($data); $i++)
                 WHERE         NOT EXISTS
                             (SELECT 1 from `cities` WHERE name = :city and province_id = (SELECT p.id FROM provinces p INNER JOIN countries c ON p.country_id = c.id WHERE p.name = :province AND c.name = :country LIMIT 1))
                 ;
-
-
-                INSERT INTO `business_addresses` (business_id, city_id, line1, line2, lat, lng)
-                VALUES         (
-                            @LAST_ID,
-                            (SELECT cities.id FROM (provinces p INNER JOIN countries c ON p.country_id = c.id) INNER JOIN cities ON cities.province_id = p.id WHERE p.name = :province AND c.name = :country AND cities.name = :city LIMIT 1),
-                            :line1,
-                            :line2,
-                            :lat,
-                            :lng
-                            )
-                ;
                 ";
 
         $business_req = $this->pdo->prepare($sql);
+
+        $business_req->bindValue(':manager_id', $manager_id,\PDO::PARAM_INT);
+        $business_req->bindValue(':website', ucwords(strtolower($business['website'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':email', ucwords(strtolower($business['email'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':phone_number', ucwords(strtolower($business['phone_number'])),\PDO::PARAM_STR);
+        $business_req->bindValue(':price', $business['price'],\PDO::PARAM_INT);
         $business_req->bindValue(':city', ucwords(strtolower($business['city'])),\PDO::PARAM_STR);
         $business_req->bindValue(':name', ucwords(strtolower($business['name'])),\PDO::PARAM_STR);
         $business_req->bindValue(':description', ucfirst(strtolower($business['description'])),\PDO::PARAM_STR);
@@ -639,19 +650,37 @@ for($i = 0; $i < count($data); $i++)
         $business_req->bindValue(':country', ucwords(strtolower($business['country'])),\PDO::PARAM_STR);
         $business_req->bindValue(':line1', ucwords(strtolower($business['line1'])),\PDO::PARAM_STR);
         $business_req->bindValue(':line2', ucwords(strtolower($business['line2'])),\PDO::PARAM_STR);
-        $business_req->bindValue(':lat', ucwords(strtolower($business['lat'])),\PDO::PARAM_STR);
-        $business_req->bindValue(':lng', ucwords(strtolower($business['lng'])),\PDO::PARAM_STR);
         $business_req->bindValue(':image_path', $image_path,\PDO::PARAM_STR);
+
         $business_req->execute();
 
         $sql = "SELECT id FROM `businesses` WHERE id = (SELECT MAX(id) FROM `businesses`);";
 
         $business_req = $this->pdo->prepare($sql);
         $business_req->execute();
+        $business_id = $business_req->fetch()['id'];
 
-        $business = $this->createBusinessCache($business_req->fetch()['id']);
+        if ($id !== $business_id) {
+            foreach ($business['categories'] as $category_id) {
+                $this->linkBusinessesCategories($business_id, $category_id);
+            }
+            $business = $this->createBusinessCache($business_id);
+            return $business;
+        }
+    }
 
-        return $business;
+    public function linkBusinessesCategories($business_id, $categorie_id)
+    {
+        $sql = "INSERT INTO `link_businesses_categories` (business_id, category_id)
+                VALUES(:business_id, :category_id)
+                ;
+                ";
+
+        $business_req = $this->pdo->prepare($sql);
+        $business_req->bindValue(':business_id', $business_id,\PDO::PARAM_INT);
+        $business_req->bindValue(':category_id', $categorie_id,\PDO::PARAM_INT);
+        $business_req->execute();
+        $business = $this->createBusinessCache($business_id);
     }
 
     public function insertVoteToComment($business_id, $comment_id, $is_votePos)
@@ -724,6 +753,52 @@ for($i = 0; $i < count($data); $i++)
         $comment_req->execute();
         $business = $this->createBusinessCache($business_id);
         return $comment_req->fetch(\PDO::FETCH_ASSOC)['id'];
+    }
+
+    public function deleteComment($business_id, $comment_id)
+    {
+        $sql = "DELETE FROM business_comments WHERE id = ? LIMIT 1";
+        $comments_req = $this->pdo->prepare($sql);
+        $comments_req->execute(array($comment_id));
+        $business = $this->createBusinessCache($business_id);
+    }
+
+    public function insertTag($business_id, $tag_name)
+    {
+        if($tag_name !== '')
+        {
+            $sql = "INSERT INTO business_tags(name) VALUES (:tag_name);";
+
+            $tag_req = $this->pdo->prepare($sql);
+            $tag_req->bindValue(':tag_name', $tag_name, \PDO::PARAM_STR);
+            $tag_req->execute();
+
+            $sql = "SELECT id FROM `business_tags` WHERE name = :tag_name;";
+            $tag_req = $this->pdo->prepare($sql);
+            $tag_req->bindValue(':tag_name', $tag_name, \PDO::PARAM_STR);
+            $tag_req->execute();
+            $tag_id = $tag_req->fetch(\PDO::FETCH_ASSOC)['id'];
+
+
+            $sql = "INSERT INTO link_businesses_tags(business_id, tag_id) VALUES (?,?);";
+            $tag_req = $this->pdo->prepare($sql);
+            $tag_req->execute(array($business_id, $tag_id));
+            $business = $this->createBusinessCache($business_id);
+        }
+    }
+
+    public function deleteTag($business_id, $tag_name)
+    {
+        $sql = "SELECT id FROM `business_tags` WHERE name = :tag_name;";
+        $tag_req = $this->pdo->prepare($sql);
+        $tag_req->bindValue(':tag_name', $tag_name, \PDO::PARAM_STR);
+        $tag_req->execute();
+        $tag_id = $tag_req->fetch(\PDO::FETCH_ASSOC)['id'];
+
+        $sql = "DELETE FROM link_businesses_tags WHERE business_id = ? AND tag_id = ? LIMIT 1";
+        $tag_req = $this->pdo->prepare($sql);
+        $tag_req->execute(array($business_id, $tag_id));
+        $business = $this->createBusinessCache($business_id);
     }
 
     public function insertBusinessImage($business_id, $image_path)

@@ -259,4 +259,6 @@ $app = new App();
 $app->addHook(new \Becee\Hooks\UserHook($app));
 $app->addHook(new \Becee\Hooks\ConfigHook($app));
 $app->addHook(new \Becee\Hooks\FlashHook($app));
+$app->addHook(new \Becee\Hooks\BusinessesHook($app));
+$app->addHook(new \Becee\Hooks\LocationHook($app));
 $app->run();

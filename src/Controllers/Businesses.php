@@ -29,6 +29,7 @@ class Businesses
         foreach ($visited_businesses_id as $business) {
             $visited_businesses[] = $manager->getBusinessById($business['id']);
         }
+
         return new \QDE\Responses\TwigResponse(
             'view_business.html.twig',
             array('business' => $response,
@@ -63,23 +64,39 @@ class Businesses
         $business = $BusinessManager->insertBusiness($request->getPost());
 
         $FILES = $request->getFiles();
-        $filename = "becee_".time()."_".$business['id'];
+        $filename = "becee_".time()."_".$business->id;
         $path = $FilesManager->uploadImage($FILES['img_business_med'], $filename,'images_businesses');
         if($path==NULL)
         {
             $path = 'img/default-business-img.png';
         }
-        $BusinessManager->insertBusinessImage($business['id'], $path);
-        echo "<br/><a href='../../'>Back to Home</a>";
-    }
+        $BusinessManager->insertBusinessImage($business->id, $path);
+        $info = print_r($business, true);
+        return new \QDE\Responses\RedirectResponse(
+            'view_business', 
+            array('id' => $business->id), 
+            array('information' => array('id' => '#information', 'message' => 'Le business a été enregistré<hr/>Informations:'.$info)));
+}
 
     public function registerAction($request)
     {
-        $LocationManager = $request->getManager('Location');
-        $countries = $LocationManager->getCountries();
-        $cities = $LocationManager->getCities();
-        return new \QDE\Responses\TwigResponse('add_business.html.twig', 
-            array('countries' => $countries, 'cities' => $cities));
+        $businessManager = $request->getManager('businesses');
+        $userManager = $request->getManager('currentUser');
+        if ($userManager->isLogged()) {
+            $LocationManager = $request->getManager('Location');
+            $countries = $LocationManager->getCountries();
+            $cities = $LocationManager->getCities();
+            $categories = $businessManager->getBusinessCategories();
+            return new \QDE\Responses\TwigResponse('add_business.html.twig', 
+                array('countries' => $countries, 'cities' => $cities, 'categories' => $categories));
+        }
+        else{
+        return new \QDE\Responses\RedirectResponse(
+            'home', 
+            null, 
+            array('information' => array('id'=>'#register', 
+                'message' => 'Vous devez être inscrit pour pouvoir enregistrer un commerce !')));
+        }
     }
 
     public function business_clash($request)
@@ -108,6 +125,19 @@ class Businesses
             array('information' => $informationArray));
     }
 
+    public function deleteCommentAction($request)
+    {
+        $manager = $request->getManager('businesses');
+        $comment_id = $request->getParamsUri('comment_id');
+        $business_id = $request->getParamsUri('business_id');
+        $manager->deleteComment($business_id, $comment_id);
+        $informationArray = array('id' => '#information', 'message' => 'Le commentaire a bien été supprimé.');
+        return new \QDE\Responses\RedirectResponse(
+            'view_business', 
+            array('id' => $business_id), 
+            array('information' => $informationArray));
+    }
+
     public function addCommentAction($request)
     {
         $manager = $request->getManager('businesses');
@@ -124,7 +154,7 @@ class Businesses
             if ($image['error'] === 0 && $image['size'] !== 0) {
                 $image_info = print_r($image, true);
                 $FilesManager = $request->getManager('files');
-                $filename = "becee_".time()."_".$business['id'];
+                $filename = "becee_".time()."_".$business_id;
                 $path = $FilesManager->uploadImage($image, $filename,'images_businesses');
                 if (!empty($path)) {
                     $image_id = $manager->insertBusinessImage($business_id, $path);
@@ -147,6 +177,47 @@ class Businesses
             array('information' => $informationArray));
     }
 
+    public function addTagAction($request)
+    {
+        $manager = $request->getManager('businesses');
+        $business_id = $request->getParamsUri('id');
+        $tag_name = $request->getPost('tag_name');
+
+
+        if ($tag_name == '') {
+            $informationArray = array('id' => '#information', 'message' => 'Votre tag n\'a pas pu être ajouté car il est vide.');
+        }
+        elseif (strlen($tag_name) > 11 ) {
+            $informationArray = array('id' => '#information', 'message' => 'Votre tag n\'a pas pu être ajouté car il est trop long.');
+        }
+        elseif (strlen($tag_name) < 3 ) {
+            $informationArray = array('id' => '#information', 'message' => 'Votre tag n\'a pas pu être ajouté car il est trop court.');
+        }
+        else {
+            $manager->insertTag($business_id, $tag_name);
+            $informationArray = array('id' => '#information', 'message' => 'Votre tag ('.$tag_name.') a bien été ajouté.');
+        }
+
+        return new \QDE\Responses\RedirectResponse(
+            'view_business', 
+            array('id' => $business_id), 
+            array('information' => $informationArray));
+    }
+
+    public function deleteTagAction($request)
+    {
+        $manager = $request->getManager('businesses');
+        $business_id = $request->getParamsUri('id');
+        $tag_name = $request->getPost('tag_name');
+        $manager->deleteTag($business_id, $tag_name);
+
+        $informationArray = array('id' => '#information', 'message' => 'Le tag ('.$tag_name.') a bien été supprimé.');
+
+        return new \QDE\Responses\RedirectResponse(
+            'view_business', 
+            array('id' => $business_id), 
+            array('information' => $informationArray));
+    }
 
     public function computeScoreAction($request)
     {

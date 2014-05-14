@@ -16,56 +16,143 @@
 
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row" id="center-row" style="width:800px;margin:auto">
-	        <div id="main" class="col-md-12">
-	        	<div class="panel">
-				    <div class="panel-heading"></div>
-				    <div class="panel-body">
-					    <span style="line-height: 30px; vertical-align:middle;">Business Registration</span>
-				    </div>
-				</div><!-- end panel panel-info -->
-	        	<div class="panel">
-				    <div class="panel-heading"></div>
-				    <div class="panel-body">
-						<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('business_add_processing') }}">
+<div class="row">
+    <div class="col-md-12" id="head">
+        <div id="logo" style="float:left; position:absolute; top:0; left:15px; z-index:999">
+            <div class="col-md-4 hidden-sm hidden-xs title">
+                <p style="width:500px">
+                    <a href="{{ path('home') }}" style="text-decoration:none; color:white">becee<span class="saumon">.</span></a>                     
+                    <span class="btn-categories btn-default"style="color:white; background:rgba(255,255,255,.1); display:inline-block; border-color:rgba(255,255,255,.2)">
+                    <span>BETA</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="container container-fluid" style="background:rgba(0,0,0,0.4); height:100%">
 
-							{{ required_input('name') }}<hr />
+            <div class="row" style="margin-top:80px">
+                <div class="col-md-7">
+                        <h1 style="text-align:left; font-size:5em; background:none; border-color: rgba(100,100,100,0.1); color:white; margin:10px">Enregistre ton commerce !</h1>
+                    <p style="font-size:1.5em; color: white; float: left; font-family: 'Roboto'; margin:7px 15px;">Inscription rapide et gratuite !</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="container container-fluid">
+        <div class="row">
+	        <div class="col-md-12">
+	        	<div class="panel">
+				    <div class="panel-body" style="border:2px solid #f5f5f5;">
+						<form class="form-horizontal" role="form" style="width:100%;font-size:15px;font-weight:400;padding:20px" method="post" enctype="multipart/form-data" action="{{ path('business_add_processing') }}">
 						    <div class="form-group">
-						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">country <span style="color:red">*</span></label>
+						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px;">Nom du commerce <span style="color:red">*</span></label>
 						        <div class="col-sm-9">
-							        <select name="country" for="inputEmail3" data-placeholder="Choose a Country..." id="countries" class="col-sm-3 control-label form-control chosen-select" style="text-align:left;margin-bottom:7px;" tabindex="-1">
+						          <input required type="text" name="name" class="form-control">
+						        </div>
+						    </div>
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Catégorie<span style="color:red">*</span></label>
+						        <div class="col-sm-9">
+						            <select required name="categories[]" class="form-control" multiple>
+						                <option value="" disabled>Sélectionner une catégorie ou plus</option>
+						                {%for category in page.categories %}
+						                {% if not category.categorie_name is empty %}
+						                <option value="{{ category.categorie_id }}">{{ category.categorie_name|title }}</option>
+						                {% endif %}
+						                {% endfor %}
+						            </select>
+						        </div>
+						    </div>
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Téléphone<span style="color:red">*</span></label>
+						        <div class="col-sm-9">
+						          <input required type="tel" class="form-control" name="phone_number">
+						        </div>
+						    </div>
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Courriel</label>
+						        <div class="col-sm-9">
+						          <input type="email" name="email" class="form-control">
+						        </div>
+						    </div>
+							<hr />
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Pays<span style="color:red">*</span></label>
+						        <div class="col-sm-9">
+							        <select name="country" required data-placeholder="Choisis un pays..." id="countries" class="col-sm-3 control-label form-control chosen-select" style="text-align:left;margin-bottom:7px;" tabindex="-1">
 							        	{%for value in page.countries %}
-						                <option value="{{ loop.index0 }}">{{ value.nicename }}</option>
+						                <option value="{{ value.nicename }}">{{ value.nicename }}</option>
 						                {% endfor %}
 							        </select>
 						        </div>
 						    </div>
 						    <div class="form-group">
-						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">City <span style="color:red">*</span></label>
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Ville<span style="color:red">*</span></label>
 							    <div class="col-sm-9">
 							      <input name="city" class="form-control" id="autocomplete-city" autocomplete=off>
 							    </div>
 						    </div>
 						    <hr />
 						    <div class="form-group">
-						        <label for="inputEmail3" class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Province <span style="color:red">*</span></label>
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Province<span style="color:red">*</span></label>
 							    <div class="col-sm-9">
-							      <input name="province" class="form-control" id="autocomplete-province" autocomplete=off>
+							      <input required name="province" class="form-control" id="autocomplete-province" autocomplete=off>
 							    </div>
 						    </div>
-							{{ required_input('postcode') }}
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Code Postal<span style="color:red">*</span></label>
+						        <div class="col-sm-9">
+						          <input required type="text" name="postcode" class="form-control">
+						        </div>
+						    </div>
 						    <hr />
-							{{ required_input('line1') }}
-							{{ input_field('line2') }}<hr />
-							{{ input_field('lat') }}
-							{{ input_field('lng') }}
-							{{ textarea('description', 'required') }}
-							{{ input_field('website') }}<hr />
-							{{ upload('img_business_med', 'images', 500000) }}<hr />
-							<span style="color:red">(* Required)</span>
-
-							{{ submit('Sign In') }}
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Adresse 1<span style="color:red">*</span></label>
+						        <div class="col-sm-9">
+						          <input required type="text" name="line1" class="form-control">
+						        </div>
+						    </div>
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Adresse 2</label>
+						        <div class="col-sm-9">
+						          <input type="text" name="line2" class="form-control">
+						        </div>
+						    </div>
+						    <hr />
+						    <div class="form-group">
+							    <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:10px">Description<span style="color:red">*</span></label>
+							    <div class="col-sm-9">
+							      	<textarea required name="description" class="form-control"></textarea>
+							    </div>
+						    </div>
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Site Web</label>
+						        <div class="col-sm-9">
+						          <input type="text" class="form-control" type="url" value="http://" name="website">
+						        </div>
+						    </div>
+						    <div class="form-group">
+						        <label class="col-sm-3 control-label" style="text-align:left;margin-bottom:7px">Prix</label>
+						        <div class="col-sm-9">
+						          <input required type="range" value="3" max="5" min="1" step="1" name='price'>
+						        </div>
+						    </div>
+						    <hr />
+							<div class="form-group">
+							    <label for="exampleInputFile" class="col-sm-3 control-label" style="text-align:left;margin-bottom:10px">Image</label>
+							    <div class="col-sm-9">
+							         <input type="hidden" name="MAX_FILE_SIZE" value="500000">
+							    	<input type="file" name="img_business_med" id="img_business_med" id="exampleInputFile">
+							    </div>
+							  </div>
+							<span style="color:red; font-size:1.2em">* Required</span>
+    <div class="form-group">
+	    <div class="col-sm-offset-3 col-sm-9">
+	      <button type="submit" class="btn btn-default">Ajouter le commerce</button>
+	    </div>
+    </div>
 						</form>
 				    </div>
 				</div><!-- end panel panel-info -->
